@@ -4,6 +4,7 @@ import { ArrowLeft, Share2, Heart, Star, Minus, Plus, Check } from "lucide-react
 import { toast } from "sonner";
 
 import { allProducts } from "@/data/products";
+import { useCart } from "@/context/CartContext";
 
 const TABS = ["Description", "Livraison", "Avis"] as const;
 type Tab = typeof TABS[number];
@@ -19,6 +20,7 @@ const paymentMethods = ["Wave", "Orange Money", "MTN MoMo", "Stripe", "PayPal"];
 const ProductDetailPage = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
+  const { addItem } = useCart();
   const [activeTab, setActiveTab] = useState<Tab>("Description");
   const [liked, setLiked] = useState(false);
   const [qty, setQty] = useState(1);
@@ -51,6 +53,7 @@ const ProductDetailPage = () => {
 
   const handleAddToCart = () => {
     setAdded(true);
+    addItem(product, qty);
     toast.success(`${product.name} ajouté au panier`, {
       description: `Quantité : ${qty}`,
     });
