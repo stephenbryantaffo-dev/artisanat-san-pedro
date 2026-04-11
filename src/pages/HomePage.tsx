@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 
 import AppShell from "@/components/AppShell";
 import { ProductCard, mockProducts } from "@/components/ProductCard";
+import { allProducts } from "@/data/products";
 
 import heroImg from "@/assets/hero-sculptor.jpg";
 import catSculpture from "@/assets/cat-sculpture.jpg";
