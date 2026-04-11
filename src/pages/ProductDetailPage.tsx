@@ -4,6 +4,7 @@ import { ArrowLeft, Share2, Heart, Star, Minus, Plus, Check } from "lucide-react
 import { toast } from "sonner";
 
 import { allProducts } from "@/data/products";
+import { useCart } from "@/context/CartContext";
 
 const TABS = ["Description", "Livraison", "Avis"] as const;
 type Tab = typeof TABS[number];
