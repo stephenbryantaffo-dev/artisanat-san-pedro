@@ -20,6 +20,7 @@ const paymentMethods = ["Wave", "Orange Money", "MTN MoMo", "Stripe", "PayPal"];
 const ProductDetailPage = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
+  const { addItem } = useCart();
   const [activeTab, setActiveTab] = useState<Tab>("Description");
   const [liked, setLiked] = useState(false);
   const [qty, setQty] = useState(1);
@@ -52,6 +53,7 @@ const ProductDetailPage = () => {
 
   const handleAddToCart = () => {
     setAdded(true);
+    addItem(product, qty);
     toast.success(`${product.name} ajouté au panier`, {
       description: `Quantité : ${qty}`,
     });
