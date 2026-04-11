@@ -10,6 +10,9 @@ import productHooks from "@/assets/product-hooks.jpg";
 import artisanKofi from "@/assets/artisan-kofi.jpg";
 import artisanAma from "@/assets/artisan-ama.jpg";
 import artisanYao from "@/assets/artisan-yao.jpg";
+import artisanMoussa from "@/assets/artisan-moussa.jpg";
+import artisanFatou from "@/assets/artisan-fatou.jpg";
+import artisanSekou from "@/assets/artisan-sekou.jpg";
 
 export interface Product {
   id: string;
@@ -36,9 +39,9 @@ const artisanProfiles = {
   kofi: { artisanSlug: "kofi-asante", artisanAvatar: artisanKofi, artisanMetier: "Sculpteur", artisanLocation: "San Pedro" },
   ama: { artisanSlug: "ama-diallo", artisanAvatar: artisanAma, artisanMetier: "Potière", artisanLocation: "San Pedro" },
   yao: { artisanSlug: "yao-kouadio", artisanAvatar: artisanYao, artisanMetier: "Tisserand", artisanLocation: "San Pedro" },
-  moussa: { artisanSlug: "moussa-traore", artisanAvatar: artisanKofi, artisanMetier: "Forgeron", artisanLocation: "San Pedro" },
-  fatou: { artisanSlug: "fatou-kone", artisanAvatar: artisanAma, artisanMetier: "Tresseuse", artisanLocation: "San Pedro" },
-  sekou: { artisanSlug: "sekou-bamba", artisanAvatar: artisanYao, artisanMetier: "Peintre", artisanLocation: "San Pedro" },
+  moussa: { artisanSlug: "moussa-traore", artisanAvatar: artisanMoussa, artisanMetier: "Forgeron", artisanLocation: "San Pedro" },
+  fatou: { artisanSlug: "fatou-kone", artisanAvatar: artisanFatou, artisanMetier: "Tresseuse", artisanLocation: "San Pedro" },
+  sekou: { artisanSlug: "sekou-bamba", artisanAvatar: artisanSekou, artisanMetier: "Peintre", artisanLocation: "San Pedro" },
 };
 
 export const allProducts: Product[] = [
