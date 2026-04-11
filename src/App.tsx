@@ -11,6 +11,7 @@ import ArtisansPage from "./pages/ArtisansPage";
 import ArtisanProfilePage from "./pages/ArtisanProfilePage";
 import CartPage from "./pages/CartPage";
 import CheckoutPage from "./pages/CheckoutPage";
+import ClientHubPage from "./pages/ClientHubPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +31,7 @@ const App = () => (
             <Route path="/artisans/:slug" element={<ArtisanProfilePage />} />
             <Route path="/panier" element={<CartPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
+            <Route path="/mon-espace" element={<ClientHubPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
