@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ShoppingBag, Heart, User, Package, ChevronRight, LogOut, Camera } from "lucide-react";
 import AppShell from "@/components/AppShell";
-import { BoutiqueProductCard } from "@/components/BoutiqueProductCard";
+import BoutiqueProductCard from "@/components/BoutiqueProductCard";
 import { allProducts } from "@/data/products";
 
 const mockOrders = [
