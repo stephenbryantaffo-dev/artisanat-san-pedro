@@ -33,12 +33,12 @@ export interface Product {
 }
 
 const artisanProfiles = {
-  kofi: { slug: "kofi-asante", avatar: artisanKofi, metier: "Sculpteur", location: "San Pedro" },
-  ama: { slug: "ama-diallo", avatar: artisanAma, metier: "Potière", location: "San Pedro" },
-  yao: { slug: "yao-kouadio", avatar: artisanYao, metier: "Tisserand", location: "San Pedro" },
-  moussa: { slug: "moussa-traore", avatar: artisanKofi, metier: "Forgeron", location: "San Pedro" },
-  fatou: { slug: "fatou-kone", avatar: artisanAma, metier: "Tresseuse", location: "San Pedro" },
-  sekou: { slug: "sekou-bamba", avatar: artisanYao, metier: "Peintre", location: "San Pedro" },
+  kofi: { artisanSlug: "kofi-asante", artisanAvatar: artisanKofi, artisanMetier: "Sculpteur", artisanLocation: "San Pedro" },
+  ama: { artisanSlug: "ama-diallo", artisanAvatar: artisanAma, artisanMetier: "Potière", artisanLocation: "San Pedro" },
+  yao: { artisanSlug: "yao-kouadio", artisanAvatar: artisanYao, artisanMetier: "Tisserand", artisanLocation: "San Pedro" },
+  moussa: { artisanSlug: "moussa-traore", artisanAvatar: artisanKofi, artisanMetier: "Forgeron", artisanLocation: "San Pedro" },
+  fatou: { artisanSlug: "fatou-kone", artisanAvatar: artisanAma, artisanMetier: "Tresseuse", artisanLocation: "San Pedro" },
+  sekou: { artisanSlug: "sekou-bamba", artisanAvatar: artisanYao, artisanMetier: "Peintre", artisanLocation: "San Pedro" },
 };
 
 export const allProducts: Product[] = [
