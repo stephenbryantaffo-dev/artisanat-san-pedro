@@ -37,6 +37,7 @@ const AIStudioPage = () => {
       setIsGenerating(false);
       setShowForm(true);
     }
+  };
 
   const handleCopy = () => {
     navigator.clipboard.writeText(generatedText);
