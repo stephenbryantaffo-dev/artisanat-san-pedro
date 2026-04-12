@@ -1,14 +1,15 @@
 import { Menu, Sparkles } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const TopNav = () => {
   return (
     <header className="glass-card fixed top-0 w-full z-50 px-6 py-4 flex justify-between items-center">
       <div className="flex items-center gap-3">
-        <button className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-foreground/5 transition-colors">
+        <Link to="/" className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-foreground/5 transition-colors">
           <Menu className="w-[18px] h-[18px] text-inverse-surface" />
-        </button>
+        </Link>
         <span className="font-serif text-base italic text-inverse-surface tracking-tight">
-          The Curator
+          Artisanat San Pedro
         </span>
       </div>
       <div className="flex items-center gap-2">

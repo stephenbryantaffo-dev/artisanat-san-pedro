@@ -5,7 +5,7 @@ const navItems = [
   { icon: Home, label: "Accueil", path: "/" },
   { icon: ShoppingBag, label: "Boutique", path: "/boutique" },
   { icon: Users, label: "Artisans", path: "/artisans" },
-  { icon: User, label: "Profil", path: "/profil" },
+  { icon: User, label: "Profil", path: "/mon-espace" },
 ];
 
 const BottomNav = () => {
