@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { X, Home, ShoppingBag, Users, Compass, User, Palette, Info, Mail } from "lucide-react";
+import { X, Home, ShoppingBag, Users, Compass, User, Palette, Info, Mail, Shield } from "lucide-react";
 
 const navLinks = [
   { label: "Accueil", path: "/", icon: Home },
@@ -11,7 +11,8 @@ const navLinks = [
   { label: "Espace Artisan", path: "/espace-artisan", icon: Palette },
   { label: "À propos", path: "/a-propos", icon: Info },
   { label: "Contact", path: "/contact", icon: Mail },
-];
+  { label: "Admin", path: "/admin", icon: Shield, admin: true },
+] as const;
 
 const paymentBadges = ["Wave", "Orange Money", "MTN MoMo", "Stripe", "PayPal"];
 
