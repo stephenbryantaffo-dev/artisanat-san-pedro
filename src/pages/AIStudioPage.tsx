@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Sparkles, Copy, Upload, Loader2 } from "lucide-react";
 import AppShell from "@/components/AppShell";
+import { supabase } from "@/integrations/supabase/client";
 
 const categories = ["Sculpture", "Tressage", "Tissage", "Poterie", "Forge", "Peinture"];
 
