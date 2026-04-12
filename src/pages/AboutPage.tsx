@@ -1,4 +1,5 @@
 import AppShell from "@/components/AppShell";
+import { ShoppingBag, Palette, Globe, Store, Laptop, TrendingUp, Users, Award, Handshake, Heart, ArrowRight } from "lucide-react";
 
 const stats = [
   { value: "240+", label: "Artisans accompagnés" },
@@ -9,69 +10,210 @@ const stats = [
   { value: "2026", label: "Année de lancement" },
 ];
 
-const pillars = [
-  { icon: "💰", title: "Économique", desc: "Générer des revenus durables pour les artisans en les connectant aux marchés locaux et internationaux via une plateforme numérique moderne." },
-  { icon: "🎭", title: "Culturel", desc: "Préserver et valoriser le patrimoine artisanal ivoirien en documentant les techniques ancestrales et en soutenant leur transmission." },
-  { icon: "✈️", title: "Touristique", desc: "Positionner San Pedro comme destination de tourisme culturel en attirant les acheteurs internationaux et les amateurs d'art." },
+const missions = [
+  {
+    title: "Générer des revenus durables",
+    body: "Dans un contexte où l'économie locale cherche à se diversifier et à renforcer l'employabilité des jeunes et des femmes, la plateforme offre aux artisans un espace de vente professionnel et une visibilité numérique leur permettant d'accéder à des marchés jusqu'alors inaccessibles.",
+  },
+  {
+    title: "Valoriser le patrimoine artisanal",
+    body: "San Pedro abrite des artisans talentueux dont les savoir-faire — transmis de génération en génération — constituent un patrimoine culturel vivant. La plateforme leur confère une légitimité numérique et préserve ces traditions en les rendant accessibles au monde entier.",
+  },
+  {
+    title: "Attirer les acheteurs internationaux",
+    body: "En valorisant l'authenticité et l'excellence artisanale de San Pedro, la plateforme positionne la région comme une destination incontournable pour les acheteurs et les touristes en quête de créations africaines authentiques et de haute qualité.",
+  },
+];
+
+const values = [
+  { icon: Heart, title: "Authenticité", desc: "Chaque œuvre est vérifiée, chaque artisan est certifié. Aucune contrefaçon, aucune production de masse." },
+  { icon: Handshake, title: "Commerce équitable", desc: "100% du prix artisan lui est reversé directement. Transparence totale sur la chaîne de valeur." },
+  { icon: Award, title: "Excellence", desc: "Une sélection rigoureuse, une présentation haut de gamme, une expérience d'achat digne des plus grandes galeries." },
+  { icon: Globe, title: "Accessibilité", desc: "Paiements locaux (Wave, Orange Money, MTN) et internationaux (Stripe, PayPal). Livraison dans 17 pays." },
 ];
 
 const partners = [
-  "Chambre des Métiers de San Pedro",
-  "Conseil Citoyen",
-  "SELLARS AFRICA",
-  "Mairie de San Pedro",
-  "AMF-UEMOA",
+  { name: "Chambre des Métiers de San Pedro", role: "Partenaire institutionnel" },
+  { name: "Conseil Citoyen", role: "Gouvernance locale" },
+  { name: "SELLARS AFRICA", role: "Partenaire technique" },
+  { name: "Mairie de San Pedro", role: "Autorité locale" },
+  { name: "AMF-UEMOA", role: "Partenaire financier" },
+];
+
+const phases = [
+  { phase: "Phase 1", period: "Jan — Mars 2026", title: "Lancement & Onboarding", desc: "Recrutement des 35 premiers artisans, formation numérique, mise en ligne de la plateforme beta.", status: "done" },
+  { phase: "Phase 2", period: "Avr — Juin 2026", title: "Croissance & Marketing", desc: "Campagnes réseaux sociaux, partenariats internationaux, objectif 100 artisans actifs.", status: "active" },
+  { phase: "Phase 3", period: "Juil — Déc 2026", title: "Consolidation & Scale", desc: "Expansion vers d'autres régions de Côte d'Ivoire, intégration logistique avancée, 240+ artisans.", status: "upcoming" },
 ];
 
 const AboutPage = () => (
   <AppShell>
     {/* Hero */}
-    <div className="bg-inverse-surface px-6 py-16">
-      <p className="text-[10px] uppercase tracking-widest text-primary mb-2">PROGRAMME PACTE</p>
-      <h1 className="font-serif text-4xl italic text-primary-foreground">Notre Mission</h1>
-      <p className="text-sm text-primary-foreground/70 font-light leading-relaxed mt-4 max-w-sm">
-        PACTE — Partenariat pour une Administration Citoyenne et la Transformation de l'État — porte la plateforme numérique de l'artisanat de San Pedro pour valoriser et promouvoir le patrimoine artisanal, générer des revenus durables pour les artisans, et les connecter aux marchés locaux et internationaux.
+    <div className="bg-inverse-surface rounded-[2rem] p-8 mx-6 mt-6">
+      <p className="text-[10px] uppercase tracking-widest text-inverse-primary mb-3">
+        PROGRAMME PACTE · SAN PEDRO
       </p>
+      <h1 className="font-headline text-4xl italic text-inverse-on-surface leading-tight">
+        Artisanat San Pedro
+      </h1>
+      <p className="font-headline text-lg italic text-primary mt-1">
+        La Plateforme Numérique de l'Artisanat
+      </p>
+      <div className="w-16 h-px bg-primary mt-6 mb-6" />
+      <p className="font-body text-sm text-inverse-on-surface/70 font-light leading-relaxed">
+        Artisanat San Pedro est la vitrine numérique officielle des artisans de la région de San Pedro, en Côte d'Ivoire. Portée par le programme PACTE — Partenariat pour une Administration Citoyenne et la Transformation de l'État — cette plateforme e-commerce connecte des créateurs d'exception aux marchés local, national et international. Elle réunit six corps de métiers : Sculpture, Tressage, Tissage, Poterie, Forge et Peinture, à travers une expérience d'achat moderne, sécurisée et culturellement ancrée.
+      </p>
+    </div>
+
+    {/* Mission */}
+    <div className="px-6 py-10">
+      <p className="text-[10px] uppercase tracking-widest text-on-surface-variant mb-3">NOTRE MISSION</p>
+      <h2 className="font-headline text-2xl italic mb-6">Pourquoi ce projet existe</h2>
+      <div className="space-y-4">
+        {missions.map((m) => (
+          <div key={m.title} className="bg-surface-container-lowest rounded-[1.5rem] p-6 border-l-4 border-primary">
+            <h3 className="font-headline text-lg">{m.title}</h3>
+            <p className="font-body text-sm text-on-surface-variant font-light leading-relaxed mt-2">{m.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    {/* Project Description */}
+    <div className="px-6 py-8 bg-surface-container-low rounded-[2rem] mx-6 mb-6">
+      <p className="text-[10px] uppercase tracking-widest text-on-surface-variant mb-3">LE PROJET</p>
+      <h2 className="font-headline text-2xl italic mb-6">Une double infrastructure</h2>
+      <div className="space-y-5">
+        <div className="flex items-start gap-4">
+          <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center flex-shrink-0">
+            <Store className="text-white w-5 h-5" />
+          </div>
+          <div>
+            <h3 className="font-headline text-base">La boutique physique</h3>
+            <p className="font-body text-sm text-on-surface-variant font-light leading-relaxed mt-1">
+              Située au cœur de San Pedro, la boutique physique sert de showroom permanent, de point de retrait pour les commandes en ligne, et de centre de formation pour les artisans. Elle incarne la passerelle entre le monde numérique et l'artisanat tangible.
+            </p>
+          </div>
+        </div>
+        <div className="flex items-start gap-4">
+          <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center flex-shrink-0">
+            <Laptop className="text-white w-5 h-5" />
+          </div>
+          <div>
+            <h3 className="font-headline text-base">La plateforme numérique</h3>
+            <p className="font-body text-sm text-on-surface-variant font-light leading-relaxed mt-1">
+              Application web moderne permettant aux artisans de gérer leur catalogue, recevoir des commandes et suivre leurs revenus. Les acheteurs bénéficient d'une expérience e-commerce fluide avec paiements sécurisés et livraison internationale.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
 
     {/* Impact Stats */}
     <div className="px-6 py-10">
-      <h2 className="font-serif text-2xl italic mb-6">Impact à ce jour</h2>
+      <p className="text-[10px] uppercase tracking-widest text-on-surface-variant mb-3">NOTRE IMPACT</p>
+      <h2 className="font-headline text-2xl italic mb-6">Les chiffres parlent</h2>
       <div className="grid grid-cols-2 gap-3">
         {stats.map((s) => (
-          <div key={s.label} className="bg-surface-container-low rounded-xl p-4 text-center">
-            <p className="font-serif text-2xl text-primary">{s.value}</p>
-            <p className="text-[8px] uppercase tracking-widest text-muted-foreground mt-1">{s.label}</p>
+          <div key={s.label} className="bg-surface-container-lowest rounded-xl p-4 text-center shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
+            <p className="font-headline text-2xl text-primary">{s.value}</p>
+            <p className="text-[8px] uppercase tracking-widest text-on-surface-variant mt-1">{s.label}</p>
           </div>
         ))}
       </div>
     </div>
 
-    {/* Pillars */}
-    <div className="px-6 py-8 bg-surface-container-low space-y-4">
-      <h2 className="font-serif text-2xl italic">Nos Piliers</h2>
-      {pillars.map((p) => (
-        <div key={p.title} className="bg-background rounded-[1.5rem] p-5">
-          <span className="text-2xl">{p.icon}</span>
-          <h3 className="font-serif text-lg italic mt-2">{p.title}</h3>
-          <p className="text-sm text-muted-foreground font-light leading-relaxed mt-2">{p.desc}</p>
-        </div>
-      ))}
+    {/* Values */}
+    <div className="px-6 py-8">
+      <p className="text-[10px] uppercase tracking-widest text-on-surface-variant mb-3">NOS VALEURS</p>
+      <h2 className="font-headline text-2xl italic mb-6">Ce qui nous guide</h2>
+      <div className="grid grid-cols-2 gap-3">
+        {values.map((v) => (
+          <div key={v.title} className="bg-surface-container-lowest rounded-[1.5rem] p-5 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
+            <v.icon className="w-6 h-6 text-primary mb-3" />
+            <h3 className="font-headline text-sm">{v.title}</h3>
+            <p className="text-[11px] text-on-surface-variant font-light leading-relaxed mt-1">{v.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    {/* Roadmap */}
+    <div className="px-6 py-8">
+      <p className="text-[10px] uppercase tracking-widest text-on-surface-variant mb-3">FEUILLE DE ROUTE</p>
+      <h2 className="font-headline text-2xl italic mb-6">Notre trajectoire 2026</h2>
+      <div className="space-y-4">
+        {phases.map((p) => (
+          <div
+            key={p.phase}
+            className={`rounded-[1.5rem] p-5 ${
+              p.status === "active"
+                ? "bg-primary text-white"
+                : "bg-surface-container-lowest"
+            }`}
+          >
+            <div className="flex items-center justify-between mb-2">
+              <span className={`text-[9px] uppercase tracking-widest font-bold ${p.status === "active" ? "text-white/70" : "text-primary"}`}>
+                {p.phase}
+              </span>
+              <span className={`text-[9px] uppercase tracking-widest ${p.status === "active" ? "text-white/50" : "text-on-surface-variant"}`}>
+                {p.period}
+              </span>
+            </div>
+            <h3 className={`font-headline text-base ${p.status === "active" ? "text-white" : ""}`}>{p.title}</h3>
+            <p className={`text-sm font-light leading-relaxed mt-1 ${p.status === "active" ? "text-white/70" : "text-on-surface-variant"}`}>
+              {p.desc}
+            </p>
+            {p.status === "done" && (
+              <span className="inline-block mt-3 text-[9px] uppercase tracking-widest text-green-600 font-bold">Complétée</span>
+            )}
+            {p.status === "active" && (
+              <span className="inline-flex items-center gap-1 mt-3 text-[9px] uppercase tracking-widest text-white/80 font-bold">
+                <span className="w-2 h-2 rounded-full bg-white animate-pulse" /> En cours
+              </span>
+            )}
+            {p.status === "upcoming" && (
+              <span className="inline-block mt-3 text-[9px] uppercase tracking-widest text-on-surface-variant">À venir</span>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
 
     {/* Partners */}
     <div className="px-6 py-8">
-      <h2 className="font-serif text-xl italic mb-6">Nos Partenaires</h2>
+      <p className="text-[10px] uppercase tracking-widest text-on-surface-variant mb-3">ÉCOSYSTÈME</p>
+      <h2 className="font-headline text-2xl italic mb-6">Nos Partenaires</h2>
       <div className="space-y-3">
-        {partners.map((name) => (
-          <div key={name} className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-xs font-bold flex-shrink-0">
-              {name.charAt(0)}
+        {partners.map((p) => (
+          <div key={p.name} className="flex items-center gap-4 bg-surface-container-lowest rounded-xl p-4 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
+            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary text-sm font-bold flex-shrink-0">
+              {p.name.charAt(0)}
             </div>
-            <span className="text-sm">{name}</span>
+            <div>
+              <p className="font-headline text-sm">{p.name}</p>
+              <p className="text-[9px] uppercase tracking-widest text-on-surface-variant mt-0.5">{p.role}</p>
+            </div>
           </div>
         ))}
       </div>
+    </div>
+
+    {/* CTA */}
+    <div className="mx-6 mb-6 bg-inverse-surface rounded-[2rem] p-8 text-center">
+      <p className="text-[10px] uppercase tracking-widest text-inverse-primary mb-3">REJOIGNEZ LE MOUVEMENT</p>
+      <h2 className="font-headline text-2xl italic text-inverse-on-surface mb-3">
+        Soutenez l'artisanat de San Pedro
+      </h2>
+      <p className="font-body text-sm text-inverse-on-surface/60 font-light leading-relaxed mb-6 max-w-md mx-auto">
+        Chaque achat sur la plateforme soutient directement un artisan et sa famille. Découvrez des créations uniques, faites avec passion et savoir-faire ancestral.
+      </p>
+      <a
+        href="/boutique"
+        className="inline-flex items-center gap-2 bg-gradient-to-r from-primary to-primary-container text-white px-8 py-3 rounded-full font-body text-sm font-medium hover:opacity-90 transition-opacity"
+      >
+        Explorer la boutique <ArrowRight className="w-4 h-4" />
+      </a>
     </div>
 
     <div className="pb-16" />
