@@ -14,6 +14,9 @@ import CheckoutPage from "./pages/CheckoutPage";
 import ClientHubPage from "./pages/ClientHubPage";
 import ArtisanDashboardPage from "./pages/ArtisanDashboardPage";
 import AIStudioPage from "./pages/AIStudioPage";
+import DecouvertePage from "./pages/DecouvertePage";
+import AboutPage from "./pages/AboutPage";
+import ContactPage from "./pages/ContactPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -36,6 +39,9 @@ const App = () => (
             <Route path="/mon-espace" element={<ClientHubPage />} />
             <Route path="/espace-artisan" element={<ArtisanDashboardPage />} />
             <Route path="/espace-artisan/ia-studio" element={<AIStudioPage />} />
+            <Route path="/decouverte" element={<DecouvertePage />} />
+            <Route path="/a-propos" element={<AboutPage />} />
+            <Route path="/contact" element={<ContactPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
