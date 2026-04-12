@@ -49,7 +49,7 @@ const ArtisansPage = () => {
         ))}
       </div>
 
-      <div className="px-6 pb-32">
+      <div className="px-6 pb-16">
         {/* Featured artisan */}
         {featured && selectedMetier === "Tous" && (
           <Link

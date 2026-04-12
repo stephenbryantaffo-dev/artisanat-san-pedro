@@ -61,7 +61,7 @@ const ProductDetailPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background pb-28">
+    <div className="min-h-screen bg-background pb-16">
       {/* Top Nav */}
       <header className="glass-card fixed top-0 w-full z-50 px-6 py-4 flex justify-between items-center">
         <button

@@ -87,7 +87,7 @@ const ClientHubPage = () => {
       </div>
 
       {/* TAB CONTENT */}
-      <div className="pb-32">
+      <div className="pb-16">
         {activeTab === "Commandes" && (
           <div className="px-6 pt-6 space-y-4">
             {mockOrders.map((order) => (

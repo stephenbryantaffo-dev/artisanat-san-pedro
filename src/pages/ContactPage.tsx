@@ -56,7 +56,7 @@ const ContactPage = () => {
       </div>
 
       {/* Chat IA CTA */}
-      <div className="px-6 mt-4 pb-32">
+      <div className="px-6 mt-4 pb-16">
         <div className="bg-primary/5 rounded-[1.5rem] p-6 text-center">
           <Sparkles className="w-8 h-8 text-primary mx-auto" />
           <h3 className="font-serif text-lg mt-2">Notre assistant IA répond immédiatement</h3>

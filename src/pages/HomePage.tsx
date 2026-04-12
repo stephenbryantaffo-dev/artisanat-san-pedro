@@ -253,7 +253,7 @@ const NewsletterSection = () => {
   const [email, setEmail] = useState("");
 
   return (
-    <section className="py-12 px-6 pb-32">
+    <section className="py-12 px-6 pb-16">
       <span className="label-caps text-[10px] text-muted-foreground mb-2 block">Restez connecté</span>
       <h2 className="font-serif text-2xl text-inverse-surface">L'art au bout des doigts</h2>
       <p className="text-sm text-muted-foreground font-light mt-2 mb-6 leading-relaxed">
