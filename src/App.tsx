@@ -12,6 +12,8 @@ import ArtisanProfilePage from "./pages/ArtisanProfilePage";
 import CartPage from "./pages/CartPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import ClientHubPage from "./pages/ClientHubPage";
+import ArtisanDashboardPage from "./pages/ArtisanDashboardPage";
+import AIStudioPage from "./pages/AIStudioPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
