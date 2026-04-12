@@ -103,7 +103,7 @@ const ArtisanDashboardPage = () => {
       </div>
 
       {/* Recent Orders */}
-      <div className="px-6 mt-8 pb-32">
+      <div className="px-6 mt-8 pb-16">
         <h2 className="font-serif text-xl text-foreground mb-4">Commandes Récentes</h2>
         <div className="space-y-3">
           {mockOrders.map((order) => (

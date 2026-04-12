@@ -141,7 +141,7 @@ const BoutiquePage = () => {
       </div>
 
       {/* Product grid */}
-      <div className="px-6 pb-32 pt-4">
+      <div className="px-6 pb-16 pt-4">
         {filteredProducts.length > 0 ? (
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {filteredProducts.map((p) => (

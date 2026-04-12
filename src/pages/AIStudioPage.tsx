@@ -181,7 +181,7 @@ const AIStudioPage = () => {
       )}
 
       {/* How it works */}
-      <div className="px-6 mt-6 pb-32">
+      <div className="px-6 mt-6 pb-16">
         <div className="flex gap-3 overflow-x-auto no-scrollbar">
           {[
             { step: "1", title: "Décrivez", text: "Quelques mots sur votre œuvre" },

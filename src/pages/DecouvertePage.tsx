@@ -84,7 +84,7 @@ const DecouvertePage = () => (
       </div>
     </div>
 
-    <div className="pb-32" />
+    <div className="pb-16" />
   </AppShell>
 );
 
