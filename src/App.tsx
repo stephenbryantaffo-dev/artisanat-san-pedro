@@ -17,6 +17,7 @@ import AIStudioPage from "./pages/AIStudioPage";
 import DecouvertePage from "./pages/DecouvertePage";
 import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
+import AIChatbot from "./components/AIChatbot";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -44,6 +45,7 @@ const App = () => (
             <Route path="/contact" element={<ContactPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
+          <AIChatbot />
         </BrowserRouter>
       </CartProvider>
     </TooltipProvider>

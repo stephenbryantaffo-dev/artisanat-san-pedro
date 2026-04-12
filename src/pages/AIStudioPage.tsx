@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Sparkles, Copy, Upload, Loader2 } from "lucide-react";
 import AppShell from "@/components/AppShell";
+import { supabase } from "@/integrations/supabase/client";
 
 const categories = ["Sculpture", "Tressage", "Tissage", "Poterie", "Forge", "Peinture"];
 
@@ -22,14 +23,20 @@ const AIStudioPage = () => {
     setIsGenerating(true);
     setGeneratedText("");
 
-    // Simulated AI generation for MVP
-    await new Promise((r) => setTimeout(r, 2500));
+    try {
+      const { data, error } = await supabase.functions.invoke("chat", {
+        body: { type: "product-description", description: description.trim() },
+      });
 
-    const mockResult = `${description.trim().slice(0, 60)}… — Cette pièce exceptionnelle incarne le savoir-faire ancestral des artisans de San Pedro. Sculptée à la main dans du bois noble, elle reflète des heures de travail minutieux et une maîtrise technique transmise de génération en génération. Chaque détail raconte une histoire : les scarifications symbolisent la sagesse des ancêtres, tandis que la finition à l'huile de palme confère au bois une patine chaleureuse et protectrice. Une œuvre unique qui marie tradition et esthétique contemporaine.`;
-
-    setGeneratedText(mockResult);
-    setIsGenerating(false);
-    setShowForm(true);
+      if (error) throw error;
+      setGeneratedText(data?.content || "Erreur lors de la génération.");
+    } catch (err) {
+      console.error("Generation error:", err);
+      setGeneratedText("Une erreur est survenue lors de la génération. Veuillez réessayer.");
+    } finally {
+      setIsGenerating(false);
+      setShowForm(true);
+    }
   };
 
   const handleCopy = () => {
