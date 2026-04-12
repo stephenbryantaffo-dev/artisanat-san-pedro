@@ -78,6 +78,7 @@ const NavigationDrawer = ({ isOpen, onClose }: NavigationDrawerProps) => {
         <nav className="mt-10 space-y-0 flex-1">
           {navLinks.map((link, i) => {
             const isActive = location.pathname === link.path;
+            const isAdmin = "admin" in link && link.admin;
             return (
               <div
                 key={link.path}
@@ -88,12 +89,15 @@ const NavigationDrawer = ({ isOpen, onClose }: NavigationDrawerProps) => {
                   transitionDelay: visible ? `${100 + i * 50}ms` : "0ms",
                 }}
               >
+                {isAdmin && <div className="h-px bg-primary-foreground/10 my-2" />}
                 <Link
                   to={link.path}
                   className={`py-4 px-2 flex items-center justify-between transition-colors ${
-                    isActive
+                    isAdmin
                       ? "text-primary"
-                      : "text-primary-foreground hover:text-primary"
+                      : isActive
+                        ? "text-primary"
+                        : "text-primary-foreground hover:text-primary"
                   }`}
                 >
                   <div className="flex items-center gap-4">
@@ -104,7 +108,7 @@ const NavigationDrawer = ({ isOpen, onClose }: NavigationDrawerProps) => {
                     <span className="w-2 h-2 rounded-full bg-primary" />
                   )}
                 </Link>
-                {i < navLinks.length - 1 && (
+                {i < navLinks.length - 1 && !isAdmin && (
                   <div className="h-px bg-primary-foreground/10" />
                 )}
               </div>
