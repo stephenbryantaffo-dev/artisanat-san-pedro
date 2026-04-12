@@ -34,6 +34,8 @@ const App = () => (
             <Route path="/panier" element={<CartPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/mon-espace" element={<ClientHubPage />} />
+            <Route path="/espace-artisan" element={<ArtisanDashboardPage />} />
+            <Route path="/espace-artisan/ia-studio" element={<AIStudioPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
