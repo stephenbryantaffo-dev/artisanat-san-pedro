@@ -39,6 +39,9 @@ const App = () => (
             <Route path="/mon-espace" element={<ClientHubPage />} />
             <Route path="/espace-artisan" element={<ArtisanDashboardPage />} />
             <Route path="/espace-artisan/ia-studio" element={<AIStudioPage />} />
+            <Route path="/decouverte" element={<DecouvertePage />} />
+            <Route path="/a-propos" element={<AboutPage />} />
+            <Route path="/contact" element={<ContactPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
