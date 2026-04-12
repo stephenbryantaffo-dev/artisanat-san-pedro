@@ -78,7 +78,15 @@ const NavigationDrawer = ({ isOpen, onClose }: NavigationDrawerProps) => {
           {navLinks.map((link, i) => {
             const isActive = location.pathname === link.path;
             return (
-              <div key={link.path}>
+              <div
+                key={link.path}
+                className="transition-all duration-300 ease-out"
+                style={{
+                  opacity: visible ? 1 : 0,
+                  transform: visible ? "translateX(0)" : "translateX(-20px)",
+                  transitionDelay: visible ? `${100 + i * 50}ms` : "0ms",
+                }}
+              >
                 <Link
                   to={link.path}
                   className={`py-4 px-2 flex items-center justify-between transition-colors ${
