@@ -14,6 +14,9 @@ import CheckoutPage from "./pages/CheckoutPage";
 import ClientHubPage from "./pages/ClientHubPage";
 import ArtisanDashboardPage from "./pages/ArtisanDashboardPage";
 import AIStudioPage from "./pages/AIStudioPage";
+import DecouvertePage from "./pages/DecouvertePage";
+import AboutPage from "./pages/AboutPage";
+import ContactPage from "./pages/ContactPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
