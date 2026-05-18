@@ -20,10 +20,13 @@ import ContactPage from "./pages/ContactPage";
 import AIChatbot from "./components/AIChatbot";
 import NotFound from "./pages/NotFound";
 import AdminPage from "./pages/AdminPage";
+import { useLenis } from "./hooks/useLenis";
 
 const queryClient = new QueryClient();
 
-const App = () => (
+const App = () => {
+  useLenis();
+  return (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <CartProvider>
@@ -52,6 +55,7 @@ const App = () => (
       </CartProvider>
     </TooltipProvider>
   </QueryClientProvider>
-);
+  );
+};
 
 export default App;
