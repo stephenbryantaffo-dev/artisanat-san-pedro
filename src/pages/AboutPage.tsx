@@ -3,6 +3,7 @@ import { ShoppingBag, Palette, Globe, Store, Laptop, TrendingUp, Users, Award, H
 import { motion } from "framer-motion";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { staggerContainer, staggerItem, scaleReveal } from "@/lib/motionVariants";
+import { FadeInText } from "@/components/ui/FadeInText";
 
 const stats = [
   { value: "240+", label: "Artisans accompagnés" },
@@ -90,7 +91,10 @@ const AboutPage = () => (
             style={{ borderLeftColor: MISSION_BORDERS[i % MISSION_BORDERS.length] }}
           >
             <h3 className="font-headline text-lg">{m.title}</h3>
-            <p className="font-body text-sm text-on-surface-variant font-light leading-relaxed mt-2">{m.body}</p>
+            <FadeInText
+              text={m.body}
+              className="text-sm font-light leading-relaxed text-on-surface-variant mt-2"
+            />
           </motion.div>
         ))}
       </motion.div>

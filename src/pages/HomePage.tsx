@@ -6,6 +6,7 @@ import { useRef } from "react";
 import { ScrollReveal } from "../components/ui/ScrollReveal";
 import { staggerContainer, staggerItem, slideLeft, scaleReveal } from "../lib/motionVariants";
 import { lenisInstance } from "../hooks/useLenis";
+import { FadeInText } from "../components/ui/FadeInText";
 
 import AppShell from "@/components/AppShell";
 import { ProductCard, mockProducts } from "@/components/ProductCard";
@@ -331,9 +332,12 @@ const EditoSection = () => (
     <span className="label-caps text-[10px] text-primary-foreground/60 mt-2 block">
       Chaque pièce, une histoire
     </span>
-    <p className="text-sm text-primary-foreground/70 font-light leading-relaxed mt-6">
-      À San Pedro, l'artisanat n'est pas un métier. C'est un langage transmis de génération en génération, façonné par des mains expertes qui transforment la matière brute en expressions vivantes de notre culture. Chaque sculpture, chaque tissu, chaque poterie porte en elle l'empreinte de siècles de tradition.
-    </p>
+    <FadeInText
+      text="À San Pedro, l'artisanat n'est pas un métier. C'est un langage transmis de génération en génération, façonné par des mains expertes qui transforment la matière brute en œuvres d'exception."
+      className="text-sm font-light leading-relaxed text-on-surface-variant mt-4 max-w-sm"
+      baseColor="rgba(255,255,255,0.25)"
+      targetColor="rgb(255,255,255)"
+    />
     <blockquote className="font-serif text-3xl italic text-primary-foreground mt-6 leading-snug">
       <span style={{ color: "#4A7A4A" }}>“</span>Chaque pièce porte l'histoire de tout un peuple.<span style={{ color: "#4A7A4A" }}>”</span>
     </blockquote>
