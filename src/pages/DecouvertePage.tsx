@@ -1,5 +1,8 @@
 import AppShell from "@/components/AppShell";
 import { allArtisans } from "@/data/artisans";
+import { motion } from "framer-motion";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { staggerContainer, staggerItem } from "@/lib/motionVariants";
 
 import catSculpture from "@/assets/cat-sculpture.jpg";
 import catTissage from "@/assets/cat-tissage.jpg";
@@ -46,8 +49,9 @@ const DecouvertePage = () => (
 
     {/* Articles */}
     <div className="px-6 py-10 space-y-6">
-      {articles.map((a) => (
-        <article key={a.title} className="bg-background rounded-[2rem] overflow-hidden shadow-[0_10px_30px_rgba(14,13,13,0.04)]">
+      {articles.map((a, i) => (
+        <ScrollReveal key={a.title} delay={i * 0.1}>
+        <article className="bg-background rounded-[2rem] overflow-hidden shadow-[0_10px_30px_rgba(14,13,13,0.04)]">
           <img src={a.image} alt={a.title} className="w-full aspect-[16/7] object-cover sepia-[0.15]" />
           <div className="p-6">
             <span className="inline-flex px-3 py-1 rounded-full bg-primary/10 text-[9px] uppercase tracking-widest text-primary backdrop-blur-sm">
@@ -60,6 +64,7 @@ const DecouvertePage = () => (
             </button>
           </div>
         </article>
+        </ScrollReveal>
       ))}
     </div>
 
@@ -67,9 +72,15 @@ const DecouvertePage = () => (
     <div className="px-6 py-8 bg-surface-container-low">
       <h2 className="font-serif text-2xl italic">Agenda Culturel 2026</h2>
       <p className="text-[10px] uppercase text-muted-foreground tracking-widest mb-6">Événements à venir</p>
-      <div className="space-y-4">
+      <motion.div
+        className="space-y-4"
+        variants={staggerContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-40px" }}
+      >
         {events.map((e) => (
-          <div key={e.name} className="flex items-center gap-4 bg-background rounded-[1.5rem] p-4">
+          <motion.div key={e.name} variants={staggerItem} className="flex items-center gap-4 bg-background rounded-[1.5rem] p-4">
             <div className="bg-primary text-primary-foreground rounded-xl p-3 text-center flex-shrink-0 w-14">
               <span className="font-serif text-xl font-bold block">{e.day}</span>
               <span className="text-[8px] uppercase">{e.month}</span>
@@ -79,9 +90,9 @@ const DecouvertePage = () => (
               <p className="text-[9px] uppercase tracking-widest text-muted-foreground">{e.location}</p>
               <p className="text-[10px] text-muted-foreground font-light">{e.desc}</p>
             </div>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </div>
 
     <div className="pb-16" />
