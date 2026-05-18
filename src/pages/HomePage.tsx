@@ -301,31 +301,107 @@ const ArtisansSection = () => (
 );
 
 /* ─── SECTION 5: PIÈCES POPULAIRES ─── */
-const PopularSection = () => (
-  <section className="py-12 px-6">
-    <ScrollReveal>
-      <div className="flex justify-between items-end mb-6">
-        <h2 className="font-serif text-2xl text-inverse-surface">Pièces Phares</h2>
-        <Link to="/boutique" className="label-caps text-[10px] text-primary underline">
-          Voir tout →
-        </Link>
+const PinnedProductsSection = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    const track = trackRef.current;
+    if (!section || !track) return;
+
+    const handleScroll = ({ scroll }: { scroll: number }) => {
+      const rect = section.getBoundingClientRect();
+      const sectionTop = scroll + rect.top - window.innerHeight * 0.1;
+      const sectionHeight = section.offsetHeight - window.innerHeight;
+
+      if (scroll >= sectionTop && scroll <= sectionTop + sectionHeight) {
+        const progress = (scroll - sectionTop) / sectionHeight;
+        const maxTranslate = track.scrollWidth - track.offsetWidth;
+        track.style.transform = `translateX(${-progress * maxTranslate}px)`;
+      }
+    };
+
+    lenisInstance?.on('scroll', handleScroll);
+    return () => { lenisInstance?.off('scroll', handleScroll); };
+  }, []);
+
+  const products = [
+    { name: 'Masque Baoulé ébène', artisan: 'Kofi Asante', price: '45 000', category: 'Sculpture', badge: 'COUP DE CŒUR' },
+    { name: 'Panier décoratif Abissa', artisan: 'Aya Coulibaly', price: '18 000', category: 'Tressage', badge: null },
+    { name: 'Vase Sénoufo terracotta', artisan: 'Fatou Diallo', price: '28 500', category: 'Poterie', badge: 'NOUVEAU' },
+    { name: 'Village au crépuscule', artisan: 'Abou Koné', price: '65 000', category: 'Peinture', badge: null },
+    { name: 'Statue Dan ancestrale', artisan: 'Kofi Asante', price: '72 000', category: 'Sculpture', badge: 'PIÈCE RARE' },
+  ];
+
+  return (
+    <section ref={sectionRef} className="relative" style={{ height: '300vh' }}>
+      <div className="sticky top-0 h-screen overflow-hidden flex flex-col justify-center">
+        <div className="px-6 mb-8 flex justify-between items-end">
+          <div>
+            <p className="label-caps text-[10px] uppercase tracking-widest text-muted-foreground mb-1">
+              Nos Créations
+            </p>
+            <h2 className="font-serif text-3xl italic text-inverse-surface">
+              Pièces <span className="text-primary">Phares</span>
+            </h2>
+          </div>
+          <p className="label-caps text-[10px] uppercase tracking-widest text-muted-foreground">
+            Faites défiler →
+          </p>
+        </div>
+
+        <div
+          ref={trackRef}
+          className="flex gap-6 px-6"
+          style={{ willChange: 'transform', transition: 'transform 0.05s linear', width: 'max-content' }}
+        >
+          {products.map((product, i) => (
+            <div
+              key={i}
+              className="flex-shrink-0 w-72 rounded-[1.5rem] overflow-hidden bg-background shadow-luxury"
+              style={{ marginTop: i % 2 === 0 ? '0px' : '40px' }}
+            >
+              <div className="aspect-[3/4] bg-surface-container-low overflow-hidden">
+                <img
+                  src={`https://source.unsplash.com/400x533/?african,craft,${product.category.toLowerCase()}`}
+                  className="w-full h-full object-cover"
+                  style={{ filter: 'brightness(0.95) sepia(0.15)' }}
+                  alt={product.name}
+                />
+              </div>
+              <div className="p-5">
+                <p className="text-[9px] uppercase tracking-widest text-primary font-bold mb-1">
+                  {product.category}
+                </p>
+                <h3 className="font-serif text-lg italic leading-tight text-inverse-surface">
+                  {product.name}
+                </h3>
+                <p className="text-[10px] text-muted-foreground mt-1">{product.artisan}</p>
+                <div className="flex justify-between items-center mt-4">
+                  <span className="font-serif text-xl text-primary">
+                    {product.price} FCFA
+                  </span>
+                  <button className="w-10 h-10 rounded-full bg-gradient-to-br from-terracotta to-terracotta-light flex items-center justify-center text-primary-foreground font-bold text-lg">
+                    +
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="px-6 mt-8 flex gap-2">
+          {products.map((_, i) => (
+            <div key={i} className="h-0.5 flex-1 bg-border/30 rounded-full overflow-hidden">
+              <div className="h-full bg-primary rounded-full" style={{ width: '20%' }} />
+            </div>
+          ))}
+        </div>
       </div>
-    </ScrollReveal>
-    <motion.div
-      className="grid grid-cols-2 gap-4"
-      variants={staggerContainer}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-40px" }}
-    >
-      {mockProducts.map((p) => (
-        <motion.div key={p.id} variants={staggerItem}>
-          <ProductCard product={p} />
-        </motion.div>
-      ))}
-    </motion.div>
-  </section>
-);
+    </section>
+  );
+};
 
 /* ─── SECTION 6: ÉDITO CULTUREL ─── */
 const EditoSection = () => (
@@ -405,7 +481,7 @@ const HomePage = () => (
     <Cascade />
     <MetiersSection />
     <ArtisansSection />
-    <PopularSection />
+    <PinnedProductsSection />
     <EditoSection />
     <NewsletterSection />
   </AppShell>
