@@ -123,15 +123,24 @@ const AIChatbot = () => {
 
             {/* Quick actions */}
             <div className="px-4 py-3 flex gap-2 overflow-x-auto no-scrollbar border-b border-border/10">
-              {quickActions.map((action) => (
-                <button
-                  key={action}
-                  onClick={() => sendMessage(action)}
-                  className="flex-shrink-0 px-3 py-2 rounded-full text-[9px] text-primary uppercase tracking-widest border border-primary/20 bg-primary/5 hover:bg-primary/10 transition-colors"
-                >
-                  {action}
-                </button>
-              ))}
+              {quickActions.map((action, i) => {
+                const palette = [
+                  { c: "#99420d", bg: "rgba(153,66,13,0.10)" },
+                  { c: "#2D4A2D", bg: "rgba(45,74,45,0.10)" },
+                  { c: "#8B1A1A", bg: "rgba(139,26,26,0.10)" },
+                ];
+                const p = palette[i % palette.length];
+                return (
+                  <button
+                    key={action}
+                    onClick={() => sendMessage(action)}
+                    style={{ color: p.c, backgroundColor: p.bg, borderColor: `${p.c}33` }}
+                    className="flex-shrink-0 px-3 py-2 rounded-full text-[9px] uppercase tracking-widest border transition-colors"
+                  >
+                    {action}
+                  </button>
+                );
+              })}
             </div>
 
             {/* Messages */}
