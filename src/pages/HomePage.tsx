@@ -7,6 +7,7 @@ import { ScrollReveal } from "../components/ui/ScrollReveal";
 import { staggerContainer, staggerItem, slideLeft, scaleReveal } from "../lib/motionVariants";
 import { lenisInstance } from "../hooks/useLenis";
 import { FadeInText } from "../components/ui/FadeInText";
+import { Cascade } from "../components/ui/Cascade";
 
 import AppShell from "@/components/AppShell";
 import { ProductCard, mockProducts } from "@/components/ProductCard";
@@ -245,12 +246,17 @@ const metierAccent = (metier: string): string => {
 };
 
 const ArtisansSection = () => (
-  <section className="py-12 bg-surface-container-low">
-    <ScrollReveal className="px-6 mb-8">
-      <h2 className="font-serif text-2xl italic text-inverse-surface">L'Âme derrière</h2>
-      <p className="font-serif text-4xl text-inverse-surface">l'Œuvre</p>
-    </ScrollReveal>
-    <div className="overflow-x-auto no-scrollbar flex gap-4 pb-4 -mx-6 px-6">
+  <section className="relative bg-surface-container-low">
+    <div className="s-sticky-heading px-6 py-8 bg-surface-container-low">
+      <p className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-2">
+        NOS CRÉATEURS
+      </p>
+      <h2 className="font-headline text-3xl italic">
+        L&apos;Âme derrière<br />
+        <span className="text-primary">l&apos;Œuvre</span>
+      </h2>
+    </div>
+    <div className="overflow-x-auto no-scrollbar flex gap-4 px-6 pb-12">
       {artisans.map((a) => (
         <motion.div
           key={a.slug}
@@ -396,6 +402,7 @@ const HomePage = () => (
   <AppShell>
     <HeroSection />
     <StatsBento />
+    <Cascade />
     <MetiersSection />
     <ArtisansSection />
     <PopularSection />
