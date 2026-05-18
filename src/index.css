@@ -147,3 +147,117 @@
 html.lenis { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto; }
 .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+
+/* Locomotive Scroll CSS system — adapted for San Pedro */
+:root {
+  --scroll-direction: 1;
+  --scroll-progress: 0;
+}
+
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+
+/* Hero line animation system — like c-hero_line + --index */
+.s-hero-line {
+  display: block;
+  overflow: hidden;
+}
+.s-hero-word {
+  display: block;
+  transform: translateY(110%);
+  opacity: 0;
+  animation: heroWordReveal 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+.s-hero-word[style*="--index: 0"] { animation-delay: 0.1s; }
+.s-hero-word[style*="--index: 1"] { animation-delay: 0.25s; }
+.s-hero-word[style*="--index: 2"] { animation-delay: 0.4s; }
+.s-hero-word[style*="--index: 3"] { animation-delay: 0.55s; }
+
+@keyframes heroWordReveal {
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* MaskLines — like data-module-mask-lines in Locomotive footer */
+.s-mask-line {
+  display: block;
+  overflow: hidden;
+}
+.s-mask-line-inner {
+  display: block;
+  transform: translateX(-25px);
+  opacity: 0;
+  transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.s-mask-line-inner.is-visible {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+/* In-view detection — like data-scroll */
+[data-san-scroll] {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.85s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              transform 0.85s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+[data-san-scroll].is-inview {
+  opacity: 1;
+  transform: translateY(0);
+}
+[data-san-scroll][data-san-delay="1"] { transition-delay: 0.1s; }
+[data-san-scroll][data-san-delay="2"] { transition-delay: 0.2s; }
+[data-san-scroll][data-san-delay="3"] { transition-delay: 0.3s; }
+[data-san-scroll][data-san-delay="4"] { transition-delay: 0.4s; }
+[data-san-scroll][data-san-delay="5"] { transition-delay: 0.5s; }
+
+/* Rail ticker — like c-rail */
+.s-rail {
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 1rem 0;
+  border-top: 1px solid rgba(152,114,104,0.15);
+  border-bottom: 1px solid rgba(152,114,104,0.15);
+}
+.s-rail-inner {
+  display: inline-flex;
+  animation: railScroll 18s linear infinite;
+}
+.s-rail-inner:hover { animation-play-state: paused; }
+.s-rail-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0 2rem;
+  font-family: 'Manrope', sans-serif;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #56433a;
+}
+@keyframes railScroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* Cascade — like c-cascade */
+.s-cascade {
+  position: relative;
+  overflow: hidden;
+}
+.s-cascade-item {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.s-cascade-item.is-active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Sticky heading — like c-sticky-heading */
+.s-sticky-heading {
+  position: sticky;
+  top: 80px;
+  z-index: 10;
+}
