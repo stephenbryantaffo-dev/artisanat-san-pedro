@@ -32,13 +32,13 @@ const ArtisanDashboardPage = () => {
       {/* Stats Bento */}
       <div className="px-6 mt-6 grid grid-cols-2 gap-3">
         {[
-          { icon: Package, value: artisanProducts.length.toString(), label: "Total Produits", bg: "bg-surface-container-low" },
-          { icon: Eye, value: "1,2k", label: "Vues (mois)", bg: "bg-surface-container" },
-          { icon: ShoppingCart, value: "8", label: "Commandes", bg: "bg-surface-container" },
-          { icon: Star, value: artisan.rating.toString(), label: "Note Globale", bg: "bg-surface-container-low" },
+          { icon: Package, value: artisanProducts.length.toString(), label: "Total Produits", bg: "bg-surface-container-low", iconColor: "text-primary" },
+          { icon: Eye, value: "1,2k", label: "Vues (mois)", bg: "bg-[#E8F0E8]", iconColor: "text-[#2D4A2D]" },
+          { icon: ShoppingCart, value: "8", label: "Commandes", bg: "bg-[#F5E8E8]", iconColor: "text-[#8B1A1A]" },
+          { icon: Star, value: artisan.rating.toString(), label: "Note Globale", bg: "bg-surface-container-low", iconColor: "text-primary" },
         ].map((stat) => (
           <div key={stat.label} className={`${stat.bg} p-5 rounded-xl`}>
-            <stat.icon className="w-5 h-5 text-primary mb-2" />
+            <stat.icon className={`w-5 h-5 mb-2 ${stat.iconColor}`} />
             <p className="font-serif text-3xl text-foreground">{stat.value}</p>
             <p className="text-[10px] uppercase tracking-widest text-muted-foreground mt-1">{stat.label}</p>
           </div>
@@ -59,7 +59,7 @@ const ArtisanDashboardPage = () => {
 
       {/* AI Generation CTA */}
       <div className="px-6 mt-6">
-        <div className="bg-background rounded-[2rem] p-6 shadow-[0_20px_40px_rgba(14,13,13,0.04)]">
+        <div className="bg-background rounded-[2rem] p-6 shadow-[0_20px_40px_rgba(14,13,13,0.04)] border-l-4 border-[#2D4A2D]">
           <div className="flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-primary fill-primary" />
             <span className="font-serif text-lg text-foreground">Ajouter avec l'IA</span>
