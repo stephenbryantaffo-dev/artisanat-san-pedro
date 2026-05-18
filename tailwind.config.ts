@@ -61,6 +61,16 @@ export default {
           DEFAULT: "#99420d",
           light: "#b95925",
         },
+        forest: {
+          DEFAULT: "#2D4A2D",
+          light: "#4A7A4A",
+          container: "#E8F0E8",
+        },
+        bordeaux: {
+          DEFAULT: "#8B1A1A",
+          light: "#B83A3A",
+          container: "#F5E8E8",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
