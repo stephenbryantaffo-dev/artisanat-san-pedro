@@ -261,3 +261,12 @@ html.lenis, html.lenis body { height: auto; }
   top: 80px;
   z-index: 10;
 }
+
+/* Clip-path reveal — wipes in from bottom to top */
+.clip-reveal {
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+}
+.clip-reveal.is-inview {
+  clip-path: inset(0% 0 0 0);
+}
