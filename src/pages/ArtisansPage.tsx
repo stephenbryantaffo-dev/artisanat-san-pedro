@@ -1,9 +1,12 @@
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Star } from "lucide-react";
+import { motion } from "framer-motion";
 
 import AppShell from "@/components/AppShell";
 import { allArtisans } from "@/data/artisans";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { staggerContainer, staggerItem, slideLeft, scaleReveal } from "@/lib/motionVariants";
 
 const METIERS = ["Tous", "Sculpture", "Tressage", "Tissage", "Poterie", "Forge", "Peinture"];
 
@@ -20,7 +23,7 @@ const ArtisansPage = () => {
   return (
     <AppShell>
       {/* Header */}
-      <div className="px-6 pt-24 pb-6">
+      <ScrollReveal variants={slideLeft} className="px-6 pt-24 pb-6">
         <span className="label-caps text-[10px] text-muted-foreground mb-1 block">Nos créateurs</span>
         <h1 className="font-serif text-4xl italic text-inverse-surface leading-tight">
           Le Village des
@@ -30,7 +33,7 @@ const ArtisansPage = () => {
         <p className="text-sm text-muted-foreground font-light mt-2">
           240 créateurs exceptionnels de San Pedro, Côte d'Ivoire
         </p>
-      </div>
+      </ScrollReveal>
 
       {/* Filter pills */}
       <div className="flex gap-2 overflow-x-auto no-scrollbar px-6 mb-6">
@@ -52,9 +55,10 @@ const ArtisansPage = () => {
       <div className="px-6 pb-16">
         {/* Featured artisan */}
         {featured && selectedMetier === "Tous" && (
+          <ScrollReveal variants={scaleReveal} className="mb-6">
           <Link
             to={`/artisans/${featured.slug}`}
-            className="bg-inverse-surface rounded-bento p-5 flex gap-4 mb-6 items-center group"
+            className="bg-inverse-surface rounded-bento p-5 flex gap-4 items-center group"
           >
             <img
               src={featured.avatar}
@@ -73,15 +77,22 @@ const ArtisansPage = () => {
               <ArrowRight className="w-4 h-4 text-primary-foreground" />
             </div>
           </Link>
+          </ScrollReveal>
         )}
 
         {/* Grid */}
-        <div className="grid grid-cols-2 gap-4">
+        <motion.div
+          className="grid grid-cols-2 gap-4"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-40px" }}
+        >
           {filtered.map((artisan) => (
+            <motion.div key={artisan.id} variants={staggerItem}>
             <Link
-              key={artisan.id}
               to={`/artisans/${artisan.slug}`}
-              className="group cursor-pointer"
+              className="group cursor-pointer block"
             >
               <div className="rounded-bento overflow-hidden relative aspect-[3/4]">
                 <img
@@ -121,8 +132,9 @@ const ArtisansPage = () => {
                 </div>
               </div>
             </Link>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </AppShell>
   );

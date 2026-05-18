@@ -1,5 +1,8 @@
 import AppShell from "@/components/AppShell";
 import { ShoppingBag, Palette, Globe, Store, Laptop, TrendingUp, Users, Award, Handshake, Heart, ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { staggerContainer, staggerItem, scaleReveal } from "@/lib/motionVariants";
 
 const stats = [
   { value: "240+", label: "Artisans accompagnés" },
@@ -52,7 +55,7 @@ const phases = [
 const AboutPage = () => (
   <AppShell>
     {/* Hero */}
-    <div className="bg-inverse-surface rounded-[2rem] p-8 mx-6 mt-6">
+    <ScrollReveal variants={scaleReveal} className="bg-inverse-surface rounded-[2rem] p-8 mx-6 mt-6">
       <p className="text-[10px] uppercase tracking-widest text-inverse-primary mb-3">
         PROGRAMME PACTE · SAN PEDRO
       </p>
@@ -66,24 +69,31 @@ const AboutPage = () => (
       <p className="font-body text-sm text-inverse-on-surface/70 font-light leading-relaxed">
         Artisanat San Pedro est la vitrine numérique officielle des artisans de la région de San Pedro, en Côte d'Ivoire. Portée par le programme PACTE — Partenariat pour une Administration Citoyenne et la Transformation de l'État — cette plateforme e-commerce connecte des créateurs d'exception aux marchés local, national et international. Elle réunit six corps de métiers : Sculpture, Tressage, Tissage, Poterie, Forge et Peinture, à travers une expérience d'achat moderne, sécurisée et culturellement ancrée.
       </p>
-    </div>
+    </ScrollReveal>
 
     {/* Mission */}
     <div className="px-6 py-10">
       <p className="text-[10px] uppercase tracking-widest text-on-surface-variant mb-3">NOTRE MISSION</p>
       <h2 className="font-headline text-2xl italic mb-6">Pourquoi ce projet existe</h2>
-      <div className="space-y-4">
+      <motion.div
+        className="space-y-4"
+        variants={staggerContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-40px" }}
+      >
         {missions.map((m, i) => (
-          <div
+          <motion.div
             key={m.title}
+            variants={staggerItem}
             className="bg-surface-container-lowest rounded-[1.5rem] p-6 border-l-4"
             style={{ borderLeftColor: MISSION_BORDERS[i % MISSION_BORDERS.length] }}
           >
             <h3 className="font-headline text-lg">{m.title}</h3>
             <p className="font-body text-sm text-on-surface-variant font-light leading-relaxed mt-2">{m.body}</p>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </div>
 
     {/* Project Description */}
@@ -120,14 +130,20 @@ const AboutPage = () => (
     <div className="px-6 py-10">
       <p className="text-[10px] uppercase tracking-widest text-on-surface-variant mb-3">NOTRE IMPACT</p>
       <h2 className="font-headline text-2xl italic mb-6">Les chiffres parlent</h2>
-      <div className="grid grid-cols-2 gap-3">
+      <motion.div
+        className="grid grid-cols-2 gap-3"
+        variants={staggerContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-40px" }}
+      >
         {stats.map((s) => (
-          <div key={s.label} className="bg-surface-container-lowest rounded-xl p-4 text-center shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
+          <motion.div key={s.label} variants={staggerItem} className="bg-surface-container-lowest rounded-xl p-4 text-center shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
             <p className="font-headline text-2xl text-primary">{s.value}</p>
             <p className="text-[8px] uppercase tracking-widest text-on-surface-variant mt-1">{s.label}</p>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </div>
 
     {/* Values */}
@@ -191,11 +207,17 @@ const AboutPage = () => (
     <div className="px-6 py-8">
       <p className="text-[10px] uppercase tracking-widest text-on-surface-variant mb-3">ÉCOSYSTÈME</p>
       <h2 className="font-headline text-2xl italic mb-6">Nos Partenaires</h2>
-      <div className="space-y-3">
+      <motion.div
+        className="space-y-3"
+        variants={staggerContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-40px" }}
+      >
         {partners.map((p, i) => {
           const color = PARTNER_COLORS[i % PARTNER_COLORS.length];
           return (
-          <div key={p.name} className="flex items-center gap-4 bg-surface-container-lowest rounded-xl p-4 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
+          <motion.div key={p.name} variants={staggerItem} className="flex items-center gap-4 bg-surface-container-lowest rounded-xl p-4 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
             <div
               className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0"
               style={{ backgroundColor: `${color}1A`, color }}
@@ -206,10 +228,10 @@ const AboutPage = () => (
               <p className="font-headline text-sm">{p.name}</p>
               <p className="text-[9px] uppercase tracking-widest text-on-surface-variant mt-0.5">{p.role}</p>
             </div>
-          </div>
+          </motion.div>
           );
         })}
-      </div>
+      </motion.div>
     </div>
 
     {/* CTA */}
