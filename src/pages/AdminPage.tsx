@@ -1,6 +1,10 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { motion } from "framer-motion";
+import { AnimatedNumber } from "@/components/ui/AnimatedNumber";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { staggerContainer, staggerItem, scaleReveal } from "@/lib/motionVariants";
 import {
   ArrowLeft, Info, Clock, Sparkles, Timer, ShoppingBag, Eye, Heart, UserPlus,
   AlertTriangle, TrendingDown, UserX, TrendingUp, Download, FileText, Share2, Mail,
@@ -275,6 +279,7 @@ const AdminDashboard = () => {
 
         {/* S1 — HERO */}
         <Section delay={100}>
+          <ScrollReveal variants={scaleReveal}>
           <div className="rounded-[2rem] p-7 relative overflow-hidden" style={{ backgroundColor: "#1A2D1A" }}>
             <div className="absolute right-0 top-0 w-48 h-48 rounded-full -translate-y-1/2 translate-x-1/2" style={{ backgroundColor: "rgba(153,66,13,0.18)" }} />
             <div className="absolute left-0 bottom-0 w-32 h-32 rounded-full translate-y-1/2 -translate-x-1/2" style={{ backgroundColor: "rgba(139,26,26,0.18)" }} />
@@ -284,20 +289,27 @@ const AdminDashboard = () => {
                 Le Poste de <span className="text-primary">Commandement</span>
               </h1>
               <p className="text-sm text-[hsl(36,50%,97%,0.6)] font-light mt-2">Tableau de bord opérationnel — Avril 2026</p>
-              <div className="grid grid-cols-3 gap-3 mt-6">
+              <motion.div
+                className="grid grid-cols-3 gap-3 mt-6"
+                variants={staggerContainer}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-40px" }}
+              >
                 {[
-                  { v: "2,34M", l: "FCFA reversés artisans", c: "#99420d" },
-                  { v: "240", l: "Artisans actifs", c: "#4A7A4A" },
-                  { v: "1 847", l: "Œuvres en ligne", c: "#B83A3A" },
-                ].map(({ v, l, c }) => (
-                  <div key={l} className="bg-white/5 rounded-xl p-4 text-center border-t-2" style={{ borderTopColor: c }}>
-                    <div className="font-serif text-2xl" style={{ color: c }}>{v}</div>
+                  { node: <AnimatedNumber value={2340000} />, l: "FCFA reversés artisans", c: "#99420d" },
+                  { node: <AnimatedNumber value={240} />, l: "Artisans actifs", c: "#4A7A4A" },
+                  { node: <AnimatedNumber value={1847} />, l: "Œuvres en ligne", c: "#B83A3A" },
+                ].map(({ node, l, c }) => (
+                  <motion.div key={l} variants={staggerItem} className="bg-white/5 rounded-xl p-4 text-center border-t-2" style={{ borderTopColor: c }}>
+                    <div className="font-serif text-2xl" style={{ color: c }}>{node}</div>
                     <div className="text-[8px] uppercase tracking-widest text-[hsl(36,50%,97%,0.5)] mt-1">{l}</div>
-                  </div>
+                  </motion.div>
                 ))}
-              </div>
+              </motion.div>
             </div>
           </div>
+          </ScrollReveal>
         </Section>
 
         {/* S2 — OBJECTIFS */}
@@ -362,7 +374,7 @@ const AdminDashboard = () => {
               <div className="text-[8px] uppercase tracking-widest text-primary-foreground/70 flex items-center gap-1">
                 <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" /> EN DIRECT
               </div>
-              <div className="font-serif text-4xl text-primary-foreground mt-1">23</div>
+              <div className="font-serif text-4xl text-primary-foreground mt-1"><AnimatedNumber value={23} duration={800} /></div>
               <div className="text-[9px] uppercase text-primary-foreground/60">Visiteurs actifs</div>
               <svg viewBox="0 0 100 30" className="mt-2 w-full opacity-30">
                 <path d="M0 20 Q10 10 20 18 Q30 25 40 12 Q50 5 60 15 Q70 22 80 10 Q90 18 100 14" fill="none" stroke="white" strokeWidth="2" />
@@ -371,14 +383,14 @@ const AdminDashboard = () => {
             {/* Sessions */}
             <div className="bg-[hsl(var(--surface-container-low))] rounded-[1.5rem] p-5">
               <Clock className="w-4 h-4 text-primary mb-2" />
-              <div className="font-serif text-3xl">184</div>
+              <div className="font-serif text-3xl"><AnimatedNumber value={184} /></div>
               <div className="text-[9px] uppercase text-muted-foreground">Sessions aujourd'hui</div>
               <p className="text-[9px] text-green-600 font-bold mt-1">↑ +12% vs hier</p>
             </div>
             {/* AI chats */}
             <div className="bg-[hsl(var(--surface-container-low))] rounded-[1.5rem] p-5">
               <Sparkles className="w-4 h-4 text-primary mb-2" />
-              <div className="font-serif text-3xl">67</div>
+              <div className="font-serif text-3xl"><AnimatedNumber value={67} /></div>
               <div className="text-[9px] uppercase text-muted-foreground">Chats IA ce mois</div>
               <div className="flex items-center gap-2 mt-1">
                 <span className="text-[9px] text-green-600 font-bold">👍 89%</span>
@@ -466,7 +478,7 @@ const AdminDashboard = () => {
           <div className="bg-[hsl(var(--surface-container-low))] rounded-[1.5rem] p-6">
             <div className="grid grid-cols-3 gap-3 mb-6">
               <div className="bg-[hsl(var(--surface-container))] rounded-xl p-4 text-center">
-                <div className="font-serif text-2xl">67</div>
+                <div className="font-serif text-2xl"><AnimatedNumber value={67} /></div>
                 <div className="text-[8px] uppercase tracking-widest text-muted-foreground mt-1">Conversations</div>
               </div>
               <div className="bg-green-50 rounded-xl p-4 text-center">
@@ -524,16 +536,22 @@ const AdminDashboard = () => {
             <div className="relative z-10">
               <p className="text-[10px] uppercase tracking-widest text-primary mb-3">Impact Économique PACTE</p>
               <div className="font-serif text-5xl italic text-[hsl(36,50%,97%)]">
-                <CountUp end={2340000} /> <span className="text-xl text-primary ml-2">FCFA</span>
+                <AnimatedNumber value={2340000} /> <span className="text-xl text-primary ml-2">FCFA</span>
               </div>
               <p className="text-sm text-[hsl(36,50%,97%,0.6)] font-light mt-2">reversés directement aux artisans de San Pedro ce trimestre</p>
               <div className="flex justify-center gap-8 mt-8">
-                {[["214", "commandes livrées"], ["142", "artisans rémunérés"], ["100%", "paiement direct"]].map(([v, l]) => (
-                  <div key={l} className="text-center">
-                    <div className="font-serif text-2xl text-[hsl(36,50%,97%)]">{v}</div>
-                    <div className="text-[9px] text-[hsl(36,50%,97%,0.5)] uppercase">{l}</div>
-                  </div>
-                ))}
+                <div className="text-center">
+                  <div className="font-serif text-2xl text-[hsl(36,50%,97%)]"><AnimatedNumber value={214} /></div>
+                  <div className="text-[9px] text-[hsl(36,50%,97%,0.5)] uppercase">commandes livrées</div>
+                </div>
+                <div className="text-center">
+                  <div className="font-serif text-2xl text-[hsl(36,50%,97%)]"><AnimatedNumber value={142} /></div>
+                  <div className="text-[9px] text-[hsl(36,50%,97%,0.5)] uppercase">artisans rémunérés</div>
+                </div>
+                <div className="text-center">
+                  <div className="font-serif text-2xl text-[hsl(36,50%,97%)]">100%</div>
+                  <div className="text-[9px] text-[hsl(36,50%,97%,0.5)] uppercase">paiement direct</div>
+                </div>
               </div>
               <div className="bg-white/5 rounded-xl p-4 mt-6">
                 <p className="font-serif italic text-base text-[hsl(36,50%,97%,0.8)]">
