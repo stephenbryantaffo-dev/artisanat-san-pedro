@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { X, Home, ShoppingBag, Users, Compass, User, Palette, Info, Mail, Shield } from "lucide-react";
+import { HoverShuffle } from "@/components/ui/HoverShuffle";
 
 const navLinks = [
   { label: "Accueil", path: "/", icon: Home },
@@ -102,7 +103,7 @@ const NavigationDrawer = ({ isOpen, onClose }: NavigationDrawerProps) => {
                 >
                   <div className="flex items-center gap-4">
                     <link.icon className="w-5 h-5" />
-                    <span className="font-serif text-xl italic">{link.label}</span>
+                    <HoverShuffle text={link.label.toUpperCase()} className="font-serif text-xl italic" />
                   </div>
                   {isActive && (
                     <span className="w-2 h-2 rounded-full bg-primary" />
