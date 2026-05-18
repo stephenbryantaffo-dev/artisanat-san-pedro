@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
@@ -60,6 +61,32 @@ const AnimatedRoutes = () => {
 
 const App = () => {
   useLenis();
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-inview');
+          }
+        });
+      },
+      { rootMargin: '-50px 0px' }
+    );
+
+    const observe = () => {
+      document.querySelectorAll('[data-san-scroll]').forEach((el) => {
+        observer.observe(el);
+      });
+    };
+
+    observe();
+    const interval = setInterval(observe, 1000);
+
+    return () => {
+      observer.disconnect();
+      clearInterval(interval);
+    };
+  }, []);
   return (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
