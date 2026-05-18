@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Search, Sparkles, ChevronDown, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 
 import AppShell from "@/components/AppShell";
 import { ProductCard, mockProducts } from "@/components/ProductCard";
@@ -20,16 +22,26 @@ import artisanAma from "@/assets/artisan-ama.jpg";
 import artisanYao from "@/assets/artisan-yao.jpg";
 
 /* ─── SECTION 1: HERO ─── */
-const HeroSection = () => (
-  <section className="relative min-h-[100svh] overflow-hidden flex items-end">
-    <img
-      src={heroImg}
-      alt="Artisan sculpteur à San Pedro"
-      className="absolute inset-0 w-full h-full object-cover"
-      style={{ filter: "brightness(0.80) contrast(1.1) sepia(0.2)" }}
-      width={1080}
-      height={1920}
-    />
+const HeroSection = () => {
+  const heroRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+  const heroY = useTransform(scrollYProgress, [0, 1], ["0%", "35%"]);
+
+  return (
+  <section ref={heroRef} className="relative min-h-[100svh] overflow-hidden flex items-end">
+    <motion.div style={{ y: heroY }} className="absolute inset-0">
+      <img
+        src={heroImg}
+        alt="Artisan sculpteur à San Pedro"
+        className="absolute inset-0 w-full h-full object-cover"
+        style={{ filter: "brightness(0.80) contrast(1.1) sepia(0.2)" }}
+        width={1080}
+        height={1920}
+      />
+    </motion.div>
     <div
       className="absolute inset-0"
       style={{
@@ -39,17 +51,34 @@ const HeroSection = () => (
     />
 
     <div className="relative z-10 w-full px-6 pb-16">
-      <span className="label-caps mb-4 block text-[10px]" style={{ color: "#4A7A4A" }}>
+      <motion.p
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+        className="label-caps mb-4 block text-[10px]"
+        style={{ color: "#4A7A4A" }}
+      >
         Artisanat San Pedro · PACTE
-      </span>
-      <h1 className="font-serif text-5xl leading-tight text-foreground mb-6" style={{ mixBlendMode: "difference" }}>
+      </motion.p>
+      <motion.h1
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.9, delay: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
+        className="font-serif text-5xl leading-tight text-foreground mb-6"
+        style={{ mixBlendMode: "difference" }}
+      >
         L'art <span className="italic font-light">vivant</span> de
         <br />
         Côte <span className="italic font-bold" style={{ color: "#2D4A2D" }}>d'Ivoire</span>
-      </h1>
+      </motion.h1>
 
       {/* AI Search bar */}
-      <div className="glass-card rounded-full border border-border/20 shadow-luxury flex items-center gap-3 p-2 w-full">
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+        className="glass-card rounded-full border border-border/20 shadow-luxury flex items-center gap-3 p-2 w-full"
+      >
         <div className="bg-primary w-10 h-10 rounded-full flex items-center justify-center shrink-0">
           <Sparkles className="w-4 h-4 text-primary-foreground" />
         </div>
@@ -61,14 +90,19 @@ const HeroSection = () => (
         <button className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-foreground/5 transition-colors shrink-0">
           <Search className="w-4 h-4 text-muted-foreground" />
         </button>
-      </div>
+      </motion.div>
 
       {/* Brand signature dots */}
-      <div className="flex gap-2 mt-4 opacity-60">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6, delay: 0.85 }}
+        className="flex gap-2 mt-4 opacity-60"
+      >
         <span className="w-2 h-2 rounded-full" style={{ background: "#99420d" }} />
         <span className="w-2 h-2 rounded-full" style={{ background: "#8B1A1A" }} />
         <span className="w-2 h-2 rounded-full" style={{ background: "#2D4A2D" }} />
-      </div>
+      </motion.div>
     </div>
 
     {/* Scroll indicator */}
@@ -76,7 +110,8 @@ const HeroSection = () => (
       <ChevronDown className="w-5 h-5 text-foreground/40" />
     </div>
   </section>
-);
+  );
+};
 
 /* ─── SECTION 2: STATS BENTO ─── */
 const StatsBento = () => (
