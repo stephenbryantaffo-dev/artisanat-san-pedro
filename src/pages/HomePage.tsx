@@ -8,6 +8,7 @@ import { staggerContainer, staggerItem, slideLeft, scaleReveal } from "../lib/mo
 import { lenisInstance } from "../hooks/useLenis";
 import { FadeInText } from "../components/ui/FadeInText";
 import { Cascade } from "../components/ui/Cascade";
+import { useImageDistort } from "../hooks/useImageDistort";
 
 import AppShell from "@/components/AppShell";
 import { ProductCard, mockProducts } from "@/components/ProductCard";
@@ -29,6 +30,7 @@ import artisanYao from "@/assets/artisan-yao.jpg";
 /* ─── SECTION 1: HERO ─── */
 const HeroSection = () => {
   const heroRef = useRef(null);
+  const distortRef = useImageDistort();
 
   useEffect(() => {
     const heroImg = document.querySelector('.hero-parallax-img') as HTMLElement | null;
@@ -43,14 +45,16 @@ const HeroSection = () => {
 
   return (
   <section ref={heroRef} className="relative min-h-[100svh] overflow-hidden flex items-end">
-    <img
-      src={heroImg}
-      alt="Artisan sculpteur à San Pedro"
-      className="hero-parallax-img absolute inset-0 w-full h-full object-cover will-change-transform"
-      style={{ filter: "brightness(0.80) contrast(1.1) sepia(0.2)" }}
-      width={1080}
-      height={1920}
-    />
+    <div ref={distortRef} data-san-scroll className="clip-reveal absolute inset-0 will-change-transform">
+      <img
+        src={heroImg}
+        alt="Artisan sculpteur à San Pedro"
+        className="hero-parallax-img w-full h-full object-cover will-change-transform"
+        style={{ filter: "brightness(0.80) contrast(1.1) sepia(0.2)" }}
+        width={1080}
+        height={1920}
+      />
+    </div>
     <div
       className="absolute inset-0"
       style={{
@@ -197,7 +201,8 @@ const MetiersSection = () => (
               loading="lazy"
               width={800}
               height={1000}
-              className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              data-san-scroll
+              className="clip-reveal absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
             />
             <div
               className="absolute inset-0"
