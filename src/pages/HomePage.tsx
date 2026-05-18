@@ -174,6 +174,15 @@ const artisans = [
   { name: "Yao Kouadio", metier: "Tisserand", since: "Depuis 1992", image: artisanYao, slug: "yao-kouadio" },
 ];
 
+const metierAccent = (metier: string): string => {
+  const m = metier.toLowerCase();
+  if (m.startsWith("sculpt") || m.startsWith("pot")) return "#99420d";
+  if (m.startsWith("tisser") || m.startsWith("tiss")) return "#8B1A1A";
+  if (m.startsWith("forge")) return "#8B1A1A";
+  if (m.startsWith("tress") || m.startsWith("peintr")) return "#2D4A2D";
+  return "#99420d";
+};
+
 const ArtisansSection = () => (
   <section className="py-12 bg-surface-container-low">
     <div className="px-6 mb-8">
@@ -199,6 +208,10 @@ const ArtisansSection = () => (
           </span>
           <div className="absolute bottom-0 left-0 right-0 p-5">
             <h3 className="font-serif text-lg text-primary-foreground">{a.name}</h3>
+            <span
+              className="block w-8 h-0.5 rounded-full mt-1 mb-1"
+              style={{ background: metierAccent(a.metier) }}
+            />
             <p className="text-xs text-primary-foreground/70">{a.since}</p>
           </div>
           <Link
