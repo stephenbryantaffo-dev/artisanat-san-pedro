@@ -1,5 +1,6 @@
 import { Heart, Plus } from "lucide-react";
 import { useState } from "react";
+import { categoryAccent } from "@/lib/categoryColors";
 
 import productMask from "@/assets/product-mask.jpg";
 import productBowls from "@/assets/product-bowls.jpg";
@@ -47,6 +48,7 @@ const mockProducts = [
 
 const ProductCard = ({ product }: { product: typeof mockProducts[0] }) => {
   const [liked, setLiked] = useState(false);
+  const accent = categoryAccent(product.category);
 
   return (
     <div className="rounded-bento overflow-hidden bg-background shadow-luxury">
@@ -59,7 +61,10 @@ const ProductCard = ({ product }: { product: typeof mockProducts[0] }) => {
           height={750}
           className="w-full h-full object-cover brightness-[0.95] sepia-[0.1]"
         />
-        <span className="absolute top-4 left-4 glass-card px-2.5 py-1 rounded-full text-[9px] uppercase tracking-widest font-bold text-inverse-surface">
+        <span
+          className="absolute top-4 left-4 glass-card px-2.5 py-1 rounded-full text-[9px] uppercase tracking-widest font-bold"
+          style={{ color: accent.hex }}
+        >
           {product.categoryCode}
         </span>
         <button
@@ -72,7 +77,10 @@ const ProductCard = ({ product }: { product: typeof mockProducts[0] }) => {
         </button>
       </div>
       <div className="p-4">
-        <span className="text-[9px] uppercase tracking-widest text-muted-foreground font-semibold">
+        <span
+          className="text-[9px] uppercase tracking-widest font-semibold"
+          style={{ color: accent.hex }}
+        >
           {product.category}
         </span>
         <h3 className="font-serif text-base leading-snug mt-1 text-inverse-surface">
