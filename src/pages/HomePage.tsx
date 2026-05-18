@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Search, Sparkles, ChevronDown, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { useRef } from "react";
 import { ScrollReveal } from "../components/ui/ScrollReveal";
 import { staggerContainer, staggerItem, slideLeft, scaleReveal } from "../lib/motionVariants";
+import { lenisInstance } from "../hooks/useLenis";
 
 import AppShell from "@/components/AppShell";
 import { ProductCard, mockProducts } from "@/components/ProductCard";
@@ -26,24 +27,28 @@ import artisanYao from "@/assets/artisan-yao.jpg";
 /* ─── SECTION 1: HERO ─── */
 const HeroSection = () => {
   const heroRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
-  const heroY = useTransform(scrollYProgress, [0, 1], ["0%", "35%"]);
+
+  useEffect(() => {
+    const heroImg = document.querySelector('.hero-parallax-img') as HTMLElement | null;
+    if (!heroImg) return;
+    const handleScroll = ({ scroll }: { scroll: number }) => {
+      const speed = 0.35;
+      heroImg.style.transform = `translateY(${scroll * speed}px)`;
+    };
+    lenisInstance?.on('scroll', handleScroll);
+    return () => { lenisInstance?.off('scroll', handleScroll); };
+  }, []);
 
   return (
   <section ref={heroRef} className="relative min-h-[100svh] overflow-hidden flex items-end">
-    <motion.div style={{ y: heroY }} className="absolute inset-0">
-      <img
-        src={heroImg}
-        alt="Artisan sculpteur à San Pedro"
-        className="absolute inset-0 w-full h-full object-cover"
-        style={{ filter: "brightness(0.80) contrast(1.1) sepia(0.2)" }}
-        width={1080}
-        height={1920}
-      />
-    </motion.div>
+    <img
+      src={heroImg}
+      alt="Artisan sculpteur à San Pedro"
+      className="hero-parallax-img absolute inset-0 w-full h-full object-cover will-change-transform"
+      style={{ filter: "brightness(0.80) contrast(1.1) sepia(0.2)" }}
+      width={1080}
+      height={1920}
+    />
     <div
       className="absolute inset-0"
       style={{
@@ -53,32 +58,32 @@ const HeroSection = () => {
     />
 
     <div className="relative z-10 w-full px-6 pb-16">
-      <motion.p
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
-        className="label-caps mb-4 block text-[10px]"
-        style={{ color: "#4A7A4A" }}
-      >
-        Artisanat San Pedro · PACTE
-      </motion.p>
-      <motion.h1
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9, delay: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
-        className="font-serif text-5xl leading-tight text-foreground mb-6"
-        style={{ mixBlendMode: "difference" }}
-      >
-        L'art <span className="italic font-light">vivant</span> de
-        <br />
-        Côte <span className="italic font-bold" style={{ color: "#2D4A2D" }}>d'Ivoire</span>
-      </motion.h1>
+      <span className="s-hero-line mb-4 block" style={{ "--index": 0 } as React.CSSProperties}>
+        <span className="s-hero-word" style={{ animationDelay: '0.05s' }}>
+          <p className="font-label text-[10px] uppercase tracking-widest text-white/70">
+            ARTISANAT SAN PEDRO · PACTE
+          </p>
+        </span>
+      </span>
+      <h1 className="font-serif text-5xl leading-[1.05] text-white mb-6" style={{ mixBlendMode: "difference" }}>
+        <span className="s-hero-line" style={{ "--index": 0 } as React.CSSProperties}>
+          <span className="s-hero-word">
+            L&apos;art <em className="not-italic text-[#b95925]">vivant</em> de
+          </span>
+        </span>
+        <span className="s-hero-line" style={{ "--index": 1 } as React.CSSProperties}>
+          <span className="s-hero-word">
+            Côte <em className="italic text-primary">d&apos;Ivoire</em>
+          </span>
+        </span>
+      </h1>
 
       {/* AI Search bar */}
-      <motion.div
-        initial={{ opacity: 0, y: 24 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+      <div
+        style={{
+          opacity: 0,
+          animation: 'heroWordReveal 0.9s cubic-bezier(0.25,0.46,0.45,0.94) 0.65s forwards',
+        }}
         className="glass-card rounded-full border border-border/20 shadow-luxury flex items-center gap-3 p-2 w-full"
       >
         <div className="bg-primary w-10 h-10 rounded-full flex items-center justify-center shrink-0">
@@ -92,7 +97,7 @@ const HeroSection = () => {
         <button className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-foreground/5 transition-colors shrink-0">
           <Search className="w-4 h-4 text-muted-foreground" />
         </button>
-      </motion.div>
+      </div>
 
       {/* Brand signature dots */}
       <motion.div
