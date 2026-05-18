@@ -245,18 +245,21 @@ const PopularSection = () => (
 
 /* ─── SECTION 6: ÉDITO CULTUREL ─── */
 const EditoSection = () => (
-  <section className="py-16 px-6 bg-surface-container-low">
-    <span className="font-serif text-3xl italic text-inverse-surface block">L'Héritage</span>
-    <span className="label-caps text-[10px] text-muted-foreground mt-2 block">
+  <section
+    className="relative py-16 px-6 texture-overlay"
+    style={{ backgroundColor: "#1A2D1A" }}
+  >
+    <span className="font-serif text-3xl italic text-primary-foreground block">L'Héritage</span>
+    <span className="label-caps text-[10px] text-primary-foreground/60 mt-2 block">
       Chaque pièce, une histoire
     </span>
-    <p className="text-sm text-muted-foreground font-light leading-relaxed mt-6">
+    <p className="text-sm text-primary-foreground/70 font-light leading-relaxed mt-6">
       À San Pedro, l'artisanat n'est pas un métier. C'est un langage transmis de génération en génération, façonné par des mains expertes qui transforment la matière brute en expressions vivantes de notre culture. Chaque sculpture, chaque tissu, chaque poterie porte en elle l'empreinte de siècles de tradition.
     </p>
-    <blockquote className="font-serif text-3xl italic text-primary mt-6 leading-snug">
-      "Chaque pièce porte l'histoire de tout un peuple."
+    <blockquote className="font-serif text-3xl italic text-primary-foreground mt-6 leading-snug">
+      <span style={{ color: "#4A7A4A" }}>“</span>Chaque pièce porte l'histoire de tout un peuple.<span style={{ color: "#4A7A4A" }}>”</span>
     </blockquote>
-    <p className="label-caps text-[10px] text-muted-foreground mt-2 tracking-widest">
+    <p className="label-caps text-[10px] text-primary-foreground/50 mt-2 tracking-widest">
       — Kofi Asante, Sculpteur
     </p>
     <div className="flex gap-3 mt-8">
@@ -268,7 +271,7 @@ const EditoSection = () => (
       </Link>
       <Link
         to="/artisans"
-        className="inline-flex items-center justify-center h-12 px-6 rounded-full border border-secondary/20 text-primary uppercase tracking-widest text-[0.7rem] font-bold hover:bg-primary/5 transition-colors"
+        className="inline-flex items-center justify-center h-12 px-6 rounded-full border border-primary-foreground/20 text-primary-foreground uppercase tracking-widest text-[0.7rem] font-bold hover:bg-primary-foreground/10 transition-colors"
       >
         Nos Artisans
       </Link>
@@ -281,7 +284,7 @@ const NewsletterSection = () => {
   const [email, setEmail] = useState("");
 
   return (
-    <section className="py-12 px-6 pb-16">
+    <section className="py-12 px-6 pb-16 gradient-newsletter">
       <span className="label-caps text-[10px] text-muted-foreground mb-2 block">Restez connecté</span>
       <h2 className="font-serif text-2xl text-inverse-surface">L'art au bout des doigts</h2>
       <p className="text-sm text-muted-foreground font-light mt-2 mb-6 leading-relaxed">
