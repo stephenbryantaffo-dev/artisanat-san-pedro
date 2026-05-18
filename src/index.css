@@ -97,6 +97,33 @@
 
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  .gradient-tribal {
+    background: linear-gradient(135deg, #99420d, #8B1A1A);
+  }
+  .gradient-nature {
+    background: linear-gradient(135deg, #2D4A2D, #4A7A4A);
+  }
+  .gradient-earth {
+    background: linear-gradient(135deg, #99420d, #2D4A2D);
+  }
+  .gradient-newsletter {
+    background: linear-gradient(135deg, #f5ede8, #e8f0e8);
+  }
+  .texture-overlay {
+    background-image:
+      radial-gradient(circle at 20% 50%, rgba(45,74,45,0.06) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(139,26,26,0.06) 0%, transparent 50%);
+  }
+  .brand-bar {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    height: 3px;
+    width: 100%;
+  }
+  .brand-bar > span:nth-child(1) { background: #99420d; }
+  .brand-bar > span:nth-child(2) { background: #2D4A2D; }
+  .brand-bar > span:nth-child(3) { background: #8B1A1A; }
 }
 
 @keyframes fadeUp {
