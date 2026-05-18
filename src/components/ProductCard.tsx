@@ -1,6 +1,7 @@
 import { Heart, Plus } from "lucide-react";
 import { useState } from "react";
 import { categoryAccent } from "@/lib/categoryColors";
+import { useTilt } from "@/hooks/useTilt";
 
 import productMask from "@/assets/product-mask.jpg";
 import productBowls from "@/assets/product-bowls.jpg";
@@ -49,9 +50,16 @@ const mockProducts = [
 const ProductCard = ({ product }: { product: typeof mockProducts[0] }) => {
   const [liked, setLiked] = useState(false);
   const accent = categoryAccent(product.category);
+  const { ref, onMouseMove, onMouseLeave } = useTilt(12);
 
   return (
-    <div className="rounded-bento overflow-hidden bg-background shadow-luxury">
+    <div
+      ref={ref}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+      style={{ transformStyle: 'preserve-3d', willChange: 'transform' }}
+      className="rounded-bento overflow-hidden bg-background shadow-luxury"
+    >
       <div className="relative aspect-[4/3] overflow-hidden">
         <img
           src={product.image}
