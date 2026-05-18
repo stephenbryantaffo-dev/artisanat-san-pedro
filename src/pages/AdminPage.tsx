@@ -275,8 +275,9 @@ const AdminDashboard = () => {
 
         {/* S1 — HERO */}
         <Section delay={100}>
-          <div className="bg-[hsl(var(--inverse-surface))] rounded-[2rem] p-7 relative overflow-hidden">
-            <div className="absolute right-0 top-0 w-48 h-48 rounded-full bg-primary/10 -translate-y-1/2 translate-x-1/2" />
+          <div className="rounded-[2rem] p-7 relative overflow-hidden" style={{ backgroundColor: "#1A2D1A" }}>
+            <div className="absolute right-0 top-0 w-48 h-48 rounded-full -translate-y-1/2 translate-x-1/2" style={{ backgroundColor: "rgba(153,66,13,0.18)" }} />
+            <div className="absolute left-0 bottom-0 w-32 h-32 rounded-full translate-y-1/2 -translate-x-1/2" style={{ backgroundColor: "rgba(139,26,26,0.18)" }} />
             <div className="relative z-10">
               <p className="text-[10px] uppercase tracking-widest text-primary mb-2">Programme PACTE · San Pedro</p>
               <h1 className="font-serif text-3xl italic text-[hsl(36,50%,97%)]">
@@ -285,12 +286,12 @@ const AdminDashboard = () => {
               <p className="text-sm text-[hsl(36,50%,97%,0.6)] font-light mt-2">Tableau de bord opérationnel — Avril 2026</p>
               <div className="grid grid-cols-3 gap-3 mt-6">
                 {[
-                  ["2,34M", "FCFA reversés artisans"],
-                  ["240", "Artisans actifs"],
-                  ["1 847", "Œuvres en ligne"],
-                ].map(([v, l]) => (
-                  <div key={l} className="bg-white/5 rounded-xl p-4 text-center">
-                    <div className="font-serif text-2xl text-[hsl(36,50%,97%)]">{v}</div>
+                  { v: "2,34M", l: "FCFA reversés artisans", c: "#99420d" },
+                  { v: "240", l: "Artisans actifs", c: "#4A7A4A" },
+                  { v: "1 847", l: "Œuvres en ligne", c: "#B83A3A" },
+                ].map(({ v, l, c }) => (
+                  <div key={l} className="bg-white/5 rounded-xl p-4 text-center border-t-2" style={{ borderTopColor: c }}>
+                    <div className="font-serif text-2xl" style={{ color: c }}>{v}</div>
                     <div className="text-[8px] uppercase tracking-widest text-[hsl(36,50%,97%,0.5)] mt-1">{l}</div>
                   </div>
                 ))}
@@ -516,9 +517,10 @@ const AdminDashboard = () => {
 
         {/* S10 — IMPACT */}
         <Section delay={1000}>
-          <div className="bg-[hsl(var(--inverse-surface))] rounded-[2rem] p-8 text-center relative overflow-hidden">
-            <div className="absolute -right-10 -bottom-10 w-40 h-40 rounded-full bg-primary/20" />
-            <div className="absolute -left-6 -top-6 w-24 h-24 rounded-full bg-primary/10" />
+          <div className="rounded-[2rem] p-8 text-center relative overflow-hidden" style={{ backgroundColor: "#1A2D1A" }}>
+            <div className="absolute -right-10 -bottom-10 w-40 h-40 rounded-full" style={{ backgroundColor: "rgba(153,66,13,0.25)" }} />
+            <div className="absolute -left-6 -top-6 w-24 h-24 rounded-full" style={{ backgroundColor: "rgba(139,26,26,0.20)" }} />
+            <div className="absolute right-1/3 top-4 w-12 h-12 rounded-full" style={{ backgroundColor: "rgba(74,122,74,0.25)" }} />
             <div className="relative z-10">
               <p className="text-[10px] uppercase tracking-widest text-primary mb-3">Impact Économique PACTE</p>
               <div className="font-serif text-5xl italic text-[hsl(36,50%,97%)]">
