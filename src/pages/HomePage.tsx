@@ -3,6 +3,8 @@ import { Search, Sparkles, ChevronDown, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import { ScrollReveal } from "../components/ui/ScrollReveal";
+import { staggerContainer, staggerItem, slideLeft, scaleReveal } from "../lib/motionVariants";
 
 import AppShell from "@/components/AppShell";
 import { ProductCard, mockProducts } from "@/components/ProductCard";
@@ -116,16 +118,22 @@ const HeroSection = () => {
 /* ─── SECTION 2: STATS BENTO ─── */
 const StatsBento = () => (
   <section className="relative z-10 -mt-10 px-6">
-    <div className="grid grid-cols-2 gap-3">
-      <div className="glass-card rounded-bento p-6 border border-border/10 shadow-luxury">
+    <motion.div
+      className="grid grid-cols-2 gap-3"
+      variants={staggerContainer}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-40px" }}
+    >
+      <motion.div variants={staggerItem} className="glass-card rounded-bento p-6 border border-border/10 shadow-luxury">
         <span className="font-serif text-3xl text-primary">240+</span>
         <p className="label-caps text-[10px] text-muted-foreground mt-1">Artisans</p>
-      </div>
-      <div className="bg-primary/5 rounded-bento p-6 border border-primary/5">
+      </motion.div>
+      <motion.div variants={staggerItem} className="bg-primary/5 rounded-bento p-6 border border-primary/5">
         <span className="font-serif text-3xl text-inverse-surface">1 200</span>
         <p className="label-caps text-[10px] text-muted-foreground mt-1">Œuvres</p>
-      </div>
-      <div className="glass-card col-span-2 rounded-bento p-6 border border-border/10 shadow-luxury flex items-center justify-between">
+      </motion.div>
+      <motion.div variants={staggerItem} className="glass-card col-span-2 rounded-bento p-6 border border-border/10 shadow-luxury flex items-center justify-between">
         <div>
           <span className="font-serif text-3xl text-inverse-surface">6</span>
           <p className="label-caps text-[10px] text-muted-foreground mt-1">Métiers d'Excellence</p>
@@ -137,8 +145,8 @@ const StatsBento = () => (
             </div>
           ))}
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   </section>
 );
 
@@ -154,13 +162,25 @@ const categories = [
 
 const MetiersSection = () => (
   <section className="py-12 px-6">
-    <h2 className="font-serif text-2xl text-inverse-surface mb-8">Savoir-faire</h2>
-    <div className="grid grid-cols-2 gap-3">
+    <ScrollReveal variants={slideLeft}>
+      <span className="label-caps text-[10px] text-muted-foreground block mb-2">Nos métiers</span>
+    </ScrollReveal>
+    <ScrollReveal delay={0.1}>
+      <h2 className="font-serif text-2xl text-inverse-surface mb-8">Savoir-faire</h2>
+    </ScrollReveal>
+    <motion.div
+      className="grid grid-cols-2 gap-3"
+      variants={staggerContainer}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-40px" }}
+    >
       {categories.map((cat) => {
         const accent = categoryAccent(cat.code);
         return (
-          <a
+          <motion.a
             key={cat.code}
+            variants={staggerItem}
             href="#"
             className="relative rounded-bento overflow-hidden group aspect-[4/5]"
           >
@@ -195,10 +215,10 @@ const MetiersSection = () => (
                 {cat.count} pièces
               </span>
             </div>
-          </a>
+          </motion.a>
         );
       })}
-    </div>
+    </motion.div>
   </section>
 );
 
@@ -220,13 +240,20 @@ const metierAccent = (metier: string): string => {
 
 const ArtisansSection = () => (
   <section className="py-12 bg-surface-container-low">
-    <div className="px-6 mb-8">
+    <ScrollReveal className="px-6 mb-8">
       <h2 className="font-serif text-2xl italic text-inverse-surface">L'Âme derrière</h2>
       <p className="font-serif text-4xl text-inverse-surface">l'Œuvre</p>
-    </div>
+    </ScrollReveal>
     <div className="overflow-x-auto no-scrollbar flex gap-4 pb-4 -mx-6 px-6">
       {artisans.map((a) => (
-        <div key={a.slug} className="min-w-[260px] relative rounded-bento overflow-hidden shrink-0">
+        <motion.div
+          key={a.slug}
+          variants={staggerItem}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="min-w-[260px] relative rounded-bento overflow-hidden shrink-0"
+        >
           <div className="aspect-[3/4]">
             <img
               src={a.image}
@@ -255,7 +282,7 @@ const ArtisansSection = () => (
           >
             <ArrowRight className="w-4 h-4 text-inverse-surface" />
           </Link>
-        </div>
+        </motion.div>
       ))}
     </div>
   </section>
@@ -264,22 +291,33 @@ const ArtisansSection = () => (
 /* ─── SECTION 5: PIÈCES POPULAIRES ─── */
 const PopularSection = () => (
   <section className="py-12 px-6">
-    <div className="flex justify-between items-end mb-6">
-      <h2 className="font-serif text-2xl text-inverse-surface">Pièces Phares</h2>
-      <Link to="/boutique" className="label-caps text-[10px] text-primary underline">
-        Voir tout →
-      </Link>
-    </div>
-    <div className="grid grid-cols-2 gap-4">
+    <ScrollReveal>
+      <div className="flex justify-between items-end mb-6">
+        <h2 className="font-serif text-2xl text-inverse-surface">Pièces Phares</h2>
+        <Link to="/boutique" className="label-caps text-[10px] text-primary underline">
+          Voir tout →
+        </Link>
+      </div>
+    </ScrollReveal>
+    <motion.div
+      className="grid grid-cols-2 gap-4"
+      variants={staggerContainer}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-40px" }}
+    >
       {mockProducts.map((p) => (
-        <ProductCard key={p.id} product={p} />
+        <motion.div key={p.id} variants={staggerItem}>
+          <ProductCard product={p} />
+        </motion.div>
       ))}
-    </div>
+    </motion.div>
   </section>
 );
 
 /* ─── SECTION 6: ÉDITO CULTUREL ─── */
 const EditoSection = () => (
+  <ScrollReveal variants={scaleReveal}>
   <section
     className="relative py-16 px-6 texture-overlay"
     style={{ backgroundColor: "#1A2D1A" }}
@@ -312,6 +350,7 @@ const EditoSection = () => (
       </Link>
     </div>
   </section>
+  </ScrollReveal>
 );
 
 /* ─── SECTION 7: NEWSLETTER ─── */
@@ -320,21 +359,25 @@ const NewsletterSection = () => {
 
   return (
     <section className="py-12 px-6 pb-16 gradient-newsletter">
-      <span className="label-caps text-[10px] text-muted-foreground mb-2 block">Restez connecté</span>
-      <h2 className="font-serif text-2xl text-inverse-surface">L'art au bout des doigts</h2>
-      <p className="text-sm text-muted-foreground font-light mt-2 mb-6 leading-relaxed">
-        Nouvelles créations, portraits d'artisans et événements culturels — chaque mois dans votre boîte mail.
-      </p>
-      <input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="votre@email.com"
-        className="bg-surface-container-low rounded-xl px-4 py-3 w-full border-none text-sm outline-none focus:ring-1 focus:ring-primary transition-shadow"
-      />
-      <button className="mt-3 w-full py-3 rounded-full bg-gradient-to-br from-terracotta to-terracotta-light text-primary-foreground uppercase tracking-widest text-[0.7rem] font-bold hover:opacity-90 active:scale-[0.97] transition-all">
-        S'abonner
-      </button>
+      <ScrollReveal>
+        <span className="label-caps text-[10px] text-muted-foreground mb-2 block">Restez connecté</span>
+        <h2 className="font-serif text-2xl text-inverse-surface">L'art au bout des doigts</h2>
+      </ScrollReveal>
+      <ScrollReveal delay={0.15}>
+        <p className="text-sm text-muted-foreground font-light mt-2 mb-6 leading-relaxed">
+          Nouvelles créations, portraits d'artisans et événements culturels — chaque mois dans votre boîte mail.
+        </p>
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="votre@email.com"
+          className="bg-surface-container-low rounded-xl px-4 py-3 w-full border-none text-sm outline-none focus:ring-1 focus:ring-primary transition-shadow"
+        />
+        <button className="mt-3 w-full py-3 rounded-full bg-gradient-to-br from-terracotta to-terracotta-light text-primary-foreground uppercase tracking-widest text-[0.7rem] font-bold hover:opacity-90 active:scale-[0.97] transition-all">
+          S'abonner
+        </button>
+      </ScrollReveal>
     </section>
   );
 };
