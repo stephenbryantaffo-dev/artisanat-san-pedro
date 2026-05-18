@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import AppShell from "@/components/AppShell";
 import { ProductCard, mockProducts } from "@/components/ProductCard";
 import { allProducts } from "@/data/products";
+import { categoryAccent } from "@/lib/categoryColors";
 
 import heroImg from "@/assets/hero-sculptor.jpg";
 import catSculpture from "@/assets/cat-sculpture.jpg";
@@ -29,16 +30,22 @@ const HeroSection = () => (
       width={1080}
       height={1920}
     />
-    <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
+    <div
+      className="absolute inset-0"
+      style={{
+        background:
+          "linear-gradient(135deg, rgba(45,74,45,0.30) 0%, rgba(139,26,26,0.15) 50%, rgba(14,13,13,0.85) 100%)",
+      }}
+    />
 
     <div className="relative z-10 w-full px-6 pb-16">
-      <span className="label-caps text-foreground/50 mb-4 block text-[10px]">
+      <span className="label-caps mb-4 block text-[10px]" style={{ color: "#4A7A4A" }}>
         Artisanat San Pedro · PACTE
       </span>
       <h1 className="font-serif text-5xl leading-tight text-foreground mb-6" style={{ mixBlendMode: "difference" }}>
         L'art <span className="italic font-light">vivant</span> de
         <br />
-        Côte <span className="italic text-primary font-bold">d'Ivoire</span>
+        Côte <span className="italic font-bold" style={{ color: "#2D4A2D" }}>d'Ivoire</span>
       </h1>
 
       {/* AI Search bar */}
@@ -54,6 +61,13 @@ const HeroSection = () => (
         <button className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-foreground/5 transition-colors shrink-0">
           <Search className="w-4 h-4 text-muted-foreground" />
         </button>
+      </div>
+
+      {/* Brand signature dots */}
+      <div className="flex gap-2 mt-4 opacity-60">
+        <span className="w-2 h-2 rounded-full" style={{ background: "#99420d" }} />
+        <span className="w-2 h-2 rounded-full" style={{ background: "#8B1A1A" }} />
+        <span className="w-2 h-2 rounded-full" style={{ background: "#2D4A2D" }} />
       </div>
     </div>
 
@@ -95,59 +109,60 @@ const StatsBento = () => (
 
 /* ─── SECTION 3: CORPS DE MÉTIERS ─── */
 const categories = [
-  { code: "SCU", name: "Sculpture", image: catSculpture },
-  { code: "TRE", name: "Tressage", image: catTressage },
-  { code: "TIS", name: "Tissage", image: catTissage },
-  { code: "POT", name: "Poterie", image: catPottery },
-  { code: "FOR", name: "Forge", image: catForge },
-  { code: "PNT", name: "Peinture", image: catPeinture },
+  { code: "SCU", name: "Sculpture", image: catSculpture, count: 31 },
+  { code: "TRE", name: "Tressage", image: catTressage, count: 22 },
+  { code: "TIS", name: "Tissage", image: catTissage, count: 18 },
+  { code: "POT", name: "Poterie", image: catPottery, count: 24 },
+  { code: "FOR", name: "Forge", image: catForge, count: 14 },
+  { code: "PNT", name: "Peinture", image: catPeinture, count: 19 },
 ];
 
 const MetiersSection = () => (
   <section className="py-12 px-6">
     <h2 className="font-serif text-2xl text-inverse-surface mb-8">Savoir-faire</h2>
     <div className="grid grid-cols-2 gap-3">
-      {categories.slice(0, 4).map((cat) => (
-        <a key={cat.code} href="#" className="relative rounded-bento overflow-hidden group aspect-[4/5]">
-          <img
-            src={cat.image}
-            alt={cat.name}
-            loading="lazy"
-            width={800}
-            height={1000}
-            className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-          />
-          <div className="absolute inset-0 bg-inverse-surface/40" />
-          <span className="absolute top-3 left-3 glass-card px-2 py-1 rounded-lg text-[9px] uppercase tracking-tight font-bold text-inverse-surface">
-            {cat.code}
-          </span>
-          <span className="absolute bottom-4 left-4 font-serif italic text-lg text-primary-foreground">
-            {cat.name}
-          </span>
-        </a>
-      ))}
-    </div>
-    {/* Full width last row */}
-    <div className="grid grid-cols-2 gap-3 mt-3">
-      {categories.slice(4).map((cat) => (
-        <a key={cat.code} href="#" className="relative rounded-bento overflow-hidden group aspect-[4/5]">
-          <img
-            src={cat.image}
-            alt={cat.name}
-            loading="lazy"
-            width={800}
-            height={1000}
-            className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-          />
-          <div className="absolute inset-0 bg-inverse-surface/40" />
-          <span className="absolute top-3 left-3 glass-card px-2 py-1 rounded-lg text-[9px] uppercase tracking-tight font-bold text-inverse-surface">
-            {cat.code}
-          </span>
-          <span className="absolute bottom-4 left-4 font-serif italic text-lg text-primary-foreground">
-            {cat.name}
-          </span>
-        </a>
-      ))}
+      {categories.map((cat) => {
+        const accent = categoryAccent(cat.code);
+        return (
+          <a
+            key={cat.code}
+            href="#"
+            className="relative rounded-bento overflow-hidden group aspect-[4/5]"
+          >
+            <img
+              src={cat.image}
+              alt={cat.name}
+              loading="lazy"
+              width={800}
+              height={1000}
+              className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+            />
+            <div
+              className="absolute inset-0"
+              style={{
+                background: `linear-gradient(to top, ${accent.hex}55 0%, rgba(14,13,13,0.25) 60%, transparent 100%)`,
+              }}
+            />
+            <span
+              className="absolute top-3 left-3 glass-card px-2 py-1 rounded-lg text-[9px] uppercase tracking-tight font-bold"
+              style={{ color: accent.hex }}
+            >
+              {cat.code}
+            </span>
+            <div className="absolute bottom-4 left-4">
+              <span className="font-serif italic text-lg text-primary-foreground block">
+                {cat.name}
+              </span>
+              <span
+                className="text-[9px] uppercase tracking-widest font-bold"
+                style={{ color: accent.hex }}
+              >
+                {cat.count} pièces
+              </span>
+            </div>
+          </a>
+        );
+      })}
     </div>
   </section>
 );
