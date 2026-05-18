@@ -2,6 +2,7 @@ import { Heart, Plus, Star } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Product } from "@/data/products";
+import { categoryAccent } from "@/lib/categoryColors";
 
 interface BoutiqueProductCardProps {
   product: Product;
@@ -10,6 +11,7 @@ interface BoutiqueProductCardProps {
 const BoutiqueProductCard = ({ product }: BoutiqueProductCardProps) => {
   const [liked, setLiked] = useState(false);
   const navigate = useNavigate();
+  const accent = categoryAccent(product.category);
 
   const handleCardClick = () => {
     navigate(`/boutique/${product.slug}`);
@@ -47,7 +49,10 @@ const BoutiqueProductCard = ({ product }: BoutiqueProductCardProps) => {
         </button>
       </div>
       <div className="p-3 space-y-1">
-        <span className="text-[8px] uppercase tracking-widest text-muted-foreground font-semibold">
+        <span
+          className="text-[8px] uppercase tracking-widest font-semibold"
+          style={{ color: accent.hex }}
+        >
           {product.category}
         </span>
         <h3 className="font-serif text-sm leading-tight line-clamp-2 text-inverse-surface">
