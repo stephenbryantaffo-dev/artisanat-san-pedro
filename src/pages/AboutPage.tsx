@@ -10,6 +10,9 @@ const stats = [
   { value: "2026", label: "Année de lancement" },
 ];
 
+const MISSION_BORDERS = ["#99420d", "#2D4A2D", "#8B1A1A"];
+const PARTNER_COLORS = ["#99420d", "#2D4A2D", "#8B1A1A"];
+
 const missions = [
   {
     title: "Générer des revenus durables",
@@ -70,8 +73,12 @@ const AboutPage = () => (
       <p className="text-[10px] uppercase tracking-widest text-on-surface-variant mb-3">NOTRE MISSION</p>
       <h2 className="font-headline text-2xl italic mb-6">Pourquoi ce projet existe</h2>
       <div className="space-y-4">
-        {missions.map((m) => (
-          <div key={m.title} className="bg-surface-container-lowest rounded-[1.5rem] p-6 border-l-4 border-primary">
+        {missions.map((m, i) => (
+          <div
+            key={m.title}
+            className="bg-surface-container-lowest rounded-[1.5rem] p-6 border-l-4"
+            style={{ borderLeftColor: MISSION_BORDERS[i % MISSION_BORDERS.length] }}
+          >
             <h3 className="font-headline text-lg">{m.title}</h3>
             <p className="font-body text-sm text-on-surface-variant font-light leading-relaxed mt-2">{m.body}</p>
           </div>
@@ -185,9 +192,14 @@ const AboutPage = () => (
       <p className="text-[10px] uppercase tracking-widest text-on-surface-variant mb-3">ÉCOSYSTÈME</p>
       <h2 className="font-headline text-2xl italic mb-6">Nos Partenaires</h2>
       <div className="space-y-3">
-        {partners.map((p) => (
+        {partners.map((p, i) => {
+          const color = PARTNER_COLORS[i % PARTNER_COLORS.length];
+          return (
           <div key={p.name} className="flex items-center gap-4 bg-surface-container-lowest rounded-xl p-4 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
-            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary text-sm font-bold flex-shrink-0">
+            <div
+              className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0"
+              style={{ backgroundColor: `${color}1A`, color }}
+            >
               {p.name.charAt(0)}
             </div>
             <div>
@@ -195,7 +207,8 @@ const AboutPage = () => (
               <p className="text-[9px] uppercase tracking-widest text-on-surface-variant mt-0.5">{p.role}</p>
             </div>
           </div>
-        ))}
+          );
+        })}
       </div>
     </div>
 
