@@ -1,10 +1,13 @@
 import { useMemo } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { ArrowLeft, Share2, Star } from "lucide-react";
+import { motion } from "framer-motion";
 
 import { allArtisans } from "@/data/artisans";
 import { allProducts } from "@/data/products";
 import BoutiqueProductCard from "@/components/BoutiqueProductCard";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { staggerContainer, staggerItem } from "@/lib/motionVariants";
 
 const ArtisanProfilePage = () => {
   const { slug } = useParams();
@@ -87,22 +90,27 @@ const ArtisanProfilePage = () => {
       </div>
 
       {/* Stats bento */}
-      <div className="mt-6 px-6 grid grid-cols-4 gap-2">
+      <motion.div
+        className="mt-6 px-6 grid grid-cols-4 gap-2"
+        variants={staggerContainer}
+        initial="hidden"
+        animate="visible"
+      >
         {[
           { value: artisan.productsCount, label: "Œuvres" },
           { value: artisan.reviews, label: "Avis" },
           { value: artisan.rating.toString(), label: "Note" },
           { value: artisan.since.toString(), label: "Depuis" },
         ].map((s) => (
-          <div key={s.label} className="bg-surface-container-low rounded-xl p-3 text-center">
+          <motion.div key={s.label} variants={staggerItem} className="bg-surface-container-low rounded-xl p-3 text-center">
             <span className="font-serif text-2xl text-primary block">{s.value}</span>
             <span className="label-caps text-[9px] text-muted-foreground">{s.label}</span>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
 
       {/* Bio */}
-      <div className="px-6 mt-8">
+      <ScrollReveal className="px-6 mt-8">
         <span className="label-caps text-[10px] text-muted-foreground mb-3 block">À propos</span>
         <div className="bg-surface-container-low rounded-bento p-6">
           <span className="font-serif text-4xl text-primary leading-none opacity-30 block">"</span>
@@ -110,17 +118,25 @@ const ArtisanProfilePage = () => {
             {artisan.bio}
           </p>
         </div>
-      </div>
+      </ScrollReveal>
 
       {/* Products */}
       {products.length > 0 && (
         <div className="px-6 mt-8">
           <h2 className="font-serif text-2xl italic text-inverse-surface mb-6">Ses Créations</h2>
-          <div className="grid grid-cols-2 gap-4">
+          <motion.div
+            className="grid grid-cols-2 gap-4"
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+          >
             {products.map((p) => (
-              <BoutiqueProductCard key={p.id} product={p} />
+              <motion.div key={p.id} variants={staggerItem}>
+                <BoutiqueProductCard product={p} />
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       )}
     </div>
