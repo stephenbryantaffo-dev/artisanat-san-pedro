@@ -1,11 +1,14 @@
 import { useMemo } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { Sparkles, Search, X } from "lucide-react";
+import { motion } from "framer-motion";
 
 import AppShell from "@/components/AppShell";
 import BoutiqueProductCard from "@/components/BoutiqueProductCard";
 import { allProducts } from "@/data/products";
 import { categoryAccent } from "@/lib/categoryColors";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { staggerContainer, staggerItem } from "@/lib/motionVariants";
 
 const CATEGORIES = ["Tout", "Sculpture", "Tressage", "Tissage", "Poterie", "Forge", "Peinture"];
 const SORT_OPTIONS = [
@@ -74,14 +77,14 @@ const BoutiquePage = () => {
   return (
     <AppShell>
       {/* Header */}
-      <div className="pt-20 pb-4 px-6">
+      <ScrollReveal className="pt-20 pb-4 px-6">
         <p className="text-[10px] uppercase tracking-widest text-muted-foreground mb-2">
           <Link to="/" className="hover:text-primary transition-colors">Accueil</Link>
           {" / "}
           <span className="text-inverse-surface">Boutique</span>
         </p>
         <h1 className="font-serif text-3xl italic text-inverse-surface">La Boutique</h1>
-      </div>
+      </ScrollReveal>
 
       {/* Search + Filter Bar */}
       <div className="sticky top-[72px] z-40 bg-background/80 backdrop-blur-md py-3 px-6">
@@ -147,11 +150,19 @@ const BoutiquePage = () => {
       {/* Product grid */}
       <div className="px-6 pb-16 pt-4">
         {filteredProducts.length > 0 ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <motion.div
+            className="grid grid-cols-2 md:grid-cols-3 gap-4"
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+          >
             {filteredProducts.map((p) => (
-              <BoutiqueProductCard key={p.id} product={p} />
+              <motion.div key={p.id} variants={staggerItem}>
+                <BoutiqueProductCard product={p} />
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         ) : (
           <div className="text-center mt-16">
             <p className="font-serif text-2xl italic text-muted-foreground">
