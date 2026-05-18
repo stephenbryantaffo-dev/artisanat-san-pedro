@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { Search, Sparkles, ChevronDown, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { fadeUp } from "../lib/motionVariants";
+import { useRef } from "react";
 
 import AppShell from "@/components/AppShell";
 import { ProductCard, mockProducts } from "@/components/ProductCard";
