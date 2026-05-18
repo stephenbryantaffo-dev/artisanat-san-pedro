@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { Mail, MapPin, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
 import AppShell from "@/components/AppShell";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { staggerContainer, staggerItem } from "@/lib/motionVariants";
 
 const subjects = ["Je veux acheter", "Je suis artisan", "Partenariat", "Question commande"];
 
@@ -19,7 +22,7 @@ const ContactPage = () => {
       </div>
 
       {/* Form */}
-      <div className="px-6 space-y-4">
+      <ScrollReveal className="px-6 space-y-4">
         <div>
           <label className="text-[10px] uppercase tracking-widest text-muted-foreground mb-1 block">Nom complet</label>
           <input value={name} onChange={(e) => setName(e.target.value)} className="bg-surface-container-low rounded-xl px-4 py-3 w-full border-none text-sm focus:ring-1 focus:ring-primary focus:outline-none" placeholder="Votre nom" />
@@ -41,19 +44,25 @@ const ContactPage = () => {
         <button className="w-full h-14 bg-gradient-to-br from-terracotta to-terracotta-light text-primary-foreground rounded-full uppercase tracking-widest text-[11px] font-bold">
           Envoyer le message
         </button>
-      </div>
+      </ScrollReveal>
 
       {/* Quick contacts */}
-      <div className="px-6 mt-8 grid grid-cols-2 gap-4">
-        <div className="bg-surface-container-low rounded-xl p-5 text-center">
+      <motion.div
+        className="px-6 mt-8 grid grid-cols-2 gap-4"
+        variants={staggerContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-40px" }}
+      >
+        <motion.div variants={staggerItem} className="bg-surface-container-low rounded-xl p-5 text-center">
           <Mail className="w-5 h-5 text-primary mx-auto mb-2" />
           <p className="text-[10px] text-muted-foreground break-all">contact@artisanat-sanpedro.ci</p>
-        </div>
-        <div className="bg-surface-container-low rounded-xl p-5 text-center">
+        </motion.div>
+        <motion.div variants={staggerItem} className="bg-surface-container-low rounded-xl p-5 text-center">
           <MapPin className="w-5 h-5 text-primary mx-auto mb-2" />
           <p className="text-[10px] text-muted-foreground">San Pedro, Centre-ville</p>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
       {/* Chat IA CTA */}
       <div className="px-6 mt-4 pb-16">
