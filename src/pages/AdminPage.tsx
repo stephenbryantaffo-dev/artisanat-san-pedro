@@ -517,9 +517,10 @@ const AdminDashboard = () => {
 
         {/* S10 — IMPACT */}
         <Section delay={1000}>
-          <div className="bg-[hsl(var(--inverse-surface))] rounded-[2rem] p-8 text-center relative overflow-hidden">
-            <div className="absolute -right-10 -bottom-10 w-40 h-40 rounded-full bg-primary/20" />
-            <div className="absolute -left-6 -top-6 w-24 h-24 rounded-full bg-primary/10" />
+          <div className="rounded-[2rem] p-8 text-center relative overflow-hidden" style={{ backgroundColor: "#1A2D1A" }}>
+            <div className="absolute -right-10 -bottom-10 w-40 h-40 rounded-full" style={{ backgroundColor: "rgba(153,66,13,0.25)" }} />
+            <div className="absolute -left-6 -top-6 w-24 h-24 rounded-full" style={{ backgroundColor: "rgba(139,26,26,0.20)" }} />
+            <div className="absolute right-1/3 top-4 w-12 h-12 rounded-full" style={{ backgroundColor: "rgba(74,122,74,0.25)" }} />
             <div className="relative z-10">
               <p className="text-[10px] uppercase tracking-widest text-primary mb-3">Impact Économique PACTE</p>
               <div className="font-serif text-5xl italic text-[hsl(36,50%,97%)]">
