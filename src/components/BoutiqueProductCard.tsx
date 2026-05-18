@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Product } from "@/data/products";
 import { categoryAccent } from "@/lib/categoryColors";
+import { useTilt } from "@/hooks/useTilt";
 
 interface BoutiqueProductCardProps {
   product: Product;
@@ -12,6 +13,7 @@ const BoutiqueProductCard = ({ product }: BoutiqueProductCardProps) => {
   const [liked, setLiked] = useState(false);
   const navigate = useNavigate();
   const accent = categoryAccent(product.category);
+  const { ref, onMouseMove, onMouseLeave } = useTilt(12);
 
   const handleCardClick = () => {
     navigate(`/boutique/${product.slug}`);
@@ -19,6 +21,10 @@ const BoutiqueProductCard = ({ product }: BoutiqueProductCardProps) => {
 
   return (
     <div
+      ref={ref}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+      style={{ transformStyle: 'preserve-3d', willChange: 'transform' }}
       className="rounded-bento overflow-hidden bg-background cursor-pointer shadow-luxury"
       onClick={handleCardClick}
     >
