@@ -5,6 +5,7 @@ import { Sparkles, Search, X } from "lucide-react";
 import AppShell from "@/components/AppShell";
 import BoutiqueProductCard from "@/components/BoutiqueProductCard";
 import { allProducts } from "@/data/products";
+import { categoryAccent } from "@/lib/categoryColors";
 
 const CATEGORIES = ["Tout", "Sculpture", "Tressage", "Tissage", "Poterie", "Forge", "Peinture"];
 const SORT_OPTIONS = [
@@ -105,13 +106,16 @@ const BoutiquePage = () => {
         <div className="flex gap-2 overflow-x-auto no-scrollbar">
           {CATEGORIES.map((cat) => {
             const isActive = cat.toLowerCase() === selectedCategory.toLowerCase();
+            const accent =
+              cat === "Tout" ? { hex: "#99420d" } : categoryAccent(cat);
             return (
               <button
                 key={cat}
                 onClick={() => setParam("cat", cat.toLowerCase())}
+                style={isActive ? { backgroundColor: accent.hex, color: "#fcf9f4" } : undefined}
                 className={`shrink-0 rounded-full px-4 py-2 text-[10px] uppercase tracking-widest font-bold transition-colors ${
                   isActive
-                    ? "bg-primary text-primary-foreground"
+                    ? ""
                     : "bg-surface-container-low text-muted-foreground hover:bg-surface-container"
                 }`}
               >
