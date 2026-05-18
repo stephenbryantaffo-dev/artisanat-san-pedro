@@ -23,6 +23,7 @@ import AIChatbot from "./components/AIChatbot";
 import NotFound from "./pages/NotFound";
 import AdminPage from "./pages/AdminPage";
 import { useLenis } from "./hooks/useLenis";
+import { useScrollSkew } from "./hooks/useScrollSkew";
 import { MagneticCursor } from "./components/ui/MagneticCursor";
 
 const queryClient = new QueryClient();
@@ -62,6 +63,7 @@ const AnimatedRoutes = () => {
 
 const App = () => {
   useLenis();
+  useScrollSkew();
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -96,7 +98,9 @@ const App = () => {
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <AnimatedRoutes />
+          <div className="skew-container" style={{ willChange: 'transform' }}>
+            <AnimatedRoutes />
+          </div>
           <AIChatbot />
         </BrowserRouter>
       </CartProvider>
