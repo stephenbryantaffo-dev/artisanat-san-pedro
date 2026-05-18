@@ -23,6 +23,7 @@ import AIChatbot from "./components/AIChatbot";
 import NotFound from "./pages/NotFound";
 import AdminPage from "./pages/AdminPage";
 import { useLenis } from "./hooks/useLenis";
+import { MagneticCursor } from "./components/ui/MagneticCursor";
 
 const queryClient = new QueryClient();
 
@@ -91,6 +92,7 @@ const App = () => {
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <CartProvider>
+        {typeof window !== 'undefined' && window.innerWidth > 768 && <MagneticCursor />}
         <Toaster />
         <Sonner />
         <BrowserRouter>
