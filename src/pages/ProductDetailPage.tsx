@@ -2,9 +2,12 @@ import { useState, useMemo } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { ArrowLeft, Share2, Heart, Star, Minus, Plus, Check } from "lucide-react";
 import { toast } from "sonner";
+import { motion } from "framer-motion";
 
 import { allProducts } from "@/data/products";
 import { useCart } from "@/context/CartContext";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { staggerContainer, staggerItem, scaleReveal } from "@/lib/motionVariants";
 
 const TABS = ["Description", "Livraison", "Avis"] as const;
 type Tab = typeof TABS[number];
@@ -80,7 +83,7 @@ const ProductDetailPage = () => {
 
       {/* SECTION 1 — Photo Gallery */}
       <div className="pt-[72px] px-4">
-        <div className="relative w-full aspect-[4/5] rounded-[2rem] overflow-hidden">
+        <ScrollReveal variants={scaleReveal} className="relative w-full aspect-[4/5] rounded-[2rem] overflow-hidden">
           <img
             src={product.image}
             alt={product.name}
@@ -107,18 +110,18 @@ const ProductDetailPage = () => {
             <span className="w-1.5 h-1 bg-primary-foreground/40 rounded-full" />
             <span className="w-1.5 h-1 bg-primary-foreground/40 rounded-full" />
           </div>
-        </div>
+        </ScrollReveal>
       </div>
 
       {/* SECTION 2 — Product Info */}
       <div className="px-6 mt-6 space-y-6">
         {/* Name + Category */}
-        <div>
+        <ScrollReveal delay={0.1}>
           <span className="label-caps text-[10px] text-muted-foreground">{product.category}</span>
           <h1 className="font-serif text-4xl italic text-inverse-surface leading-tight mt-1">
             {product.name}
           </h1>
-        </div>
+        </ScrollReveal>
 
         {/* Ratings + Stock */}
         <div className="flex items-center gap-3 flex-wrap">
@@ -139,12 +142,14 @@ const ProductDetailPage = () => {
         </div>
 
         {/* Price */}
-        <p className="font-serif text-3xl italic text-primary">
-          {product.price.toLocaleString("fr-FR")} <span className="text-base not-italic">FCFA</span>
-        </p>
+        <ScrollReveal delay={0.2}>
+          <p className="font-serif text-3xl italic text-primary">
+            {product.price.toLocaleString("fr-FR")} <span className="text-base not-italic">FCFA</span>
+          </p>
+        </ScrollReveal>
 
         {/* Artisan Card */}
-        <div className="bg-surface-container-low p-5 rounded-bento flex items-center justify-between">
+        <ScrollReveal delay={0.3} className="bg-surface-container-low p-5 rounded-bento flex items-center justify-between">
           <div className="flex items-center gap-4">
             <img
               src={product.artisanAvatar}
@@ -167,10 +172,10 @@ const ProductDetailPage = () => {
           >
             Voir →
           </Link>
-        </div>
+        </ScrollReveal>
 
         {/* Tabs */}
-        <div>
+        <ScrollReveal>
           <div className="flex gap-6 border-b border-border/20 mb-6">
             {TABS.map((tab) => (
               <button
@@ -231,7 +236,7 @@ const ProductDetailPage = () => {
               ))}
             </div>
           )}
-        </div>
+        </ScrollReveal>
 
         {/* Payment methods */}
         <div className="flex gap-2 flex-wrap">
@@ -247,9 +252,16 @@ const ProductDetailPage = () => {
       {relatedProducts.length > 0 && (
         <div className="bg-surface-container-low py-10 px-6 mt-8">
           <h2 className="font-serif italic text-2xl text-inverse-surface mb-6">Vous aimerez aussi</h2>
-          <div className="grid grid-cols-2 gap-4">
+          <motion.div
+            className="grid grid-cols-2 gap-4"
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+          >
             {relatedProducts.map((rp) => (
-              <Link key={rp.id} to={`/boutique/${rp.slug}`} className="group">
+              <motion.div key={rp.id} variants={staggerItem}>
+              <Link to={`/boutique/${rp.slug}`} className="group block">
                 <div className="aspect-square rounded-bento overflow-hidden mb-2">
                   <img
                     src={rp.image}
@@ -265,8 +277,9 @@ const ProductDetailPage = () => {
                   {rp.price.toLocaleString("fr-FR")} FCFA
                 </p>
               </Link>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       )}
 
