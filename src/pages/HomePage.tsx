@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { Search, Sparkles, ChevronDown, ArrowRight } from "lucide-react";
+import { Search, Sparkles, ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useRef } from "react";
 import { ScrollReveal } from "../components/ui/ScrollReveal";
-import { staggerContainer, staggerItem, slideLeft, scaleReveal } from "../lib/motionVariants";
+import { staggerContainer, staggerItem, scaleReveal } from "../lib/motionVariants";
 import { lenisInstance } from "../hooks/useLenis";
 import { FadeInText } from "../components/ui/FadeInText";
 import { Cascade } from "../components/ui/Cascade";
@@ -15,7 +15,6 @@ import { ForcedCascade } from "../components/ui/ForcedCascade";
 import AppShell from "@/components/AppShell";
 import { ProductCard, mockProducts } from "@/components/ProductCard";
 import { allProducts } from "@/data/products";
-import { categoryAccent } from "@/lib/categoryColors";
 
 import heroImg from "@/assets/hero-sculptor.jpg";
 import catSculpture from "@/assets/cat-sculpture.jpg";
@@ -238,15 +237,6 @@ const artisans = [
   { name: "Ama Diallo", metier: "Potière", since: "2005", image: artisanAma, slug: "ama-diallo", bio: "Sa poterie sénoufo cuite au feu de bois marie traditions séculaires et formes contemporaines épurées." },
   { name: "Yao Kouadio", metier: "Tisserand", since: "1992", image: artisanYao, slug: "yao-kouadio", bio: "Tisserand virtuose dont les pagnes Baoulé aux motifs géométriques voyagent jusqu'aux galeries européennes." },
 ];
-
-const metierAccent = (metier: string): string => {
-  const m = metier.toLowerCase();
-  if (m.startsWith("sculpt") || m.startsWith("pot")) return "#99420d";
-  if (m.startsWith("tisser") || m.startsWith("tiss")) return "#8B1A1A";
-  if (m.startsWith("forge")) return "#8B1A1A";
-  if (m.startsWith("tress") || m.startsWith("peintr")) return "#2D4A2D";
-  return "#99420d";
-};
 
 const artisansItems = artisans.map((a) => ({
   id: a.slug,
