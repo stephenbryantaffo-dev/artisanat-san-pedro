@@ -9,6 +9,7 @@ import { lenisInstance } from "../hooks/useLenis";
 import { FadeInText } from "../components/ui/FadeInText";
 import { Cascade } from "../components/ui/Cascade";
 import { useImageDistort } from "../hooks/useImageDistort";
+import { useThemeSection } from "../hooks/useThemeSection";
 
 import AppShell from "@/components/AppShell";
 import { ProductCard, mockProducts } from "@/components/ProductCard";
@@ -479,17 +480,25 @@ const NewsletterSection = () => {
 };
 
 /* ─── PAGE ─── */
-const HomePage = () => (
-  <AppShell>
-    <HeroSection />
-    <StatsBento />
-    <Cascade />
-    <MetiersSection />
-    <ArtisansSection />
-    <PinnedProductsSection />
-    <EditoSection />
-    <NewsletterSection />
-  </AppShell>
-);
+const HomePage = () => {
+  const heroRef = useThemeSection<HTMLDivElement>('dark');
+  const metiersRef = useThemeSection<HTMLDivElement>('light');
+  const artisansRef = useThemeSection<HTMLDivElement>('forest');
+  const productsRef = useThemeSection<HTMLDivElement>('light');
+  const storyRef = useThemeSection<HTMLDivElement>('terracotta');
+
+  return (
+    <AppShell>
+      <div ref={heroRef}><HeroSection /></div>
+      <StatsBento />
+      <Cascade />
+      <div ref={metiersRef}><MetiersSection /></div>
+      <div ref={artisansRef}><ArtisansSection /></div>
+      <div ref={productsRef}><PinnedProductsSection /></div>
+      <div ref={storyRef}><EditoSection /></div>
+      <NewsletterSection />
+    </AppShell>
+  );
+};
 
 export default HomePage;

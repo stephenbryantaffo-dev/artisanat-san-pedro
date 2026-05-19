@@ -25,6 +25,7 @@ import AdminPage from "./pages/AdminPage";
 import { useLenis } from "./hooks/useLenis";
 import { useScrollSkew } from "./hooks/useScrollSkew";
 import { MagneticCursor } from "./components/ui/MagneticCursor";
+import { Preloader } from "./components/ui/Preloader";
 
 const queryClient = new QueryClient();
 
@@ -94,6 +95,7 @@ const App = () => {
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <CartProvider>
+        <Preloader />
         {typeof window !== 'undefined' && window.innerWidth > 768 && <MagneticCursor />}
         <Toaster />
         <Sonner />
