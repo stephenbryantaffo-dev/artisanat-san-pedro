@@ -312,8 +312,12 @@ const ArtisansSection = () => (
 const PinnedProductsSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => { setIsMobile(window.innerWidth < 768); }, []);
 
   useEffect(() => {
+    if (isMobile) return;
     const section = sectionRef.current;
     const track = trackRef.current;
     if (!section || !track) return;
@@ -332,15 +336,56 @@ const PinnedProductsSection = () => {
 
     lenisInstance?.on('scroll', handleScroll);
     return () => { lenisInstance?.off('scroll', handleScroll); };
-  }, []);
+  }, [isMobile]);
 
   const products = [
-    { name: 'Masque Baoulé ébène', artisan: 'Kofi Asante', price: '45 000', category: 'Sculpture', badge: 'COUP DE CŒUR' },
-    { name: 'Panier décoratif Abissa', artisan: 'Aya Coulibaly', price: '18 000', category: 'Tressage', badge: null },
-    { name: 'Vase Sénoufo terracotta', artisan: 'Fatou Diallo', price: '28 500', category: 'Poterie', badge: 'NOUVEAU' },
-    { name: 'Village au crépuscule', artisan: 'Abou Koné', price: '65 000', category: 'Peinture', badge: null },
-    { name: 'Statue Dan ancestrale', artisan: 'Kofi Asante', price: '72 000', category: 'Sculpture', badge: 'PIÈCE RARE' },
+    {
+      name: 'Masque Baoulé ébène', artisan: 'Kofi Asante', price: '45 000', category: 'Sculpture', badge: 'COUP DE CŒUR',
+      image: 'https://image.pollinations.ai/prompt/african%20baoule%20mask%20dark%20ebony%20wood%20sculpture%20on%20neutral%20background%2C%20museum%20quality%20photography%2C%20warm%20lighting%2C%20detailed%20texture%2C%20product%20shot?width=800&height=1000&seed=3001&nologo=true',
+    },
+    {
+      name: 'Panier décoratif Abissa', artisan: 'Aya Coulibaly', price: '18 000', category: 'Tressage', badge: null,
+      image: 'https://image.pollinations.ai/prompt/woven%20african%20basket%20colorful%20fibers%20product%20photography%20on%20neutral%20background%2C%20warm%20lighting%2C%20detailed%20craft?width=800&height=1000&seed=3002&nologo=true',
+    },
+    {
+      name: 'Vase Sénoufo terracotta', artisan: 'Fatou Diallo', price: '28 500', category: 'Poterie', badge: 'NOUVEAU',
+      image: 'https://image.pollinations.ai/prompt/african%20senoufo%20terracotta%20vase%20pottery%20product%20photography%20warm%20clay%20color%20neutral%20background%2C%20museum%20quality?width=800&height=1000&seed=3003&nologo=true',
+    },
+    {
+      name: 'Village au crépuscule', artisan: 'Abou Koné', price: '65 000', category: 'Peinture', badge: null,
+      image: 'https://image.pollinations.ai/prompt/african%20painting%20village%20at%20sunset%20colorful%20pigments%20on%20canvas%2C%20product%20photography%20neutral%20background?width=800&height=1000&seed=3004&nologo=true',
+    },
+    {
+      name: 'Statue Dan ancestrale', artisan: 'Kofi Asante', price: '72 000', category: 'Sculpture', badge: 'PIÈCE RARE',
+      image: 'https://image.pollinations.ai/prompt/african%20dan%20sculpture%20wooden%20ancestral%20figure%20product%20photography%20neutral%20background%2C%20dark%20wood%2C%20museum%20quality?width=800&height=1000&seed=3005&nologo=true',
+    },
   ];
+
+  if (isMobile) {
+    return (
+      <section className="py-16 px-6">
+        <p className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-1">
+          NOS CRÉATIONS · COUP DE CŒUR
+        </p>
+        <h2 className="font-headline text-3xl italic mb-8">Pièces Phares</h2>
+        <div className="flex gap-4 overflow-x-auto no-scrollbar -mx-6 px-6 pb-4 snap-x snap-mandatory">
+          {products.map((product, i) => (
+            <div key={i} className="flex-shrink-0 w-64 snap-center rounded-2xl overflow-hidden bg-white shadow-lg">
+              <div className="aspect-[3/4] overflow-hidden">
+                <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+              </div>
+              <div className="p-4">
+                <p className="font-label text-[9px] uppercase tracking-widest text-primary mb-1">{product.category}</p>
+                <h3 className="font-headline text-base italic leading-tight">{product.name}</h3>
+                <p className="text-[10px] text-on-surface-variant mt-1">{product.artisan}</p>
+                <p className="font-headline text-lg text-primary mt-2">{product.price} FCFA</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section ref={sectionRef} className="relative" style={{ height: '300vh' }}>
@@ -367,12 +412,17 @@ const PinnedProductsSection = () => {
           {products.map((product, i) => (
             <div
               key={i}
-              className="flex-shrink-0 w-72 rounded-[1.5rem] overflow-hidden bg-background shadow-luxury"
+              className="flex-shrink-0 w-72 rounded-[1.5rem] overflow-hidden bg-background shadow-luxury relative"
               style={{ marginTop: i % 2 === 0 ? '0px' : '40px' }}
             >
+              {product.badge && (
+                <span className="absolute top-3 left-3 z-10 glass-card px-2.5 py-1 rounded-full text-[9px] uppercase tracking-widest font-bold text-inverse-surface">
+                  {product.badge}
+                </span>
+              )}
               <div className="aspect-[3/4] bg-surface-container-low overflow-hidden">
                 <img
-                  src={`https://source.unsplash.com/400x533/?african,craft,${product.category.toLowerCase()}`}
+                  src={product.image}
                   className="w-full h-full object-cover"
                   style={{ filter: 'brightness(0.95) sepia(0.15)' }}
                   alt={product.name}
