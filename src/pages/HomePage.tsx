@@ -11,6 +11,7 @@ import { Cascade } from "../components/ui/Cascade";
 import { useImageDistort } from "../hooks/useImageDistort";
 import { useThemeSection } from "../hooks/useThemeSection";
 import { ArtisansCardFlipSection } from "../components/sections/ArtisansCardFlipSection";
+import { MetiersDeckSection } from "../components/sections/MetiersDeckSection";
 
 import AppShell from "@/components/AppShell";
 import { ProductCard, mockProducts } from "@/components/ProductCard";
@@ -493,7 +494,7 @@ const HomePage = () => {
       <div ref={heroRef}><HeroSection /></div>
       <StatsBento />
       <Cascade />
-      <div ref={metiersRef}><MetiersSection /></div>
+      <div ref={metiersRef}><MetiersDeckSection /></div>
       <div ref={artisansRef}><ArtisansCardFlipSection /></div>
       <div ref={productsRef}><PinnedProductsSection /></div>
       <div ref={storyRef}><EditoSection /></div>
