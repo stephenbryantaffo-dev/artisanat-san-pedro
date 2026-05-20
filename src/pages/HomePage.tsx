@@ -10,6 +10,7 @@ import { FadeInText } from "../components/ui/FadeInText";
 import { Cascade } from "../components/ui/Cascade";
 import { useImageDistort } from "../hooks/useImageDistort";
 import { useThemeSection } from "../hooks/useThemeSection";
+import { ArtisansCardFlipSection } from "../components/sections/ArtisansCardFlipSection";
 
 import AppShell from "@/components/AppShell";
 import { ProductCard, mockProducts } from "@/components/ProductCard";
@@ -493,7 +494,7 @@ const HomePage = () => {
       <StatsBento />
       <Cascade />
       <div ref={metiersRef}><MetiersSection /></div>
-      <div ref={artisansRef}><ArtisansSection /></div>
+      <div ref={artisansRef}><ArtisansCardFlipSection /></div>
       <div ref={productsRef}><PinnedProductsSection /></div>
       <div ref={storyRef}><EditoSection /></div>
       <NewsletterSection />
