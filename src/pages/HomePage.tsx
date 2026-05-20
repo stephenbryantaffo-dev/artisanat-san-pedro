@@ -1,20 +1,20 @@
 import { useState, useEffect } from "react";
-import { Search, Sparkles, ChevronDown } from "lucide-react";
+import { Search, Sparkles, ChevronDown, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useRef } from "react";
 import { ScrollReveal } from "../components/ui/ScrollReveal";
-import { staggerContainer, staggerItem, scaleReveal } from "../lib/motionVariants";
+import { staggerContainer, staggerItem, slideLeft, scaleReveal } from "../lib/motionVariants";
 import { lenisInstance } from "../hooks/useLenis";
 import { FadeInText } from "../components/ui/FadeInText";
 import { Cascade } from "../components/ui/Cascade";
 import { useImageDistort } from "../hooks/useImageDistort";
 import { useThemeSection } from "../hooks/useThemeSection";
-import { ForcedCascade } from "../components/ui/ForcedCascade";
 
 import AppShell from "@/components/AppShell";
 import { ProductCard, mockProducts } from "@/components/ProductCard";
 import { allProducts } from "@/data/products";
+import { categoryAccent } from "@/lib/categoryColors";
 
 import heroImg from "@/assets/hero-sculptor.jpg";
 import catSculpture from "@/assets/cat-sculpture.jpg";
@@ -172,173 +172,242 @@ const categories = [
   { code: "PNT", name: "Peinture", image: catPeinture, count: 19 },
 ];
 
-const metiersDetails: Record<string, { description: string; artisans: number; oeuvres: string; color: string }> = {
-  SCU: { description: "Art ancestral du bois et de la pierre, la sculpture baoulé et dan perpétue des siècles de savoir-faire transmis de génération en génération.", artisans: 42, oeuvres: "380+", color: "#99420d" },
-  TRE: { description: "Paniers, nattes et objets décoratifs tressés à la main. Chaque entrelacement raconte une histoire de patience et de précision.", artisans: 38, oeuvres: "290+", color: "#2D4A2D" },
-  TIS: { description: "Pagnes Baoulé, bogolans et textiles aux motifs géométriques. Le tissage ivoirien conjugue couleurs vives et symbolisme profond.", artisans: 51, oeuvres: "445+", color: "#8B1A1A" },
-  POT: { description: "Modelée à la main dans la terre argileuse locale, cuite au bois selon des techniques millénaires.", artisans: 29, oeuvres: "210+", color: "#99420d" },
-  FOR: { description: "Bracelets, couteaux cérémoniels et outils forgés au charbon de bois. Le forgeron est aussi gardien de traditions séculaires.", artisans: 18, oeuvres: "95+", color: "#8B1A1A" },
-  PNT: { description: "Toiles expressives aux pigments naturels, paysages de lagunes et portraits de village qui capturent l'âme de San Pedro.", artisans: 22, oeuvres: "180+", color: "#2D4A2D" },
-};
-
-const metiersItems = categories.map((cat) => {
-  const d = metiersDetails[cat.code];
-  return {
-    id: cat.code,
-    content: (
-      <div className="relative rounded-[2rem] overflow-hidden" style={{ height: "55vh" }}>
-        <img
-          src={cat.image}
-          alt={cat.name}
-          className="w-full h-full object-cover"
-          style={{ filter: "brightness(0.75) sepia(0.18)" }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-inverse-surface/85 to-transparent" />
-        <div className="absolute top-6 left-6 w-1 h-12 rounded-full" style={{ background: d.color }} />
-        <div className="absolute bottom-8 left-8 right-8">
-          <div className="glass-card inline-flex px-3 py-1 rounded-full mb-3">
-            <p className="text-[9px] uppercase tracking-widest font-sans font-bold" style={{ color: d.color }}>
-              {cat.code}
-            </p>
-          </div>
-          <h3 className="font-serif text-5xl italic text-primary-foreground leading-none mb-3">
-            {cat.name}
-          </h3>
-          <p className="text-sm text-primary-foreground/70 font-light leading-relaxed">
-            {d.description}
-          </p>
-          <div className="flex gap-6 mt-4">
-            <div>
-              <p className="font-serif text-2xl" style={{ color: d.color }}>{d.artisans}</p>
-              <p className="text-[9px] uppercase tracking-widest text-primary-foreground/50 font-sans">Artisans</p>
-            </div>
-            <div>
-              <p className="font-serif text-2xl" style={{ color: d.color }}>{d.oeuvres}</p>
-              <p className="text-[9px] uppercase tracking-widest text-primary-foreground/50 font-sans">Œuvres</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    ),
-  };
-});
-
 const MetiersSection = () => (
-  <ForcedCascade
-    items={metiersItems}
-    title={<>Nos Corps de <span className="text-primary">Métiers</span></>}
-    label="SAVOIR-FAIRE · SAN PEDRO"
-  />
+  <section className="py-12 px-6">
+    <ScrollReveal variants={slideLeft}>
+      <span className="label-caps text-[10px] text-muted-foreground block mb-2">Nos métiers</span>
+    </ScrollReveal>
+    <ScrollReveal delay={0.1}>
+      <h2 className="font-serif text-2xl text-inverse-surface mb-8">Savoir-faire</h2>
+    </ScrollReveal>
+    <motion.div
+      className="grid grid-cols-2 gap-3"
+      variants={staggerContainer}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-40px" }}
+    >
+      {categories.map((cat) => {
+        const accent = categoryAccent(cat.code);
+        return (
+          <motion.a
+            key={cat.code}
+            variants={staggerItem}
+            href="#"
+            className="relative rounded-bento overflow-hidden group aspect-[4/5]"
+          >
+            <img
+              src={cat.image}
+              alt={cat.name}
+              loading="lazy"
+              width={800}
+              height={1000}
+              data-san-scroll
+              className="clip-reveal absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+            />
+            <div
+              className="absolute inset-0"
+              style={{
+                background: `linear-gradient(to top, ${accent.hex}55 0%, rgba(14,13,13,0.25) 60%, transparent 100%)`,
+              }}
+            />
+            <span
+              className="absolute top-3 left-3 glass-card px-2 py-1 rounded-lg text-[9px] uppercase tracking-tight font-bold"
+              style={{ color: accent.hex }}
+            >
+              {cat.code}
+            </span>
+            <div className="absolute bottom-4 left-4">
+              <span className="font-serif italic text-lg text-primary-foreground block">
+                {cat.name}
+              </span>
+              <span
+                className="text-[9px] uppercase tracking-widest font-bold"
+                style={{ color: accent.hex }}
+              >
+                {cat.count} pièces
+              </span>
+            </div>
+          </motion.a>
+        );
+      })}
+    </motion.div>
+  </section>
 );
 
 /* ─── SECTION 4: ARTISANS EN VEDETTE ─── */
 const artisans = [
-  { name: "Kofi Asante", metier: "Sculpteur", since: "1998", image: artisanKofi, slug: "kofi-asante", bio: "Maître sculpteur baoulé reconnu pour ses masques cérémoniels en ébène, gardiens des esprits ancestraux." },
-  { name: "Ama Diallo", metier: "Potière", since: "2005", image: artisanAma, slug: "ama-diallo", bio: "Sa poterie sénoufo cuite au feu de bois marie traditions séculaires et formes contemporaines épurées." },
-  { name: "Yao Kouadio", metier: "Tisserand", since: "1992", image: artisanYao, slug: "yao-kouadio", bio: "Tisserand virtuose dont les pagnes Baoulé aux motifs géométriques voyagent jusqu'aux galeries européennes." },
+  { name: "Kofi Asante", metier: "Sculpteur", since: "Depuis 1998", image: artisanKofi, slug: "kofi-asante" },
+  { name: "Ama Diallo", metier: "Potière", since: "Depuis 2005", image: artisanAma, slug: "ama-diallo" },
+  { name: "Yao Kouadio", metier: "Tisserand", since: "Depuis 1992", image: artisanYao, slug: "yao-kouadio" },
 ];
 
-const artisansItems = artisans.map((a) => ({
-  id: a.slug,
-  content: (
-    <div className="flex flex-col gap-4" style={{ height: "55vh" }}>
-      <div className="relative flex-1 rounded-[2rem] overflow-hidden">
-        <img
-          src={a.image}
-          className="w-full h-full object-cover"
-          style={{ filter: "grayscale(0.2) sepia(0.15)" }}
-          alt={a.name}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-inverse-surface/75 to-transparent" />
-        <div className="absolute bottom-6 left-6 right-6">
-          <p className="text-[9px] uppercase tracking-widest text-primary-foreground/60 mb-1 font-sans">
-            {a.metier}
-          </p>
-          <h3 className="font-serif text-4xl italic text-primary-foreground">{a.name}</h3>
-          <p className="text-sm text-primary-foreground/60 font-light mt-1">
-            Depuis {a.since} · San Pedro, Côte d'Ivoire
-          </p>
-        </div>
-      </div>
-      <div className="bg-surface-container-low rounded-[1.5rem] p-5 flex items-center justify-between gap-4">
-        <p className="text-sm text-muted-foreground font-light flex-1 line-clamp-2">
-          {a.bio}
-        </p>
-        <Link
-          to={`/artisans/${a.slug}`}
-          className="inline-flex items-center justify-center h-11 px-5 rounded-full bg-gradient-to-br from-terracotta to-terracotta-light text-primary-foreground uppercase tracking-widest text-[10px] font-bold flex-shrink-0"
-        >
-          Voir le profil
-        </Link>
-      </div>
-    </div>
-  ),
-}));
+const metierAccent = (metier: string): string => {
+  const m = metier.toLowerCase();
+  if (m.startsWith("sculpt") || m.startsWith("pot")) return "#99420d";
+  if (m.startsWith("tisser") || m.startsWith("tiss")) return "#8B1A1A";
+  if (m.startsWith("forge")) return "#8B1A1A";
+  if (m.startsWith("tress") || m.startsWith("peintr")) return "#2D4A2D";
+  return "#99420d";
+};
 
 const ArtisansSection = () => (
-  <ForcedCascade
-    items={artisansItems}
-    title={<>Nos <span className="text-primary">Artisans</span></>}
-    label="L'ÂME DERRIÈRE L'ŒUVRE"
-  />
+  <section className="relative bg-surface-container-low">
+    <div className="s-sticky-heading px-6 py-8 bg-surface-container-low">
+      <p className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-2">
+        NOS CRÉATEURS
+      </p>
+      <h2 className="font-headline text-3xl italic">
+        L&apos;Âme derrière<br />
+        <span className="text-primary">l&apos;Œuvre</span>
+      </h2>
+    </div>
+    <div className="overflow-x-auto no-scrollbar flex gap-4 px-6 pb-12">
+      {artisans.map((a) => (
+        <motion.div
+          key={a.slug}
+          variants={staggerItem}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="min-w-[260px] relative rounded-bento overflow-hidden shrink-0"
+        >
+          <div className="aspect-[3/4]">
+            <img
+              src={a.image}
+              alt={a.name}
+              loading="lazy"
+              width={750}
+              height={1000}
+              className="w-full h-full object-cover img-warm"
+            />
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-t from-inverse-surface/60 to-transparent" />
+          <span className="absolute top-4 right-4 glass-card px-2.5 py-1 rounded-full text-[10px] uppercase tracking-widest font-bold text-inverse-surface">
+            {a.metier}
+          </span>
+          <div className="absolute bottom-0 left-0 right-0 p-5">
+            <h3 className="font-serif text-lg text-primary-foreground">{a.name}</h3>
+            <span
+              className="block w-8 h-0.5 rounded-full mt-1 mb-1"
+              style={{ background: metierAccent(a.metier) }}
+            />
+            <p className="text-xs text-primary-foreground/70">{a.since}</p>
+          </div>
+          <Link
+            to={`/artisans/${a.slug}`}
+            className="absolute bottom-4 right-4 w-9 h-9 rounded-full glass-card flex items-center justify-center"
+          >
+            <ArrowRight className="w-4 h-4 text-inverse-surface" />
+          </Link>
+        </motion.div>
+      ))}
+    </div>
+  </section>
 );
 
-/* ─── SECTION 5: PIÈCES PHARES (cascade) ─── */
-const featuredProducts = [
-  { id: 'p1', name: 'Masque Baoulé ébène', artisan: 'Kofi Asante', price: 45000, category: 'Sculpture', badge: 'COUP DE CŒUR', image: catSculpture },
-  { id: 'p2', name: 'Panier décoratif Abissa', artisan: 'Aya Coulibaly', price: 18000, category: 'Tressage', badge: null, image: catTressage },
-  { id: 'p3', name: 'Vase Sénoufo terracotta', artisan: 'Fatou Diallo', price: 28500, category: 'Poterie', badge: 'NOUVEAU', image: catPottery },
-  { id: 'p4', name: 'Village au crépuscule', artisan: 'Abou Koné', price: 65000, category: 'Peinture', badge: null, image: catPeinture },
-  { id: 'p5', name: 'Statue Dan ancestrale', artisan: 'Kofi Asante', price: 72000, category: 'Sculpture', badge: 'PIÈCE RARE', image: catSculpture },
-];
+/* ─── SECTION 5: PIÈCES POPULAIRES ─── */
+const PinnedProductsSection = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
 
-const productsItems = featuredProducts.map((product) => ({
-  id: product.id,
-  content: (
-    <div className="flex flex-col gap-4" style={{ height: '55vh' }}>
-      <div className="relative flex-1 rounded-[2rem] overflow-hidden">
-        <img
-          src={product.image}
-          className="w-full h-full object-cover"
-          style={{ filter: 'brightness(0.95) sepia(0.15)' }}
-          alt={product.name}
-        />
-        {product.badge && (
-          <div className="absolute top-5 left-5">
-            <span className="glass-card px-4 py-2 rounded-full text-[9px] uppercase tracking-widest text-primary font-sans font-bold">
-              {product.badge}
-            </span>
+  useEffect(() => {
+    const section = sectionRef.current;
+    const track = trackRef.current;
+    if (!section || !track) return;
+
+    const handleScroll = ({ scroll }: { scroll: number }) => {
+      const rect = section.getBoundingClientRect();
+      const sectionTop = scroll + rect.top - window.innerHeight * 0.1;
+      const sectionHeight = section.offsetHeight - window.innerHeight;
+
+      if (scroll >= sectionTop && scroll <= sectionTop + sectionHeight) {
+        const progress = (scroll - sectionTop) / sectionHeight;
+        const maxTranslate = track.scrollWidth - track.offsetWidth;
+        track.style.transform = `translateX(${-progress * maxTranslate}px)`;
+      }
+    };
+
+    lenisInstance?.on('scroll', handleScroll);
+    return () => { lenisInstance?.off('scroll', handleScroll); };
+  }, []);
+
+  const products = [
+    { name: 'Masque Baoulé ébène', artisan: 'Kofi Asante', price: '45 000', category: 'Sculpture', badge: 'COUP DE CŒUR' },
+    { name: 'Panier décoratif Abissa', artisan: 'Aya Coulibaly', price: '18 000', category: 'Tressage', badge: null },
+    { name: 'Vase Sénoufo terracotta', artisan: 'Fatou Diallo', price: '28 500', category: 'Poterie', badge: 'NOUVEAU' },
+    { name: 'Village au crépuscule', artisan: 'Abou Koné', price: '65 000', category: 'Peinture', badge: null },
+    { name: 'Statue Dan ancestrale', artisan: 'Kofi Asante', price: '72 000', category: 'Sculpture', badge: 'PIÈCE RARE' },
+  ];
+
+  return (
+    <section ref={sectionRef} className="relative" style={{ height: '300vh' }}>
+      <div className="sticky top-0 h-screen overflow-hidden flex flex-col justify-center">
+        <div className="px-6 mb-8 flex justify-between items-end">
+          <div>
+            <p className="label-caps text-[10px] uppercase tracking-widest text-muted-foreground mb-1">
+              Nos Créations
+            </p>
+            <h2 className="font-serif text-3xl italic text-inverse-surface">
+              Pièces <span className="text-primary">Phares</span>
+            </h2>
           </div>
-        )}
-      </div>
-      <div className="bg-surface-container-low rounded-[1.5rem] p-5 flex items-center justify-between gap-4">
-        <div className="min-w-0">
-          <p className="text-[9px] uppercase tracking-widest text-muted-foreground mb-1 font-sans">
-            {product.category}
-          </p>
-          <h3 className="font-serif text-xl italic text-inverse-surface truncate">{product.name}</h3>
-          <p className="font-serif text-2xl text-primary mt-1">
-            {product.price.toLocaleString('fr-FR')} FCFA
+          <p className="label-caps text-[10px] uppercase tracking-widest text-muted-foreground">
+            Faites défiler →
           </p>
         </div>
-        <button
-          className="w-14 h-14 rounded-full bg-gradient-to-br from-terracotta to-terracotta-light text-primary-foreground flex items-center justify-center text-2xl flex-shrink-0"
-          aria-label="Ajouter au panier"
-        >
-          +
-        </button>
-      </div>
-    </div>
-  ),
-}));
 
-const PinnedProductsSection = () => (
-  <ForcedCascade
-    items={productsItems}
-    title={<>Pièces <span className="text-primary">Phares</span></>}
-    label="NOS CRÉATIONS · COUP DE CŒUR"
-  />
-);
+        <div
+          ref={trackRef}
+          className="flex gap-6 px-6"
+          style={{ willChange: 'transform', transition: 'transform 0.05s linear', width: 'max-content' }}
+        >
+          {products.map((product, i) => (
+            <div
+              key={i}
+              className="flex-shrink-0 w-72 rounded-[1.5rem] overflow-hidden bg-background shadow-luxury"
+              style={{ marginTop: i % 2 === 0 ? '0px' : '40px' }}
+            >
+              <div className="aspect-[3/4] bg-surface-container-low overflow-hidden">
+                <img
+                  src={`https://source.unsplash.com/400x533/?african,craft,${product.category.toLowerCase()}`}
+                  className="w-full h-full object-cover"
+                  style={{ filter: 'brightness(0.95) sepia(0.15)' }}
+                  alt={product.name}
+                />
+              </div>
+              <div className="p-5">
+                <p className="text-[9px] uppercase tracking-widest text-primary font-bold mb-1">
+                  {product.category}
+                </p>
+                <h3 className="font-serif text-lg italic leading-tight text-inverse-surface">
+                  {product.name}
+                </h3>
+                <p className="text-[10px] text-muted-foreground mt-1">{product.artisan}</p>
+                <div className="flex justify-between items-center mt-4">
+                  <span className="font-serif text-xl text-primary">
+                    {product.price} FCFA
+                  </span>
+                  <button className="w-10 h-10 rounded-full bg-gradient-to-br from-terracotta to-terracotta-light flex items-center justify-center text-primary-foreground font-bold text-lg">
+                    +
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="px-6 mt-8 flex gap-2">
+          {products.map((_, i) => (
+            <div key={i} className="h-0.5 flex-1 bg-border/30 rounded-full overflow-hidden">
+              <div className="h-full bg-primary rounded-full" style={{ width: '20%' }} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
 
 /* ─── SECTION 6: ÉDITO CULTUREL ─── */
 const EditoSection = () => (
