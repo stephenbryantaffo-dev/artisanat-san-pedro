@@ -9,7 +9,7 @@ const metiers = [
     artisans: 42,
     accent: '#8B3A0F',
     description: 'Art ancestral du bois et de la pierre. Masques baoulé et dan transmis sur quatre générations.',
-    image: 'https://image.pollinations.ai/prompt/west%20african%20artisan%20hands%20carving%20wooden%20mask%20baoule%20sculpture%20with%20chisel%2C%20warm%20editorial%20lighting%2C%20detailed%20texture%2C%20professional%20photography?width=900&height=1200&seed=2001&nologo=true',
+    image: 'https://picsum.photos/seed/asp-sculpture-baoule/900/1200',
   },
   {
     id: 'tressage',
@@ -18,7 +18,7 @@ const metiers = [
     artisans: 38,
     accent: '#2D4A2D',
     description: 'Paniers, nattes et objets décoratifs tressés à la main avec patience et précision.',
-    image: 'https://image.pollinations.ai/prompt/african%20woven%20basket%20fiber%20craft%20close%20up%20texture%2C%20natural%20materials%2C%20warm%20earthy%20lighting%2C%20detailed%20weaving%20pattern?width=900&height=1200&seed=2002&nologo=true',
+    image: 'https://picsum.photos/seed/asp-tressage-fibre/900/1200',
   },
   {
     id: 'tissage',
@@ -27,7 +27,7 @@ const metiers = [
     artisans: 51,
     accent: '#8B1A1A',
     description: 'Pagnes Baoulé, bogolans et textiles aux motifs géométriques chargés de symbolisme.',
-    image: 'https://image.pollinations.ai/prompt/african%20kente%20cloth%20textile%20on%20wooden%20loom%2C%20colorful%20geometric%20patterns%2C%20artisan%20hands%20weaving%2C%20warm%20natural%20lighting?width=900&height=1200&seed=2003&nologo=true',
+    image: 'https://picsum.photos/seed/asp-tissage-kente/900/1200',
   },
   {
     id: 'poterie',
@@ -36,7 +36,7 @@ const metiers = [
     artisans: 29,
     accent: '#8B3A0F',
     description: 'Modelée à la main dans la terre argileuse locale, cuite au bois selon des techniques millénaires.',
-    image: 'https://image.pollinations.ai/prompt/west%20african%20pottery%20terracotta%20clay%20bowls%20artisan%20hands%20shaping%2C%20warm%20clay%20color%2C%20natural%20texture%2C%20editorial%20photography?width=900&height=1200&seed=2004&nologo=true',
+    image: 'https://picsum.photos/seed/asp-poterie-terre/900/1200',
   },
   {
     id: 'forge',
@@ -45,7 +45,7 @@ const metiers = [
     artisans: 18,
     accent: '#8B1A1A',
     description: 'Bracelets, couteaux cérémoniels et outils forgés au charbon de bois selon les rites Akan.',
-    image: 'https://image.pollinations.ai/prompt/african%20blacksmith%20forging%20metal%20with%20fire%20and%20hammer%2C%20warm%20orange%20glow%2C%20detailed%20sparks%2C%20dramatic%20editorial%20photography?width=900&height=1200&seed=2005&nologo=true',
+    image: 'https://picsum.photos/seed/asp-forge-metal/900/1200',
   },
   {
     id: 'peinture',
@@ -54,7 +54,7 @@ const metiers = [
     artisans: 22,
     accent: '#2D4A2D',
     description: "Toiles expressives aux pigments naturels qui capturent l'âme des villages ivoiriens.",
-    image: 'https://image.pollinations.ai/prompt/african%20artist%20painting%20canvas%20with%20natural%20pigments%2C%20colorful%20village%20scene%2C%20warm%20studio%20lighting%2C%20detailed%20brushwork?width=900&height=1200&seed=2006&nologo=true',
+    image: 'https://picsum.photos/seed/asp-peinture-toile/900/1200',
   },
 ]
 

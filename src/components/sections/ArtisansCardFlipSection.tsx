@@ -10,8 +10,7 @@ const artisans = [
     location: "San Pedro, Côte d'Ivoire",
     bio: "Sculpteur de masques baoulé et dan, héritier d'une tradition de quatre générations.",
     accentColor: '#8B3A0F',
-    image:
-      'https://image.pollinations.ai/prompt/portrait%20of%20west%20african%20male%20wood%20sculptor%20artisan%2C%20focused%20expression%2C%20warm%20editorial%20lighting%2C%20professional%20photography%2C%20holding%20wooden%20mask%2C%20detailed%20skin%20texture?width=800&height=1100&seed=1001&nologo=true',
+    image: 'https://picsum.photos/seed/asp-artisan-kofi/800/1100',
   },
   {
     id: 2,
@@ -21,8 +20,7 @@ const artisans = [
     location: "San Pedro, Côte d'Ivoire",
     bio: 'Tisserande de pagnes Baoulé aux motifs ancestraux, formée par sa grand-mère dans le village.',
     accentColor: '#2D4A2D',
-    image:
-      'https://image.pollinations.ai/prompt/portrait%20of%20west%20african%20female%20weaver%20artisan%20with%20colorful%20fabric%2C%20warm%20natural%20lighting%2C%20editorial%20photography%2C%20african%20textile%20background%2C%20focused%20expression?width=800&height=1100&seed=1002&nologo=true',
+    image: 'https://picsum.photos/seed/asp-artisan-aya/800/1100',
   },
   {
     id: 3,
@@ -32,8 +30,7 @@ const artisans = [
     location: "San Pedro, Côte d'Ivoire",
     bio: "Forgeron des outils traditionnels et bijoux Akan, dépositaire d'un savoir-faire millénaire.",
     accentColor: '#8B1A1A',
-    image:
-      'https://image.pollinations.ai/prompt/portrait%20of%20west%20african%20male%20blacksmith%20artisan%20at%20forge%2C%20warm%20fire%20glow%2C%20professional%20photography%2C%20bronze%20metalwork%2C%20focused%20intense%20expression?width=800&height=1100&seed=1003&nologo=true',
+    image: 'https://picsum.photos/seed/asp-artisan-moussa/800/1100',
   },
 ]
 
