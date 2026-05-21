@@ -1,26 +1,27 @@
+## Fix homepage image loading and pinned products scroll
 
+### 1. Swap image URLs to Picsum (stable, instant)
 
-## Problèmes identifiés
+**`src/components/sections/MetiersDeckSection.tsx`** — replace all 6 `image` fields in the `metiers` array with the provided `https://picsum.photos/seed/asp-*/900/1200` URLs.
 
-1. **Bouton Menu (hamburger) en haut à gauche** — C'est un simple `<button>` sans action ni navigation. Il faut lui ajouter un comportement (ouvrir un menu latéral ou naviguer vers l'accueil).
+**`src/components/sections/ArtisansCardFlipSection.tsx`** — replace the 3 artisan `image` fields with the provided `https://picsum.photos/seed/asp-artisan-*/800/1100` URLs.
 
-2. **Page "Profil" → 404** — Le BottomNav pointe vers `/profil` mais cette route n'existe pas. La page client est sur `/mon-espace`.
+### 2. Rewrite `PinnedProductsSection` with robust scroll detection
 
-3. **"The Curator"** apparaît dans 3 fichiers et doit être remplacé par **"Artisanat San Pedro"**.
+In **`src/pages/HomePage.tsx`**, replace the existing `PinnedProductsSection` component with the new version:
 
----
+- Picsum image URLs for all 5 products
+- Per-product `accent` color
+- Desktop: 400vh section, sticky inner, horizontal track translated via `transform: translate3d(...)`
+- Scroll detection tries `lenisInstance` first (polled every 100ms until ready), with a native `window.scroll` listener always attached as fallback
+- Clamps translateX between 0 and `-(track.scrollWidth - innerWidth + 64)`
+- Mobile (`<768px`): native horizontal snap-scroll carousel
+- Staggered card vertical offset (alternating 0/40px), badges, accent bars, "+" add button
 
-## Plan
+`HomePage.tsx` already renders `<PinnedProductsSection />` in place — no integration change needed beyond the component rewrite.
 
-### 1. Corriger le lien Profil dans BottomNav
-- `src/components/BottomNav.tsx` : changer `path: "/profil"` → `path: "/mon-espace"`
+### Files touched
 
-### 2. Rendre le bouton Menu fonctionnel
-- `src/components/TopNav.tsx` : transformer le bouton Menu en un `Link` vers `/` (accueil), puisqu'il n'y a pas de menu latéral existant dans le projet.
-
-### 3. Renommer "The Curator" → "Artisanat San Pedro"
-Modifier dans 3 fichiers :
-- `src/components/TopNav.tsx` (ligne 11)
-- `src/pages/ProductDetailPage.tsx` (ligne 74)
-- `src/pages/ArtisanProfilePage.tsx` (ligne 46)
-
+- `src/components/sections/MetiersDeckSection.tsx` (image URLs only)
+- `src/components/sections/ArtisansCardFlipSection.tsx` (image URLs only)
+- `src/pages/HomePage.tsx` (replace `PinnedProductsSection` component)
