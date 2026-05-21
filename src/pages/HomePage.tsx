@@ -314,83 +314,52 @@ const PinnedProductsSection = () => {
   const trackRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
 
-  const products = [
-    {
-      name: 'Masque Baoulé ébène', artisan: 'Kofi Asante', price: '45 000', category: 'Sculpture',
-      badge: 'COUP DE CŒUR', accent: '#8B3A0F',
-      image: 'https://picsum.photos/seed/asp-product-masque/800/1000',
-    },
-    {
-      name: 'Panier décoratif Abissa', artisan: 'Aya Coulibaly', price: '18 000', category: 'Tressage',
-      badge: null as string | null, accent: '#2D4A2D',
-      image: 'https://picsum.photos/seed/asp-product-panier/800/1000',
-    },
-    {
-      name: 'Vase Sénoufo terracotta', artisan: 'Fatou Diallo', price: '28 500', category: 'Poterie',
-      badge: 'NOUVEAU', accent: '#8B3A0F',
-      image: 'https://picsum.photos/seed/asp-product-vase/800/1000',
-    },
-    {
-      name: 'Village au crépuscule', artisan: 'Abou Koné', price: '65 000', category: 'Peinture',
-      badge: null as string | null, accent: '#2D4A2D',
-      image: 'https://picsum.photos/seed/asp-product-toile/800/1000',
-    },
-    {
-      name: 'Statue Dan ancestrale', artisan: 'Kofi Asante', price: '72 000', category: 'Sculpture',
-      badge: 'PIÈCE RARE', accent: '#8B1A1A',
-      image: 'https://picsum.photos/seed/asp-product-statue/800/1000',
-    },
-  ];
-
   useEffect(() => { setIsMobile(window.innerWidth < 768); }, []);
 
   useEffect(() => {
     if (isMobile) return;
+    const section = sectionRef.current;
+    const track = trackRef.current;
+    if (!section || !track) return;
 
-    const updateTransform = (scrollY: number) => {
-      const section = sectionRef.current;
-      const track = trackRef.current;
-      if (!section || !track) return;
+    const handleScroll = ({ scroll }: { scroll: number }) => {
       const rect = section.getBoundingClientRect();
-      const sectionTop = scrollY + rect.top;
+      const sectionTop = scroll + rect.top - window.innerHeight * 0.1;
       const sectionHeight = section.offsetHeight - window.innerHeight;
-      const maxTranslate = track.scrollWidth - window.innerWidth + 64;
 
-      if (scrollY < sectionTop) {
-        track.style.transform = 'translate3d(0, 0, 0)';
-        return;
+      if (scroll >= sectionTop && scroll <= sectionTop + sectionHeight) {
+        const progress = (scroll - sectionTop) / sectionHeight;
+        const maxTranslate = track.scrollWidth - track.offsetWidth;
+        track.style.transform = `translateX(${-progress * maxTranslate}px)`;
       }
-      if (scrollY > sectionTop + sectionHeight) {
-        track.style.transform = `translate3d(${-maxTranslate}px, 0, 0)`;
-        return;
-      }
-      const progress = (scrollY - sectionTop) / sectionHeight;
-      track.style.transform = `translate3d(${-progress * maxTranslate}px, 0, 0)`;
     };
 
-    const handleLenis = ({ scroll }: { scroll: number }) => updateTransform(scroll);
-    const handleNative = () => updateTransform(window.scrollY || window.pageYOffset);
-
-    let lenisReady = false;
-    const tryLenis = setInterval(() => {
-      if (lenisInstance) {
-        lenisInstance.on('scroll', handleLenis);
-        lenisReady = true;
-        clearInterval(tryLenis);
-        updateTransform(window.scrollY);
-      }
-    }, 100);
-
-    window.addEventListener('scroll', handleNative, { passive: true });
-    const initTimeout = setTimeout(() => updateTransform(window.scrollY), 200);
-
-    return () => {
-      clearInterval(tryLenis);
-      clearTimeout(initTimeout);
-      if (lenisReady && lenisInstance) lenisInstance.off('scroll', handleLenis);
-      window.removeEventListener('scroll', handleNative);
-    };
+    lenisInstance?.on('scroll', handleScroll);
+    return () => { lenisInstance?.off('scroll', handleScroll); };
   }, [isMobile]);
+
+  const products = [
+    {
+      name: 'Masque Baoulé ébène', artisan: 'Kofi Asante', price: '45 000', category: 'Sculpture', badge: 'COUP DE CŒUR',
+      image: 'https://image.pollinations.ai/prompt/african%20baoule%20mask%20dark%20ebony%20wood%20sculpture%20on%20neutral%20background%2C%20museum%20quality%20photography%2C%20warm%20lighting%2C%20detailed%20texture%2C%20product%20shot?width=800&height=1000&seed=3001&nologo=true',
+    },
+    {
+      name: 'Panier décoratif Abissa', artisan: 'Aya Coulibaly', price: '18 000', category: 'Tressage', badge: null,
+      image: 'https://image.pollinations.ai/prompt/woven%20african%20basket%20colorful%20fibers%20product%20photography%20on%20neutral%20background%2C%20warm%20lighting%2C%20detailed%20craft?width=800&height=1000&seed=3002&nologo=true',
+    },
+    {
+      name: 'Vase Sénoufo terracotta', artisan: 'Fatou Diallo', price: '28 500', category: 'Poterie', badge: 'NOUVEAU',
+      image: 'https://image.pollinations.ai/prompt/african%20senoufo%20terracotta%20vase%20pottery%20product%20photography%20warm%20clay%20color%20neutral%20background%2C%20museum%20quality?width=800&height=1000&seed=3003&nologo=true',
+    },
+    {
+      name: 'Village au crépuscule', artisan: 'Abou Koné', price: '65 000', category: 'Peinture', badge: null,
+      image: 'https://image.pollinations.ai/prompt/african%20painting%20village%20at%20sunset%20colorful%20pigments%20on%20canvas%2C%20product%20photography%20neutral%20background?width=800&height=1000&seed=3004&nologo=true',
+    },
+    {
+      name: 'Statue Dan ancestrale', artisan: 'Kofi Asante', price: '72 000', category: 'Sculpture', badge: 'PIÈCE RARE',
+      image: 'https://image.pollinations.ai/prompt/african%20dan%20sculpture%20wooden%20ancestral%20figure%20product%20photography%20neutral%20background%2C%20dark%20wood%2C%20museum%20quality?width=800&height=1000&seed=3005&nologo=true',
+    },
+  ];
 
   if (isMobile) {
     return (
@@ -402,14 +371,11 @@ const PinnedProductsSection = () => {
         <div className="flex gap-4 overflow-x-auto no-scrollbar -mx-6 px-6 pb-4 snap-x snap-mandatory">
           {products.map((product, i) => (
             <div key={i} className="flex-shrink-0 w-64 snap-center rounded-2xl overflow-hidden bg-white shadow-lg">
-              <div className="aspect-[4/5] overflow-hidden">
-                <img src={product.image} alt={product.name} className="w-full h-full object-cover"
-                  style={{ filter: 'brightness(0.95) sepia(0.1)' }} />
+              <div className="aspect-[3/4] overflow-hidden">
+                <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
               </div>
               <div className="p-4">
-                <p className="font-label text-[9px] uppercase tracking-widest mb-1" style={{ color: product.accent }}>
-                  {product.category}
-                </p>
+                <p className="font-label text-[9px] uppercase tracking-widest text-primary mb-1">{product.category}</p>
                 <h3 className="font-headline text-base italic leading-tight">{product.name}</h3>
                 <p className="text-[10px] text-on-surface-variant mt-1">{product.artisan}</p>
                 <p className="font-headline text-lg text-primary mt-2">{product.price} FCFA</p>
@@ -422,74 +388,73 @@ const PinnedProductsSection = () => {
   }
 
   return (
-    <section ref={sectionRef} className="relative bg-surface" style={{ height: '400vh' }}>
+    <section ref={sectionRef} className="relative" style={{ height: '300vh' }}>
       <div className="sticky top-0 h-screen overflow-hidden flex flex-col justify-center">
-        <div className="px-8 mb-8 flex justify-between items-end flex-shrink-0">
+        <div className="px-6 mb-8 flex justify-between items-end">
           <div>
-            <p className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-1">
-              NOS CRÉATIONS · COUP DE CŒUR
+            <p className="label-caps text-[10px] uppercase tracking-widest text-muted-foreground mb-1">
+              Nos Créations
             </p>
-            <h2 className="font-headline text-3xl italic">
+            <h2 className="font-serif text-3xl italic text-inverse-surface">
               Pièces <span className="text-primary">Phares</span>
             </h2>
           </div>
-          <p className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant flex items-center gap-2">
-            Faites défiler
-            <span className="inline-block w-8 h-px bg-on-surface-variant/40" />
-            <span>→</span>
+          <p className="label-caps text-[10px] uppercase tracking-widest text-muted-foreground">
+            Faites défiler →
           </p>
         </div>
 
         <div
           ref={trackRef}
-          className="flex gap-6 px-8"
-          style={{ willChange: 'transform', width: 'max-content' }}
+          className="flex gap-6 px-6"
+          style={{ willChange: 'transform', transition: 'transform 0.05s linear', width: 'max-content' }}
         >
           {products.map((product, i) => (
             <div
               key={i}
-              className="flex-shrink-0 w-80 rounded-[1.5rem] overflow-hidden bg-surface-container-lowest"
-              style={{
-                marginTop: i % 2 === 0 ? '0px' : '40px',
-                boxShadow: '0 30px 80px rgba(14,13,13,0.12)',
-              }}
+              className="flex-shrink-0 w-72 rounded-[1.5rem] overflow-hidden bg-background shadow-luxury relative"
+              style={{ marginTop: i % 2 === 0 ? '0px' : '40px' }}
             >
-              <div className="relative aspect-[3/4] overflow-hidden bg-surface-container">
+              {product.badge && (
+                <span className="absolute top-3 left-3 z-10 glass-card px-2.5 py-1 rounded-full text-[9px] uppercase tracking-widest font-bold text-inverse-surface">
+                  {product.badge}
+                </span>
+              )}
+              <div className="aspect-[3/4] bg-surface-container-low overflow-hidden">
                 <img
                   src={product.image}
-                  alt={product.name}
                   className="w-full h-full object-cover"
-                  style={{ filter: 'brightness(0.95) sepia(0.1)' }}
-                  loading="lazy"
+                  style={{ filter: 'brightness(0.95) sepia(0.15)' }}
+                  alt={product.name}
                 />
-                {product.badge && (
-                  <div className="absolute top-4 left-4">
-                    <span className="glass-card px-3 py-1.5 rounded-full font-label text-[9px] uppercase tracking-widest text-primary font-bold backdrop-blur-md">
-                      {product.badge}
-                    </span>
-                  </div>
-                )}
-                <div className="absolute top-4 right-4 w-1 h-10 rounded-full" style={{ background: product.accent }} />
               </div>
               <div className="p-5">
-                <p className="font-label text-[9px] uppercase tracking-widest mb-1" style={{ color: product.accent }}>
+                <p className="text-[9px] uppercase tracking-widest text-primary font-bold mb-1">
                   {product.category}
                 </p>
-                <h3 className="font-headline text-lg italic leading-tight">{product.name}</h3>
-                <p className="text-[10px] text-on-surface-variant mt-1">{product.artisan}</p>
+                <h3 className="font-serif text-lg italic leading-tight text-inverse-surface">
+                  {product.name}
+                </h3>
+                <p className="text-[10px] text-muted-foreground mt-1">{product.artisan}</p>
                 <div className="flex justify-between items-center mt-4">
-                  <span className="font-headline text-xl text-primary">
+                  <span className="font-serif text-xl text-primary">
                     {product.price} FCFA
                   </span>
-                  <button className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-lg"
-                    style={{ background: 'linear-gradient(135deg, #99420d, #b95925)' }}>
+                  <button className="w-10 h-10 rounded-full bg-gradient-to-br from-terracotta to-terracotta-light flex items-center justify-center text-primary-foreground font-bold text-lg">
                     +
                   </button>
                 </div>
               </div>
             </div>
           ))}
-          <div className="flex-shrink-0 w-16" />
+        </div>
+
+        <div className="px-6 mt-8 flex gap-2">
+          {products.map((_, i) => (
+            <div key={i} className="h-0.5 flex-1 bg-border/30 rounded-full overflow-hidden">
+              <div className="h-full bg-primary rounded-full" style={{ width: '20%' }} />
+            </div>
+          ))}
         </div>
       </div>
     </section>
