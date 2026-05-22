@@ -12,6 +12,7 @@ import { useImageDistort } from "../hooks/useImageDistort";
 import { useThemeSection } from "../hooks/useThemeSection";
 import { ArtisansCardFlipSection } from "../components/sections/ArtisansCardFlipSection";
 import { MetiersDeckSection } from "../components/sections/MetiersDeckSection";
+import { PinnedProductsSection } from "../components/sections/PinnedProductsSection";
 
 import AppShell from "@/components/AppShell";
 import { ProductCard, mockProducts } from "@/components/ProductCard";
