@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import { lenisInstance } from '../../hooks/useLenis'
 
 const artisans = [
   {
@@ -101,18 +100,25 @@ export function ArtisansCardFlipSection() {
 
   useEffect(() => {
     if (isMobile) return
-    const handleScroll = ({ scroll }: { scroll: number }) => {
-      const section = sectionRef.current
-      if (!section) return
-      const rect = section.getBoundingClientRect()
-      const sectionTop = scroll + rect.top
-      const sectionScrollRange = section.offsetHeight - window.innerHeight
-      const raw = (scroll - sectionTop) / sectionScrollRange
-      setProgress(Math.max(0, Math.min(1, raw)))
+    let rafId: number
+    const handleScroll = () => {
+      cancelAnimationFrame(rafId)
+      rafId = requestAnimationFrame(() => {
+        const section = sectionRef.current
+        if (!section) return
+        const rect = section.getBoundingClientRect()
+        const scroll = window.scrollY || window.pageYOffset
+        const sectionTop = scroll + rect.top
+        const sectionScrollRange = section.offsetHeight - window.innerHeight
+        const raw = (scroll - sectionTop) / sectionScrollRange
+        setProgress(Math.max(0, Math.min(1, raw)))
+      })
     }
-    lenisInstance?.on('scroll', handleScroll)
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll()
     return () => {
-      lenisInstance?.off('scroll', handleScroll)
+      cancelAnimationFrame(rafId)
+      window.removeEventListener('scroll', handleScroll)
     }
   }, [isMobile])
 
