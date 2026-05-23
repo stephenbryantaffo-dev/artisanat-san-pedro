@@ -66,14 +66,8 @@ const metiers = [
 export function MetiersDeckSection() {
   const sectionRef = useRef<HTMLElement>(null)
   const [progress, setProgress] = useState(0)
-  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
-    setIsMobile(window.innerWidth < 768)
-  }, [])
-
-  useEffect(() => {
-    if (isMobile) return
     let rafId: number
     const handleScroll = () => {
       cancelAnimationFrame(rafId)
@@ -94,57 +88,28 @@ export function MetiersDeckSection() {
       cancelAnimationFrame(rafId)
       window.removeEventListener('scroll', handleScroll)
     }
-  }, [isMobile])
-
-  if (isMobile) {
-    return (
-      <section className="py-16 px-6">
-        <p className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-1">
-          SAVOIR-FAIRE
-        </p>
-        <h2 className="font-headline text-3xl italic mb-8">Nos Corps de Métiers</h2>
-        <div className="grid grid-cols-2 gap-4">
-          {metiers.map((m) => (
-            <div key={m.id} className="relative rounded-2xl overflow-hidden" style={{ aspectRatio: '3/4' }}>
-              <img
-                src={m.image}
-                onError={(e) => { (e.target as HTMLImageElement).src = m.fallback }}
-                alt={m.name}
-                className="w-full h-full object-cover"
-                style={{ filter: 'brightness(0.75) sepia(0.15)' }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-              <div className="absolute top-3 left-3 px-2 py-1 rounded-md bg-white/20 backdrop-blur-sm">
-                <p className="text-[8px] uppercase tracking-widest text-white font-bold">{m.code}</p>
-              </div>
-              <div className="absolute bottom-3 left-3">
-                <h3 className="font-headline text-xl italic text-white">{m.name}</h3>
-                <p className="text-[9px] text-white/70 uppercase tracking-widest">{m.artisans} artisans</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-    )
-  }
+  }, [])
 
   const cardRange = 1 / metiers.length
   const activeIndex = Math.min(Math.floor(progress / cardRange), metiers.length - 1)
 
   return (
-    <section ref={sectionRef} className="relative" style={{ height: '350vh' }}>
+    <section ref={sectionRef} className="relative h-[320vh] sm:h-[350vh]">
       <div className="sticky top-0 h-screen overflow-hidden flex flex-col bg-surface">
-        <div className="px-8 pt-24 pb-6 flex justify-between items-end">
+        <div className="px-4 sm:px-8 pt-24 pb-6 flex justify-between items-end">
           <div>
             <p className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-1">
               SAVOIR-FAIRE · SAN PEDRO
             </p>
-            <h2 className="font-headline text-3xl italic">
+            <h2 className="font-headline text-2xl sm:text-3xl italic">
               Nos Corps de <span className="text-primary">Métiers</span>
             </h2>
           </div>
           <div className="text-right">
-            <p className="font-headline text-5xl text-primary/20 italic tabular-nums">
+            <p className="font-label text-[9px] uppercase tracking-widest text-on-surface-variant mb-1 sm:hidden">
+              Faites défiler
+            </p>
+            <p className="font-headline text-4xl sm:text-5xl text-primary/20 italic tabular-nums">
               {String(activeIndex + 1).padStart(2, '0')}
             </p>
             <p className="font-label text-[9px] uppercase tracking-widest text-on-surface-variant">
@@ -153,7 +118,7 @@ export function MetiersDeckSection() {
           </div>
         </div>
 
-        <div className="flex-1 flex items-center justify-center relative px-8 pb-8">
+        <div className="flex-1 flex items-center justify-center relative px-4 sm:px-8 pb-8">
           {metiers.map((metier, i) => {
             const cardStart = i * cardRange
             const cardEnd = (i + 1) * cardRange
@@ -192,10 +157,8 @@ export function MetiersDeckSection() {
             return (
               <div
                 key={metier.id}
-                className="absolute"
+                className="absolute w-[290px] sm:w-[380px] h-[420px] sm:h-[520px]"
                 style={{
-                  width: '380px',
-                  height: '520px',
                   transform,
                   opacity,
                   zIndex,
@@ -220,9 +183,9 @@ export function MetiersDeckSection() {
                   <div className="absolute top-6 right-6 px-3 py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/20">
                     <p className="font-label text-[9px] uppercase tracking-widest text-white font-bold">{metier.code}</p>
                   </div>
-                  <div className="absolute bottom-8 left-8 right-8">
-                    <h3 className="font-headline text-5xl italic text-white leading-none mb-3">{metier.name}</h3>
-                    <p className="font-body text-sm text-white/75 font-light leading-relaxed mb-4">
+                  <div className="absolute bottom-6 sm:bottom-8 left-6 sm:left-8 right-6 sm:right-8">
+                    <h3 className="font-headline text-3xl sm:text-5xl italic text-white leading-none mb-3">{metier.name}</h3>
+                    <p className="font-body text-xs sm:text-sm text-white/75 font-light leading-relaxed mb-4">
                       {metier.description}
                     </p>
                     <div className="flex items-center gap-2">
@@ -238,7 +201,7 @@ export function MetiersDeckSection() {
           })}
         </div>
 
-        <div className="px-8 pb-8 flex gap-2">
+        <div className="px-4 sm:px-8 pb-8 flex gap-2">
           {metiers.map((_, i) => (
             <div key={i} className="flex-1 h-0.5 rounded-full bg-outline-variant/20 overflow-hidden">
               <div
