@@ -87,7 +87,21 @@ const BoutiquePage = () => {
       </ScrollReveal>
 
       {/* Search + Filter Bar */}
-      <div className="sticky top-[72px] z-40 bg-background/80 backdrop-blur-md py-3 px-6">
+      <div
+        style={{
+          position: 'sticky',
+          top: '72px',
+          zIndex: 30,
+          background: '#fcf9f4',
+          paddingTop: '16px',
+          paddingBottom: '12px',
+          marginLeft: '-24px',
+          marginRight: '-24px',
+          paddingLeft: '24px',
+          paddingRight: '24px',
+          boxShadow: '0 4px 16px rgba(14, 13, 13, 0.04)',
+        }}
+      >
         {/* Search input */}
         <div className="glass-card rounded-full flex items-center gap-3 px-4 py-3 border border-border/20 mb-3">
           <Sparkles className="w-4 h-4 text-primary shrink-0" />
