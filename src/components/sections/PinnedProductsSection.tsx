@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 export function PinnedProductsSection() {
   const sectionRef = useRef<HTMLElement>(null)
   const trackRef = useRef<HTMLDivElement>(null)
-  const [isMobile, setIsMobile] = useState(false)
+  const [sectionHeight, setSectionHeight] = useState('400vh')
 
   const products = [
     { name: 'Masque Baoulé ébène', artisan: 'Kofi Asante', price: '45 000', category: 'Sculpture', badge: 'COUP DE COEUR', accent: '#8B3A0F',
@@ -24,14 +24,13 @@ export function PinnedProductsSection() {
   ]
 
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768)
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
+    const update = () => setSectionHeight(window.innerWidth < 768 ? '320vh' : '400vh')
+    update()
+    window.addEventListener('resize', update)
+    return () => window.removeEventListener('resize', update)
   }, [])
 
   useEffect(() => {
-    if (isMobile) return
     let rafId: number
     const handleScroll = () => {
       cancelAnimationFrame(rafId)
@@ -61,42 +60,15 @@ export function PinnedProductsSection() {
       cancelAnimationFrame(rafId)
       window.removeEventListener('scroll', handleScroll)
     }
-  }, [isMobile])
-
-  if (isMobile) {
-    return (
-      <section className="py-16 px-6">
-        <p className="text-[10px] uppercase tracking-widest text-stone-600 mb-1">NOS CRÉATIONS</p>
-        <h2 className="text-3xl italic font-serif mb-8">Pièces Phares</h2>
-        <div className="flex gap-4 overflow-x-auto -mx-6 px-6 pb-4 snap-x">
-          {products.map((p, i) => (
-            <div key={i} className="flex-shrink-0 w-64 snap-center rounded-2xl overflow-hidden bg-white shadow-lg">
-              <img
-                src={p.image}
-                onError={(e) => { (e.target as HTMLImageElement).src = p.fallback }}
-                alt={p.name}
-                className="w-full aspect-[4/5] object-cover"
-              />
-              <div className="p-4">
-                <p className="text-[9px] uppercase tracking-widest mb-1" style={{ color: p.accent }}>{p.category}</p>
-                <h3 className="text-base italic font-serif">{p.name}</h3>
-                <p className="text-[10px] text-stone-600 mt-1">{p.artisan}</p>
-                <p className="text-lg font-serif mt-2" style={{ color: '#99420d' }}>{p.price} FCFA</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-    )
-  }
+  }, [sectionHeight])
 
   return (
-    <section ref={sectionRef} className="relative" style={{ height: '400vh', background: '#fcf9f4' }}>
+    <section ref={sectionRef} className="relative" style={{ height: sectionHeight, background: '#fcf9f4' }}>
       <div style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-        <div className="px-8 mb-8 flex justify-between items-end">
+        <div className="px-4 sm:px-8 mb-8 flex justify-between items-end">
           <div>
             <p className="text-[10px] uppercase tracking-widest text-stone-600 mb-1">NOS CRÉATIONS · COUP DE COEUR</p>
-            <h2 className="text-3xl italic font-serif">
+            <h2 className="text-2xl sm:text-3xl italic font-serif">
               Pièces <span style={{ color: '#99420d' }}>Phares</span>
             </h2>
           </div>
@@ -105,11 +77,9 @@ export function PinnedProductsSection() {
 
         <div
           ref={trackRef}
+          className="gap-4 sm:gap-6 px-4 sm:px-8"
           style={{
             display: 'flex',
-            gap: '24px',
-            paddingLeft: '32px',
-            paddingRight: '32px',
             width: 'max-content',
             willChange: 'transform',
             transition: 'transform 0.05s linear',
@@ -118,9 +88,8 @@ export function PinnedProductsSection() {
           {products.map((p, i) => (
             <div
               key={i}
+              className="w-[240px] sm:w-[320px] flex-shrink-0"
               style={{
-                flexShrink: 0,
-                width: '320px',
                 marginTop: i % 2 === 0 ? '0' : '40px',
                 background: '#ffffff',
                 borderRadius: '24px',
