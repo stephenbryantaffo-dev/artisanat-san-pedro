@@ -92,14 +92,8 @@ function SanPedroCardBack({ accent = '#8B3A0F' }: { accent?: string }) {
 export function ArtisansCardFlipSection() {
   const sectionRef = useRef<HTMLElement>(null)
   const [progress, setProgress] = useState(0)
-  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
-    setIsMobile(window.innerWidth < 768)
-  }, [])
-
-  useEffect(() => {
-    if (isMobile) return
     let rafId: number
     const handleScroll = () => {
       cancelAnimationFrame(rafId)
@@ -120,54 +114,28 @@ export function ArtisansCardFlipSection() {
       cancelAnimationFrame(rafId)
       window.removeEventListener('scroll', handleScroll)
     }
-  }, [isMobile])
-
-  if (isMobile) {
-    return (
-      <section className="py-16 px-6 bg-surface-container-low">
-        <div className="mb-8">
-          <p className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-1">
-            NOS CRÉATEURS
-          </p>
-          <h2 className="font-headline text-3xl italic">
-            L'Âme derrière<br />
-            <span className="text-primary">l'Œuvre</span>
-          </h2>
-        </div>
-        <div className="space-y-6">
-          {artisans.map((artisan) => (
-            <div key={artisan.id} className="relative rounded-[1.5rem] overflow-hidden bg-white shadow-lg" style={{ aspectRatio: '3/4' }}>
-              <img src={artisan.image} alt={artisan.name} className="w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-              <div className="absolute bottom-5 left-5 right-5">
-                <p className="font-label text-[9px] uppercase tracking-widest text-white/70 mb-1">{artisan.metier}</p>
-                <h3 className="font-headline text-2xl italic text-white">{artisan.name}</h3>
-                <p className="font-body text-xs text-white/60 font-light mt-1">{artisan.since}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-    )
-  }
+  }, [])
 
   const cardRange = 1 / artisans.length
   const activeIndex = Math.min(Math.floor(progress / cardRange), artisans.length - 1)
 
   return (
-    <section ref={sectionRef} className="relative bg-surface-container-low" style={{ height: '200vh' }}>
+    <section ref={sectionRef} className="relative bg-surface-container-low h-[180vh] sm:h-[200vh]">
       <div className="sticky top-0 h-screen overflow-hidden flex flex-col">
-        <div className="px-8 pt-24 pb-4 flex justify-between items-end">
+        <div className="px-4 sm:px-8 pt-24 pb-4 flex justify-between items-end">
           <div>
             <p className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-1">
               NOS CRÉATEURS
             </p>
-            <h2 className="font-headline text-3xl italic">
+            <h2 className="font-headline text-2xl sm:text-3xl italic">
               L'Âme derrière <span className="text-primary">l'Œuvre</span>
             </h2>
           </div>
           <div className="text-right">
-            <p className="font-headline text-5xl text-primary/20 italic tabular-nums">
+            <p className="font-label text-[9px] uppercase tracking-widest text-on-surface-variant mb-1 sm:hidden">
+              Faites défiler
+            </p>
+            <p className="font-headline text-4xl sm:text-5xl text-primary/20 italic tabular-nums">
               {String(activeIndex + 1).padStart(2, '0')}
             </p>
             <p className="font-label text-[9px] uppercase tracking-widest text-on-surface-variant">
@@ -176,7 +144,7 @@ export function ArtisansCardFlipSection() {
           </div>
         </div>
 
-        <div className="flex-1 flex items-center justify-center px-8" style={{ perspective: '1500px' }}>
+        <div className="flex-1 flex items-center justify-center px-4 sm:px-8" style={{ perspective: '1500px' }}>
           {artisans.map((artisan, i) => {
             const cardStart = i * cardRange
             const cardEnd = (i + 1) * cardRange
@@ -201,9 +169,8 @@ export function ArtisansCardFlipSection() {
                 }}
               >
                 <div
+                  className="w-[280px] h-[420px] sm:w-[340px] sm:h-[500px]"
                   style={{
-                    width: '340px',
-                    height: '500px',
                     position: 'relative',
                     transformStyle: 'preserve-3d',
                     transform: `rotateY(${flipDeg}deg)`,
