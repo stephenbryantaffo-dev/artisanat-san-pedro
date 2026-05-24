@@ -1,37 +1,77 @@
+import { Link } from "react-router-dom";
+
+const navLinks: { label: string; to: string }[] = [
+  { label: "Boutique", to: "/boutique" },
+  { label: "Artisans", to: "/artisans" },
+  { label: "Découverte", to: "/decouverte" },
+  { label: "À propos", to: "/a-propos" },
+  { label: "Contact", to: "/contact" },
+];
+
 const Footer = () => {
   return (
-    <footer className="bg-surface-container py-16">
+    <footer className="bg-surface-container pt-16 pb-10">
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           <div className="md:col-span-2">
-            <h3 className="font-serif text-xl text-inverse-surface mb-3">
-              Artisanat<span className="text-primary font-light italic"> San Pedro</span>
+            <h3 className="font-serif text-2xl text-inverse-surface mb-4 leading-tight">
+              Artisanat
+              <span className="italic font-light text-primary"> San Pedro</span>
             </h3>
-            <p className="text-muted-foreground text-sm leading-relaxed max-w-sm">
-              Plateforme digitale du programme PACTE pour la promotion de l'artisanat à San Pedro, Côte d'Ivoire.
+            <p className="text-muted-foreground text-sm font-light leading-relaxed max-w-sm">
+              Plateforme digitale du programme PACTE pour la promotion de
+              l'artisanat à San Pedro, Côte d'Ivoire.
             </p>
+            <div className="flex gap-2 mt-6 opacity-70">
+              <span className="w-2 h-2 rounded-full" style={{ background: "#99420d" }} />
+              <span className="w-2 h-2 rounded-full" style={{ background: "#8B1A1A" }} />
+              <span className="w-2 h-2 rounded-full" style={{ background: "#2D4A2D" }} />
+            </div>
           </div>
+
           <div>
-            <span className="label-caps text-muted-foreground mb-4 block">Navigation</span>
-            <ul className="space-y-2">
-              {["Galerie", "Artisans", "Collections", "À propos"].map((l) => (
-                <li key={l}>
-                  <a href="#" className="text-sm text-inverse-surface hover:text-primary transition-colors">{l}</a>
+            <span className="label-caps text-muted-foreground mb-5 block">
+              Navigation
+            </span>
+            <ul className="space-y-3">
+              {navLinks.map((l) => (
+                <li key={l.to}>
+                  <Link
+                    to={l.to}
+                    className="text-sm font-light text-inverse-surface hover:text-primary transition-colors"
+                  >
+                    {l.label}
+                  </Link>
                 </li>
               ))}
             </ul>
           </div>
+
           <div>
-            <span className="label-caps text-muted-foreground mb-4 block">Contact</span>
-            <ul className="space-y-2 text-sm text-inverse-surface">
-              <li>San Pedro, Côte d'Ivoire</li>
-              <li>info@artisanat-sanpedro.ci</li>
+            <span className="label-caps text-muted-foreground mb-5 block">
+              Contact
+            </span>
+            <ul className="space-y-3 text-sm font-light text-inverse-surface">
+              <li>San Pedro</li>
+              <li>Côte d'Ivoire</li>
+              <li>
+                <a
+                  href="mailto:info@artisanat-sanpedro.ci"
+                  className="hover:text-primary transition-colors"
+                >
+                  info@artisanat-sanpedro.ci
+                </a>
+              </li>
             </ul>
           </div>
         </div>
-        <div className="mt-12 pt-6 text-center">
-          <p className="text-muted-foreground text-xs">
-            © 2026 Artisanat San Pedro — Programme PACTE. Tous droits réservés.
+
+        <div className="mt-16 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <p className="text-muted-foreground text-xs font-light">
+            © 2026 Artisanat San Pedro — Programme PACTE.
+          </p>
+          <p className="label-caps text-muted-foreground text-[10px]">
+            Côte d'Ivoire · 2026
           </p>
         </div>
       </div>
