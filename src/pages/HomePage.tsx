@@ -1,8 +1,7 @@
-import { useState, useEffect } from "react";
-import { Search, Sparkles, ChevronDown, ArrowRight } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { Search, Sparkles, ChevronDown, ArrowRight, Play, Volume2, VolumeX } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useRef } from "react";
 import { ScrollReveal } from "../components/ui/ScrollReveal";
 import { staggerContainer, staggerItem, slideLeft, scaleReveal } from "../lib/motionVariants";
 import { lenisInstance } from "../hooks/useLenis";
@@ -33,6 +32,26 @@ import artisanYao from "@/assets/artisan-yao.jpg";
 
 /* ─── SECTION 1: HERO ─── */
 const HeroSection = () => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isMuted, setIsMuted] = useState(true);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setPrefersReducedMotion(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+
+  const toggleSound = () => {
+    if (!videoRef.current) return;
+    const newMuted = !videoRef.current.muted;
+    videoRef.current.muted = newMuted;
+    setIsMuted(newMuted);
+    if (!newMuted) videoRef.current.play().catch(() => {});
+  };
+
   const heroRef = useRef(null);
   const distortRef = useImageDistort();
 
@@ -49,15 +68,43 @@ const HeroSection = () => {
 
   return (
   <section ref={heroRef} className="relative min-h-[100svh] overflow-hidden flex items-end">
-    <div ref={distortRef} data-san-scroll className="clip-reveal absolute inset-0 will-change-transform">
-      <img
-        src={heroImg}
-        alt="Artisan sculpteur à San Pedro"
-        className="hero-parallax-img w-full h-full object-cover will-change-transform"
-        style={{ filter: "brightness(0.80) contrast(1.1) sepia(0.2)" }}
-        width={1080}
-        height={1920}
-      />
+    <div
+      ref={distortRef}
+      data-san-scroll
+      className="clip-reveal absolute inset-0 will-change-transform"
+      style={{
+        clipPath: 'ellipse(140% 96% at 50% 0%)',
+        WebkitClipPath: 'ellipse(140% 96% at 50% 0%)',
+      }}
+    >
+      {prefersReducedMotion ? (
+        <img
+          src={heroImg}
+          alt="Artisan sculpteur à San Pedro"
+          className="hero-parallax-img w-full h-full object-cover will-change-transform"
+          style={{ filter: "brightness(0.65) contrast(1.1) sepia(0.18)" }}
+          width={1080}
+          height={1920}
+        />
+      ) : (
+        <video
+          ref={videoRef}
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster={heroImg}
+          preload="auto"
+          className="hero-parallax-img w-full h-full object-cover will-change-transform"
+          style={{ filter: "brightness(0.65) contrast(1.1) sepia(0.18)" }}
+          aria-label="Vidéo d'ambiance — artisans de San Pedro"
+        >
+          <source
+            src="https://videos.pexels.com/video-files/4881824/4881824-hd_1920_1080_25fps.mp4"
+            type="video/mp4"
+          />
+        </video>
+      )}
     </div>
     <div
       className="absolute inset-0"
@@ -66,6 +113,29 @@ const HeroSection = () => {
           "linear-gradient(135deg, rgba(45,74,45,0.30) 0%, rgba(139,26,26,0.15) 50%, rgba(14,13,13,0.85) 100%)",
       }}
     />
+
+    {!prefersReducedMotion && (
+      <button
+        onClick={toggleSound}
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 group focus:outline-none"
+        aria-label={isMuted ? "Activer le son de la vidéo" : "Couper le son"}
+      >
+        <span
+          className="absolute inset-0 rounded-full bg-white/15 animate-ping"
+          style={{ animationDuration: '2.5s' }}
+        />
+        <div className="relative w-20 h-20 rounded-full bg-white/15 backdrop-blur-md border border-white/30 flex items-center justify-center group-hover:bg-white/25 group-hover:scale-110 transition-all duration-300 shadow-2xl">
+          {isMuted ? (
+            <VolumeX className="w-7 h-7 text-white" strokeWidth={1.8} />
+          ) : (
+            <Volume2 className="w-7 h-7 text-white" strokeWidth={1.8} />
+          )}
+        </div>
+        <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-widest text-white/70 whitespace-nowrap font-light">
+          {isMuted ? 'Cliquez pour activer le son' : 'Couper le son'}
+        </span>
+      </button>
+    )}
 
     <div className="relative z-10 w-full px-6 pb-16">
       <span className="s-hero-line mb-4 block" style={{ "--index": 0 } as React.CSSProperties}>
