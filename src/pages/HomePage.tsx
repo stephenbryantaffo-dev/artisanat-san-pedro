@@ -12,6 +12,7 @@ import { useThemeSection } from "../hooks/useThemeSection";
 import { ArtisansCardFlipSection } from "../components/sections/ArtisansCardFlipSection";
 import { MetiersDeckSection } from "../components/sections/MetiersDeckSection";
 import { PinnedProductsSection } from "../components/sections/PinnedProductsSection";
+import MonthlySelectionSection from "@/components/sections/MonthlySelectionSection";
 
 import AppShell from "@/components/AppShell";
 import { ProductCard, mockProducts } from "@/components/ProductCard";
@@ -467,6 +468,7 @@ const HomePage = () => {
       <div ref={metiersRef}><MetiersDeckSection /></div>
       <div ref={artisansRef}><ArtisansCardFlipSection /></div>
       <div ref={productsRef}><PinnedProductsSection /></div>
+      <MonthlySelectionSection />
       <div ref={storyRef}><EditoSection /></div>
       <NewsletterSection />
     </AppShell>
