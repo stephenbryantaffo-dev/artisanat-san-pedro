@@ -1,40 +1,26 @@
 import { useEffect, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { allArtisans }  from '@/data/artisans'
 
-const artisans = [
-  {
-    id: 1,
-    name: 'Kofi Asante',
-    metier: 'Maître Sculpteur',
-    since: 'Depuis 1998',
-    location: "San Pedro, Côte d'Ivoire",
-    bio: "Sculpteur de masques baoulé et dan, héritier d'une tradition de quatre générations.",
-    accentColor: '#8B3A0F',
-    image:
-      'https://image.pollinations.ai/prompt/portrait%20of%20west%20african%20male%20wood%20sculptor%20artisan%2C%20focused%20expression%2C%20warm%20editorial%20lighting%2C%20professional%20photography%2C%20holding%20wooden%20mask%2C%20detailed%20skin%20texture?width=800&height=1100&seed=1001&nologo=true',
-  },
-  {
-    id: 2,
-    name: 'Aya Coulibaly',
-    metier: 'Maître Tisserande',
-    since: 'Depuis 2005',
-    location: "San Pedro, Côte d'Ivoire",
-    bio: 'Tisserande de pagnes Baoulé aux motifs ancestraux, formée par sa grand-mère dans le village.',
-    accentColor: '#2D4A2D',
-    image:
-      'https://image.pollinations.ai/prompt/portrait%20of%20west%20african%20female%20weaver%20artisan%20with%20colorful%20fabric%2C%20warm%20natural%20lighting%2C%20editorial%20photography%2C%20african%20textile%20background%2C%20focused%20expression?width=800&height=1100&seed=1002&nologo=true',
-  },
-  {
-    id: 3,
-    name: 'Moussa Traoré',
-    metier: 'Maître Forgeron',
-    since: 'Depuis 1992',
-    location: "San Pedro, Côte d'Ivoire",
-    bio: "Forgeron des outils traditionnels et bijoux Akan, dépositaire d'un savoir-faire millénaire.",
-    accentColor: '#8B1A1A',
-    image:
-      'https://image.pollinations.ai/prompt/portrait%20of%20west%20african%20male%20blacksmith%20artisan%20at%20forge%2C%20warm%20fire%20glow%2C%20professional%20photography%2C%20bronze%20metalwork%2C%20focused%20intense%20expression?width=800&height=1100&seed=1003&nologo=true',
-  },
-]
+
+
+const artisans = allArtisans.slice(0, 3).map((a) => ({
+  id: a.id,
+  slug: a.slug,
+  name: a.name,
+  metier: `Maître ${a.metier}`,
+  since: `Depuis ${a.since}`,
+  location: `${a.location}, Côte d'Ivoire`,
+  bio: a.bio.split('.')[0] + '.',
+  accentColor:
+    a.metierCategory === 'Sculpture' ? '#8B3A0F' :
+    a.metierCategory === 'Tissage' ? '#2D4A2D' :
+    a.metierCategory === 'Forge' ? '#8B1A1A' :
+    a.metierCategory === 'Poterie' ? '#8B3A0F' :
+    a.metierCategory === 'Tressage' ? '#2D4A2D' :
+    '#8B1A1A',
+  image: a.avatar,
+}))
 
 function SanPedroCardBack({ accent = '#8B3A0F' }: { accent?: string }) {
   return (
