@@ -188,9 +188,17 @@ export function ArtisansCardFlipSection() {
                       boxShadow: '0 30px 80px rgba(14,13,13,0.25)',
                     }}
                   >
-                    <div className="relative w-full h-full">
-                      <img src={artisan.image} alt={artisan.name} className="w-full h-full object-cover" style={{ filter: 'brightness(0.95) sepia(0.1)' }} />
+                    <Link
+                      to={`/artisans/${artisan.slug}`}
+                      className="group cursor-pointer relative w-full h-full block"
+                    >
+                      <img src={artisan.image} alt={artisan.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" style={{ filter: 'brightness(0.95) sepia(0.1)' }} />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+                      {/* Hover badge — only visible when card is fully flipped + hovered */}
+                      <div className="absolute top-4 right-4 glass-card px-3 py-1.5 rounded-full text-[9px] uppercase tracking-wider font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1">
+                        Voir le profil
+                        <span>→</span>
+                      </div>
                       <div className="absolute top-6 left-6 w-1 h-12 rounded-full" style={{ background: artisan.accentColor }} />
                       <div className="absolute bottom-7 left-7 right-7">
                         <p
@@ -209,7 +217,7 @@ export function ArtisansCardFlipSection() {
                           {artisan.bio}
                         </p>
                       </div>
-                    </div>
+                    </Link>
                   </div>
                 </div>
               </div>
