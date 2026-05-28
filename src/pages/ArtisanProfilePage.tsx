@@ -45,9 +45,9 @@ const ArtisanProfilePage = () => {
         >
           <ArrowLeft className="w-[18px] h-[18px] text-inverse-surface" />
         </button>
-        <span className="font-serif text-base italic text-inverse-surface tracking-tight">
+        <Link to="/" className="font-serif text-base italic text-inverse-surface tracking-tight hover:text-primary transition-colors">
           Artisanat San Pedro
-        </span>
+        </Link>
         <button className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-foreground/5 transition-colors">
           <Share2 className="w-[18px] h-[18px] text-inverse-surface" />
         </button>

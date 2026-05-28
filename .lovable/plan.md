@@ -1,27 +1,17 @@
 ## Objectif
+Rendre le texte "Artisanat San Pedro" cliquable (lien vers l'accueil `/`) dans les 3 endroits où il n'est actuellement pas enveloppé dans un `<Link>`.
 
-Le Preloader (écran noir + compteur 00→100) doit s'afficher **uniquement sur la page d'accueil (`/`)**, et **une seule fois par session** (pas de rejouage en revenant sur l'accueil après navigation).
+## Détails
+Le `TopNav.tsx` a déjà le logo cliquable. Les endroits à corriger :
 
-## Correctif
+1. **NavigationDrawer.tsx** (ligne 63-65) — le titre brand dans l'en-tête du drawer mobile.
+2. **ProductDetailPage.tsx** (ligne 76-78) — le texte brand dans le header de la page produit.
+3. **ArtisanProfilePage.tsx** (ligne 48-50) — le texte brand dans le header de la page artisan.
 
-Modifier uniquement `src/App.tsx` :
+## Modifications
+- Dans chacun des 3 fichiers, remplacer le `<span>` affichant "Artisanat San Pedro" par un `<Link to="/">` enveloppant ce même `<span>`.
+- S'assurer que `Link` est déjà importé depuis `react-router-dom` (vérifier et ajouter si besoin).
+- Aucun changement de style ou de comportement autre que l'ajout du lien.
 
-1. Déplacer le `<Preloader />` à l'intérieur d'un petit composant wrapper qui :
-   - lit `useLocation()` (donc placé sous `<BrowserRouter>`)
-   - ne rend le Preloader **que si** `location.pathname === '/'` **ET** qu'un flag `pacte_preloader_shown` n'existe pas encore dans `sessionStorage`
-   - écrit ce flag dès qu'il est rendu (via `useEffect`)
-
-2. Conserver le composant `Preloader.tsx` tel quel (aucun changement visuel ni de logique d'animation).
-
-Résultat :
-- Premier arrivée sur `/` dans l'onglet → preloader joue.
-- Navigation vers `/boutique`, `/artisans/...`, etc. → jamais de preloader.
-- Retour sur `/` plus tard dans la même session → pas de preloader.
-- Rechargement complet (F5) ou nouvel onglet sur `/` → preloader rejoue.
-- Arrivée directe sur une page autre que `/` (ex. lien partagé vers `/artisans/kofi-asante`) → pas de preloader.
-
-## Fichiers touchés
-
-- `src/App.tsx` (déplacement du Preloader dans un wrapper conditionnel sous `BrowserRouter`)
-
-Aucune autre partie du site n'est modifiée.
+## Résultat attendu
+Cliquer sur "Artisanat San Pedro" dans le drawer ou dans les headers de page produit / artisan redirige vers la page d'accueil.
