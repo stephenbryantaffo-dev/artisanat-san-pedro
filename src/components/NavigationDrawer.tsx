@@ -60,9 +60,9 @@ const NavigationDrawer = ({ isOpen, onClose }: NavigationDrawerProps) => {
         {/* Header */}
         <div className="flex items-start justify-between">
           <div>
-            <span className="font-serif text-2xl italic text-primary-foreground">
+            <Link to="/" onClick={onClose} className="font-serif text-2xl italic text-primary-foreground hover:text-primary transition-colors">
               Artisanat San Pedro
-            </span>
+            </Link>
             <p className="text-[10px] uppercase tracking-widest text-primary-foreground/50 mt-1">
               Programme PACTE · Côte d'Ivoire
             </p>
