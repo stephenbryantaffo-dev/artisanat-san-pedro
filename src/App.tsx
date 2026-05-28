@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
@@ -62,6 +62,24 @@ const AnimatedRoutes = () => {
   );
 };
 
+const HomePreloader = () => {
+  const location = useLocation();
+  const [shouldShow, setShouldShow] = useState(() => {
+    if (typeof window === "undefined") return false;
+    if (location.pathname !== "/") return false;
+    return !sessionStorage.getItem("pacte_preloader_shown");
+  });
+
+  useEffect(() => {
+    if (shouldShow) {
+      sessionStorage.setItem("pacte_preloader_shown", "1");
+    }
+  }, [shouldShow]);
+
+  if (!shouldShow) return null;
+  return <Preloader />;
+};
+
 const App = () => {
   useLenis();
   useScrollSkew();
@@ -95,11 +113,11 @@ const App = () => {
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <CartProvider>
-        <Preloader />
         {typeof window !== 'undefined' && window.innerWidth > 768 && <MagneticCursor />}
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <HomePreloader />
           <div className="skew-container" style={{ willChange: 'transform' }}>
             <AnimatedRoutes />
           </div>
