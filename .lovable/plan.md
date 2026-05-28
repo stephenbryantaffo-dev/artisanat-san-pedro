@@ -1,27 +1,27 @@
-Le composant `Footer.tsx` existe mais n'est jamais rendu. `AppShell.tsx` (utilisé par toutes les pages principales) contient `TopNav` + `BrandBar` mais pas de Footer. Le footer actuel est basique, avec des liens morts (`href="#"`) et n'utilise pas le design system editorial (tokens HSL, typographies Noto Serif/Manrope, pas de bordures 1px).
-
 ## Objectif
-Intégrer un footer editorial cohérent sur toutes les pages, en l'ajoutant à `AppShell` et en réécrivant le composant pour matcher le design system "Editorial Artisan".
 
-## Plan
+Le Preloader (écran noir + compteur 00→100) doit s'afficher **uniquement sur la page d'accueil (`/`)**, et **une seule fois par session** (pas de rejouage en revenant sur l'accueil après navigation).
 
-### 1. Réécrire `src/components/Footer.tsx`
-- Supprimer les bordures 1px (contraire aux règles du design system) ; utiliser des décalages de fond (`bg-surface-container`, `bg-surface-container-low`) pour la séparation.
-- Utiliser les tokens Tailwind du projet : `font-serif`, `text-inverse-surface`, `text-muted-foreground`, `bg-surface-container`, `text-primary`, `tracking-widest`.
-- Remplacer tous les `<a href="#">` par des `<Link>` de `react-router-dom` avec les vraies routes du site (`/boutique`, `/artisans`, `/decouverte`, `/a-propos`, `/contact`).
-- Adapter le contenu au contexte ivoirien : remplacer "Galerie" par "Boutique", "Collections" par "Découverte", ajouter un lien "Contact".
-- Styliser le titre avec la signature éditoriale : `Artisanat <span className="italic text-primary">San Pedro</span>`.
-- Ajouter un séparateur visuel subtil (gradient horizontal ou simple padding) au lieu d'une bordure.
-- Garder 4 colonnes sur desktop, empilé sur mobile.
-- Conserver la ligne de copyright.
+## Correctif
 
-### 2. Intégrer le Footer dans `src/components/AppShell.tsx`
-- Importer `Footer`.
-- L'ajouter juste avant `BrandBar` (ou après `<main>`, selon l'ordre logique) : `TopNav` → `<main>` → `<Footer />` → `<BrandBar>`.
+Modifier uniquement `src/App.tsx` :
 
-### 3. Nettoyer la vieille page `src/pages/Index.tsx`
-- Cette page importe `Footer` mais n'est plus routée (App.tsx pointe vers `HomePage`). Supprimer l'import obsolète de `Footer` pour éviter toute confusion future.
+1. Déplacer le `<Preloader />` à l'intérieur d'un petit composant wrapper qui :
+   - lit `useLocation()` (donc placé sous `<BrowserRouter>`)
+   - ne rend le Preloader **que si** `location.pathname === '/'` **ET** qu'un flag `pacte_preloader_shown` n'existe pas encore dans `sessionStorage`
+   - écrit ce flag dès qu'il est rendu (via `useEffect`)
 
-### 4. Vérification visuelle
-- S'assurer que le footer utilise bien les classes du design system et non des couleurs hardcodées inappropriées.
-- Confirmer qu'il s'affiche sur toutes les pages (`/`, `/boutique`, `/artisans`, `/a-propos`, `/contact`, etc.).
+2. Conserver le composant `Preloader.tsx` tel quel (aucun changement visuel ni de logique d'animation).
+
+Résultat :
+- Premier arrivée sur `/` dans l'onglet → preloader joue.
+- Navigation vers `/boutique`, `/artisans/...`, etc. → jamais de preloader.
+- Retour sur `/` plus tard dans la même session → pas de preloader.
+- Rechargement complet (F5) ou nouvel onglet sur `/` → preloader rejoue.
+- Arrivée directe sur une page autre que `/` (ex. lien partagé vers `/artisans/kofi-asante`) → pas de preloader.
+
+## Fichiers touchés
+
+- `src/App.tsx` (déplacement du Preloader dans un wrapper conditionnel sous `BrowserRouter`)
+
+Aucune autre partie du site n'est modifiée.
