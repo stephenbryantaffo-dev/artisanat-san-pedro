@@ -89,17 +89,17 @@ const BoutiquePage = () => {
       {/* Search + Filter Bar */}
       <div
         style={{
-          position: 'sticky',
-          top: '72px',
-          zIndex: 30,
+          position: 'fixed',
+          top: '64px',
+          left: 0,
+          right: 0,
+          zIndex: 40,
           background: '#fcf9f4',
           paddingTop: '16px',
           paddingBottom: '12px',
-          marginLeft: '-24px',
-          marginRight: '-24px',
           paddingLeft: '24px',
           paddingRight: '24px',
-          boxShadow: '0 4px 16px rgba(14, 13, 13, 0.04)',
+          boxShadow: '0 4px 16px rgba(14, 13, 13, 0.06)',
         }}
       >
         {/* Search input */}
@@ -162,7 +162,7 @@ const BoutiquePage = () => {
       </div>
 
       {/* Product grid */}
-      <div className="px-6 pb-16 pt-4">
+      <div className="px-6 pb-16" style={{ paddingTop: '220px' }}>
         {filteredProducts.length > 0 ? (
           <motion.div
             className="grid grid-cols-2 md:grid-cols-3 gap-4"
