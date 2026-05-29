@@ -1,17 +1,14 @@
-## Objectif
-Rendre le texte "Artisanat San Pedro" cliquable (lien vers l'accueil `/`) dans les 3 endroits où il n'est actuellement pas enveloppé dans un `<Link>`.
+## Modifications dans `src/pages/ProductDetailPage.tsx` uniquement
 
-## Détails
-Le `TopNav.tsx` a déjà le logo cliquable. Les endroits à corriger :
+### 1. Élargir les suggestions de produits
+- Logique `relatedProducts` : afficher **6 produits** au lieu de 2.
+- Prioriser la même catégorie, puis compléter avec d'autres produits si nécessaire pour toujours atteindre 6.
+- Grille passe à `grid-cols-2 md:grid-cols-3` pour mieux occuper l'espace.
+- Ajouter sous la grille un CTA centré « Voir toute la boutique → » qui pointe vers `/boutique`.
 
-1. **NavigationDrawer.tsx** (ligne 63-65) — le titre brand dans l'en-tête du drawer mobile.
-2. **ProductDetailPage.tsx** (ligne 76-78) — le texte brand dans le header de la page produit.
-3. **ArtisanProfilePage.tsx** (ligne 48-50) — le texte brand dans le header de la page artisan.
+### 2. Aligner la longueur sur les autres pages (Option 1)
+- Importer `Footer` et `BrandBar`.
+- Les rendre en bas de la page, juste après la section « Vous aimerez aussi » et avant la barre d'action fixe.
+- Augmenter le padding bas du wrapper racine de `pb-16` → `pb-32` pour que le footer/contenu ne soit pas masqué par la barre fixe d'ajout au panier.
 
-## Modifications
-- Dans chacun des 3 fichiers, remplacer le `<span>` affichant "Artisanat San Pedro" par un `<Link to="/">` enveloppant ce même `<span>`.
-- S'assurer que `Link` est déjà importé depuis `react-router-dom` (vérifier et ajouter si besoin).
-- Aucun changement de style ou de comportement autre que l'ajout du lien.
-
-## Résultat attendu
-Cliquer sur "Artisanat San Pedro" dans le drawer ou dans les headers de page produit / artisan redirige vers la page d'accueil.
+Aucun autre fichier modifié. Le header custom (flèche retour + Artisanat San Pedro + partage) et la barre d'achat fixe en bas restent intacts.

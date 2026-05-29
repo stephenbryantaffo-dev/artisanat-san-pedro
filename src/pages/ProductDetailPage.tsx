@@ -8,6 +8,8 @@ import { allProducts } from "@/data/products";
 import { useCart } from "@/context/CartContext";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { staggerContainer, staggerItem, scaleReveal } from "@/lib/motionVariants";
+import Footer from "@/components/Footer";
+import BrandBar from "@/components/BrandBar";
 
 const TABS = ["Description", "Livraison", "Avis"] as const;
 type Tab = typeof TABS[number];
@@ -33,9 +35,13 @@ const ProductDetailPage = () => {
 
   const relatedProducts = useMemo(() => {
     if (!product) return [];
-    return allProducts
-      .filter((p) => p.category === product.category && p.id !== product.id)
-      .slice(0, 2);
+    const sameCategory = allProducts.filter(
+      (p) => p.category === product.category && p.id !== product.id
+    );
+    const others = allProducts.filter(
+      (p) => p.category !== product.category && p.id !== product.id
+    );
+    return [...sameCategory, ...others].slice(0, 6);
   }, [product]);
 
   if (!product) {
@@ -64,7 +70,7 @@ const ProductDetailPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background pb-16">
+    <div className="min-h-screen bg-background pb-32">
       {/* Top Nav */}
       <header className="glass-card fixed top-0 w-full z-50 px-6 py-4 flex justify-between items-center">
         <button
@@ -253,7 +259,7 @@ const ProductDetailPage = () => {
         <div className="bg-surface-container-low py-10 px-6 mt-8">
           <h2 className="font-serif italic text-2xl text-inverse-surface mb-6">Vous aimerez aussi</h2>
           <motion.div
-            className="grid grid-cols-2 gap-4"
+            className="grid grid-cols-2 md:grid-cols-3 gap-4"
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
@@ -280,8 +286,19 @@ const ProductDetailPage = () => {
               </motion.div>
             ))}
           </motion.div>
+          <div className="mt-8 flex justify-center">
+            <Link
+              to="/boutique"
+              className="inline-flex items-center justify-center h-10 px-6 rounded-full border border-secondary/20 text-primary uppercase tracking-widest text-[0.7rem] font-bold hover:bg-primary/5 transition-colors"
+            >
+              Voir toute la boutique →
+            </Link>
+          </div>
         </div>
       )}
+
+      <Footer />
+      <BrandBar />
 
       {/* Bottom Action Bar */}
       <div className="fixed bottom-0 w-full z-50 glass-card backdrop-blur-xl px-6 py-6 flex items-center gap-4 border-t border-border/10"
