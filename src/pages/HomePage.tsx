@@ -13,6 +13,8 @@ import { ArtisansCardFlipSection } from "../components/sections/ArtisansCardFlip
 import { MetiersDeckSection } from "../components/sections/MetiersDeckSection";
 import { PinnedProductsSection } from "../components/sections/PinnedProductsSection";
 import MonthlySelectionSection from "@/components/sections/MonthlySelectionSection";
+import TrustStrip from "@/components/sections/TrustStrip";
+import PressMentionsSection from "@/components/sections/PressMentionsSection";
 
 import AppShell from "@/components/AppShell";
 import { ProductCard, mockProducts } from "@/components/ProductCard";
@@ -463,12 +465,14 @@ const HomePage = () => {
   return (
     <AppShell>
       <div ref={heroRef}><HeroSection /></div>
+      <TrustStrip />
       <StatsBento />
       <Cascade />
       <div ref={metiersRef}><MetiersDeckSection /></div>
       <div ref={artisansRef}><ArtisansCardFlipSection /></div>
       <div ref={productsRef}><PinnedProductsSection /></div>
       <MonthlySelectionSection />
+      <PressMentionsSection />
       <div ref={storyRef}><EditoSection /></div>
       <NewsletterSection />
     </AppShell>
