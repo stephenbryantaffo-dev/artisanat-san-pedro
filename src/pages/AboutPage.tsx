@@ -56,7 +56,7 @@ const phases = [
 const AboutPage = () => (
   <AppShell>
     {/* Hero */}
-    <ScrollReveal variants={scaleReveal} className="bg-inverse-surface rounded-[2rem] p-8 mx-6 mt-6">
+    <ScrollReveal variants={scaleReveal} className="bg-[#1E1A18] rounded-[2rem] p-8 mx-6 mt-6">
       <p className="text-[10px] uppercase tracking-widest text-inverse-primary mb-3">
         PROGRAMME PACTE · SAN PEDRO
       </p>
@@ -239,7 +239,7 @@ const AboutPage = () => (
     </div>
 
     {/* CTA */}
-    <div className="mx-6 mb-6 bg-inverse-surface rounded-[2rem] p-8 text-center">
+    <div className="mx-6 mb-6 bg-[#1E1A18] rounded-[2rem] p-8 text-center">
       <p className="text-[10px] uppercase tracking-widest text-inverse-primary mb-3">REJOIGNEZ LE MOUVEMENT</p>
       <h2 className="font-headline text-2xl italic text-inverse-on-surface mb-3">
         Soutenez l'artisanat de San Pedro
