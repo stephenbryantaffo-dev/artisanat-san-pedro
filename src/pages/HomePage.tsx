@@ -465,12 +465,14 @@ const HomePage = () => {
   return (
     <AppShell>
       <div ref={heroRef}><HeroSection /></div>
+      <TrustStrip />
       <StatsBento />
       <Cascade />
       <div ref={metiersRef}><MetiersDeckSection /></div>
       <div ref={artisansRef}><ArtisansCardFlipSection /></div>
       <div ref={productsRef}><PinnedProductsSection /></div>
       <MonthlySelectionSection />
+      <PressMentionsSection />
       <div ref={storyRef}><EditoSection /></div>
       <NewsletterSection />
     </AppShell>
