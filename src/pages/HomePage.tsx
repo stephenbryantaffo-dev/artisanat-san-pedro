@@ -161,27 +161,6 @@ const HeroSection = () => {
         </span>
       </h1>
 
-      {/* AI Search bar */}
-      <div
-        style={{
-          opacity: 0,
-          animation: 'heroWordReveal 0.9s cubic-bezier(0.25,0.46,0.45,0.94) 0.65s forwards',
-        }}
-        className="glass-card rounded-full border border-border/20 shadow-luxury flex items-center gap-3 p-2 w-full"
-      >
-        <div className="bg-primary w-10 h-10 rounded-full flex items-center justify-center shrink-0">
-          <Sparkles className="w-4 h-4 text-primary-foreground" />
-        </div>
-        <input
-          type="text"
-          placeholder="Décrivez ce que vous cherchez…"
-          className="bg-transparent border-none outline-none flex-1 font-light text-sm text-foreground placeholder:text-muted-foreground"
-        />
-        <button className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-foreground/5 transition-colors shrink-0">
-          <Search className="w-4 h-4 text-muted-foreground" />
-        </button>
-      </div>
-
       {/* Brand signature dots */}
       <motion.div
         initial={{ opacity: 0 }}
