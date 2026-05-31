@@ -439,7 +439,6 @@ const HomePage = () => {
   const metiersRef = useThemeSection<HTMLDivElement>('light');
   const artisansRef = useThemeSection<HTMLDivElement>('forest');
   const productsRef = useThemeSection<HTMLDivElement>('light');
-  const productsRef = useThemeSection<HTMLDivElement>('light');
 
   return (
     <AppShell>
