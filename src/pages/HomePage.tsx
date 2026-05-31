@@ -439,20 +439,17 @@ const HomePage = () => {
   const metiersRef = useThemeSection<HTMLDivElement>('light');
   const artisansRef = useThemeSection<HTMLDivElement>('forest');
   const productsRef = useThemeSection<HTMLDivElement>('light');
-  const storyRef = useThemeSection<HTMLDivElement>('terracotta');
+  const productsRef = useThemeSection<HTMLDivElement>('light');
 
   return (
     <AppShell>
       <div ref={heroRef}><HeroSection /></div>
-      <StatsBento />
       <div ref={productsRef}><PinnedProductsSection /></div>
-      <Cascade />
       <div ref={metiersRef}><MetiersDeckSection /></div>
       <div ref={artisansRef}><ArtisansCardFlipSection /></div>
-      <div ref={storyRef}><EditoSection /></div>
+      <MonthlySelectionSection />
       <TrustStrip />
       <PressMentionsSection />
-      <MonthlySelectionSection />
       <NewsletterSection />
     </AppShell>
   );
