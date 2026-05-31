@@ -37,7 +37,7 @@ const events = [
 const DecouvertePage = () => (
   <AppShell>
     {/* Hero */}
-    <div className="bg-[#1E1A18] py-16 px-6 text-center">
+    <div className="bg-[#2C1810] py-16 px-6 text-center">
       <p className="text-[10px] uppercase tracking-widest text-primary mb-2">L'HÉRITAGE</p>
       <h1 className="font-serif text-4xl italic text-primary-foreground">
         La Culture Vivante de<br />San Pedro

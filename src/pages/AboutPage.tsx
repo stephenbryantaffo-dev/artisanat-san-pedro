@@ -56,18 +56,18 @@ const phases = [
 const AboutPage = () => (
   <AppShell>
     {/* Hero */}
-    <ScrollReveal variants={scaleReveal} className="bg-[#1E1A18] rounded-[2rem] p-8 mx-6 mt-6">
-      <p className="text-[10px] uppercase tracking-widest text-inverse-primary mb-3">
+    <ScrollReveal variants={scaleReveal} className="bg-[#2C1810] rounded-[2rem] p-8 mx-6 mt-6">
+      <p className="text-[10px] uppercase tracking-widest text-primary mb-3">
         PROGRAMME PACTE · SAN PEDRO
       </p>
-      <h1 className="font-headline text-4xl italic text-inverse-on-surface leading-tight">
+      <h1 className="font-serif text-4xl italic text-white leading-tight">
         Artisanat San Pedro
       </h1>
-      <p className="font-headline text-lg italic text-primary mt-1">
+      <p className="font-serif text-lg italic text-primary mt-1">
         La Plateforme Numérique de l'Artisanat
       </p>
-      <div className="w-16 h-px bg-primary mt-6 mb-6" />
-      <p className="font-body text-sm text-inverse-on-surface/70 font-light leading-relaxed">
+      <div className="w-16 h-px bg-white/20 mt-6 mb-6" />
+      <p className="text-sm font-light leading-relaxed text-white/70">
         Artisanat San Pedro est la vitrine numérique officielle des artisans de la région de San Pedro, en Côte d'Ivoire. Portée par le programme PACTE — Partenariat pour une Administration Citoyenne et la Transformation de l'État — cette plateforme e-commerce connecte des créateurs d'exception aux marchés local, national et international. Elle réunit six corps de métiers : Sculpture, Tressage, Tissage, Poterie, Forge et Peinture, à travers une expérience d'achat moderne, sécurisée et culturellement ancrée.
       </p>
     </ScrollReveal>
@@ -239,12 +239,12 @@ const AboutPage = () => (
     </div>
 
     {/* CTA */}
-    <div className="mx-6 mb-6 bg-[#1E1A18] rounded-[2rem] p-8 text-center">
-      <p className="text-[10px] uppercase tracking-widest text-inverse-primary mb-3">REJOIGNEZ LE MOUVEMENT</p>
-      <h2 className="font-headline text-2xl italic text-inverse-on-surface mb-3">
+    <div className="mx-6 mb-6 bg-[#2C1810] rounded-[2rem] p-8 text-center">
+      <p className="text-[10px] uppercase tracking-widest text-primary mb-3">REJOIGNEZ LE MOUVEMENT</p>
+      <h2 className="font-serif text-2xl italic text-white mb-3">
         Soutenez l'artisanat de San Pedro
       </h2>
-      <p className="font-body text-sm text-inverse-on-surface/60 font-light leading-relaxed mb-6 max-w-md mx-auto">
+      <p className="text-sm font-light leading-relaxed text-white/70 mb-6 max-w-md mx-auto">
         Chaque achat sur la plateforme soutient directement un artisan et sa famille. Découvrez des créations uniques, faites avec passion et savoir-faire ancestral.
       </p>
       <a

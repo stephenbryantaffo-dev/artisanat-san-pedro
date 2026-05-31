@@ -58,7 +58,7 @@ const ArtisansPage = () => {
           <ScrollReveal variants={scaleReveal} className="mb-6">
           <Link
             to={`/artisans/${featured.slug}`}
-            className="bg-[#1E1A18] rounded-bento p-5 flex gap-4 items-center group"
+            className="bg-[#2C1810] rounded-bento p-5 flex gap-4 items-center group"
           >
             <img
               src={featured.avatar}
