@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Search, Sparkles, ChevronDown, ArrowRight, Play, Volume2, VolumeX } from "lucide-react";
+import { ChevronDown, ArrowRight, Play, Volume2, VolumeX } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ScrollReveal } from "../components/ui/ScrollReveal";
