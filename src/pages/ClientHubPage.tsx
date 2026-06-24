@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ShoppingBag, Heart, User, Package, ChevronRight, LogOut, Camera } from "lucide-react";
+import { ShoppingBag, Heart, User, Package, ChevronRight, LogOut, Camera, Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 import AppShell from "@/components/AppShell";
 import BoutiqueProductCard from "@/components/BoutiqueProductCard";
 import { allProducts } from "@/data/products";
@@ -41,6 +42,85 @@ const ClientHubPage = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<typeof tabs[number]>("Commandes");
   const [favorites] = useState(allProducts.slice(0, 4));
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    const loadProfile = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+      const { data } = await (supabase as any)
+        .from("profiles")
+        .select("avatar_url")
+        .eq("id", user.id)
+        .maybeSingle();
+      if (data?.avatar_url) setAvatarUrl(data.avatar_url);
+    };
+    loadProfile();
+  }, []);
+
+  const handleAvatarFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      setUploadError("Veuillez sélectionner une image.");
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      setUploadError("Image trop lourde (max 5 Mo).");
+      return;
+    }
+
+    setUploading(true);
+    setUploadError(null);
+
+    try {
+      const localPreview = URL.createObjectURL(file);
+      setAvatarUrl(localPreview);
+
+      const { data: { user } } = await supabase.auth.getUser();
+
+      if (!user) {
+        setUploadError("Connectez-vous pour sauvegarder définitivement votre photo.");
+        setUploading(false);
+        return;
+      }
+
+      const fileExt = file.name.split(".").pop();
+      const filePath = `client-avatars/${user.id}-${Date.now()}.${fileExt}`;
+
+      const { error: uploadErr } = await supabase.storage
+        .from("artisan-images")
+        .upload(filePath, file, { upsert: true });
+
+      if (uploadErr) throw uploadErr;
+
+      const { data: publicUrlData } = supabase.storage
+        .from("artisan-images")
+        .getPublicUrl(filePath);
+
+      const publicUrl = publicUrlData.publicUrl;
+
+      const { error: updateErr } = await (supabase as any)
+        .from("profiles")
+        .update({ avatar_url: publicUrl })
+        .eq("id", user.id);
+
+      if (updateErr) throw updateErr;
+
+      setAvatarUrl(publicUrl);
+    } catch (err: any) {
+      console.error("Avatar upload error:", err);
+      setUploadError("Échec de l'envoi. Réessayez.");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const triggerFileSelect = () => fileInputRef.current?.click();
 
   return (
     <AppShell>
@@ -149,12 +229,43 @@ const ClientHubPage = () => {
           <div className="px-6 pt-6 space-y-4">
             {/* Avatar */}
             <div className="flex flex-col items-center mb-6">
-              <div className="w-20 h-20 rounded-full bg-[hsl(var(--surface-container))] flex items-center justify-center">
-                <User className="w-8 h-8 text-muted-foreground" />
+              <div className="relative">
+                <div className="w-20 h-20 rounded-full bg-[hsl(var(--surface-container))] flex items-center justify-center overflow-hidden">
+                  {avatarUrl ? (
+                    <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+                  ) : (
+                    <User className="w-8 h-8 text-muted-foreground" />
+                  )}
+                </div>
+                {uploading && (
+                  <div className="absolute inset-0 rounded-full bg-black/40 flex items-center justify-center">
+                    <Loader2 className="w-5 h-5 text-white animate-spin" />
+                  </div>
+                )}
               </div>
-              <button className="mt-3 border border-muted-foreground/20 text-foreground rounded-full uppercase tracking-widest text-[9px] font-bold px-4 py-2 flex items-center gap-1.5 hover:bg-muted/50 transition-colors">
-                <Camera className="w-3 h-3" /> Modifier
+
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleAvatarFileChange}
+              />
+
+              <button
+                onClick={triggerFileSelect}
+                disabled={uploading}
+                className="mt-3 border border-muted-foreground/20 text-foreground rounded-full uppercase tracking-widest text-[9px] font-bold px-4 py-2 flex items-center gap-1.5 hover:bg-muted/50 transition-colors disabled:opacity-50"
+              >
+                <Camera className="w-3 h-3" />
+                {uploading ? "Envoi..." : "Modifier"}
               </button>
+
+              {uploadError && (
+                <p className="mt-2 text-[10px] text-destructive text-center max-w-[220px]">
+                  {uploadError}
+                </p>
+              )}
             </div>
 
             {/* Form fields */}
