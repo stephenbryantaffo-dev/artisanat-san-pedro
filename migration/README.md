@@ -53,25 +53,36 @@ chmod +x migration/*.sh
 
 ## Étape 4 — Brancher l'app sur ton Supabase
 
-Un client alternatif est créé à `src/integrations/supabase/client.custom.ts`
-qui lit `.env.local` :
+Un client alternatif est défini dans `src/integrations/supabase/client.custom.ts`
+et pointe **directement** (URL + clé anon en dur) vers ton projet Supabase
+`ghzrzlkezdgnldlpnlbc`.
 
-```
-VITE_OWN_SUPABASE_URL=https://<project>.supabase.co
-VITE_OWN_SUPABASE_ANON_KEY=<anon>
+Pour basculer l'app **hors Lovable** (sur ta machine, après `git clone`),
+remplace le contenu de `src/integrations/supabase/client.ts` par UNE seule
+ligne :
+
+```ts
+export * from "./client.custom";
 ```
 
-Pour basculer l'app **hors Lovable** : remplace le contenu de
-`src/integrations/supabase/client.ts` par `export * from "./client.custom";`.
-Ne le fais PAS tant que tu édites dans Lovable (ça casse le preview).
+⚠️ Ne fais PAS cette bascule depuis l'éditeur Lovable : `client.ts` y est
+régénéré automatiquement par Lovable Cloud et ta modification sera écrasée.
 
 ## Étape 5 — Régénérer les types TypeScript
 
+`src/integrations/supabase/types.ts` est aujourd'hui généré pour Lovable Cloud
+(schéma vide). Pour récupérer les types de tes vraies tables (`artisans`,
+`products`, `profiles`), exécute sur ta machine :
+
 ```bash
 npx supabase login
-npx supabase link --project-ref $SUPABASE_PROJECT_REF
-npx supabase gen types typescript --linked > src/integrations/supabase/types.ts
+npx supabase gen types typescript \
+  --project-id ghzrzlkezdgnldlpnlbc \
+  > src/integrations/supabase/types.ts
 ```
+
+Alternative sans CLI : Dashboard Supabase → **API Docs → TypeScript types**,
+puis copie-colle dans `src/integrations/supabase/types.ts`.
 
 ## Étape 6 — Migrer les utilisateurs
 
