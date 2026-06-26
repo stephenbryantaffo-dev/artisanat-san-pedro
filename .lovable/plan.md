@@ -1,81 +1,77 @@
-## Contexte important
+## Contexte & contraintes importantes
 
-Ce projet utilise **Lovable Cloud** (un backend Supabase géré par Lovable). Une fois Cloud activé sur un projet, il n'est **pas possible de le déconnecter** ni de le remplacer en place par un autre projet Supabase. La voie réaliste pour "sortir" et avoir ton propre backend est donc :
+Ta demande se heurte à deux limites techniques de l'éditeur Lovable que je dois te signaler avant d'agir :
 
-1. Créer **ton propre projet Supabase** sur supabase.com (compte que tu contrôles).
-2. **Exporter** schéma + données + storage + edge functions depuis Cloud.
-3. **Réimporter** dans ton projet Supabase.
-4. Garder le code de l'app (React) tel quel — seules les variables d'environnement de connexion changent. À terme, tu pourras héberger l'app où tu veux (Vercel, Netlify, etc.) en pointant vers ton Supabase.
+1. **`src/integrations/supabase/client.ts` et `src/integrations/supabase/types.ts` sont auto-générés** par Lovable Cloud. Si je les édite à la main, Lovable les réécrasera à la prochaine synchro Cloud (toute opération backend, redéploiement de function, etc.) et ton app cassera de façon imprévisible.
+2. **Je ne peux pas exécuter `supabase gen types` contre ton projet externe** depuis le sandbox Lovable (pas de `supabase login` interactif, pas d'accès à ton projet `ghzrzlkezdgnldlpnlbc`). La régénération des types doit se faire depuis ta machine.
+3. Le fichier `.env` (qui contient `VITE_SUPABASE_URL` / `VITE_SUPABASE_PUBLISHABLE_KEY` pointant vers Cloud) est lui aussi **protégé** — je ne peux pas le modifier.
 
-Je ne peux pas modifier en parallèle le projet Lovable Cloud actif — donc cette migration produit un **package d'export** que tu utiliseras côté supabase.com, plus une **branche de code** prête à pointer vers ton instance.
-
----
-
-## Plan de migration
-
-### Étape 1 — Préparer l'export depuis Cloud
-- Générer un fichier `migration/schema.sql` contenant la définition complète de la table `profiles` (colonnes, contraintes, RLS, policies, triggers, GRANTs).
-- Exporter les données existantes : CSV de `public.profiles` vers `migration/data/profiles.csv`.
-- Lister tous les fichiers du bucket `artisan-images` et générer un script `migration/storage-export.sh` qui les télécharge en local (via l'API Storage de Cloud avec la clé service_role temporaire).
-- Copier le code des edge functions (actuellement : `chat`) dans `migration/functions/`.
-
-### Étape 2 — Créer ton projet Supabase
-Instructions claires (hors code) que je te donnerai :
-- Créer un projet sur supabase.com.
-- Récupérer : `Project URL`, `anon key`, `service_role key`, le mot de passe DB.
-- Activer les providers Auth identiques (Email + Google) avec les mêmes Redirect URLs.
-
-### Étape 3 — Importer dans ton Supabase
-Scripts fournis dans `migration/` :
-- `01-apply-schema.sh` → applique `schema.sql` via `psql`.
-- `02-import-data.sh` → COPY des CSV.
-- `03-create-bucket.sh` → crée le bucket `artisan-images` (public) + policies.
-- `04-upload-storage.sh` → réuploade les fichiers téléchargés.
-- `05-deploy-functions.sh` → `supabase functions deploy chat` + set du secret `LOVABLE_API_KEY` (ou ta propre clé OpenAI/Gemini si tu veux te détacher complètement du gateway Lovable).
-
-### Étape 4 — Brancher l'app sur ton Supabase
-- Créer `src/integrations/supabase/client.custom.ts` qui lit `VITE_OWN_SUPABASE_URL` et `VITE_OWN_SUPABASE_ANON_KEY` depuis `.env.local`.
-- Ajouter un README `migration/README.md` expliquant comment basculer les imports `@/integrations/supabase/client` vers ce nouveau client le jour où tu héberges l'app hors Lovable (un simple find/replace).
-- Tant que tu travailles dans Lovable, l'app continue de pointer vers Cloud (sinon elle casse ici).
-
-### Étape 5 — Documentation
-`migration/README.md` détaillé :
-- Ordre exact des scripts.
-- Comment régénérer les types TS (`supabase gen types`).
-- Checklist post-migration (auth, RLS, storage URL, edge function secrets, CORS).
-- Limites : la table `auth.users` ne peut pas être exportée/importée 1:1 — les utilisateurs existants devront refaire un signup OU tu utilises l'API Admin de Supabase pour les recréer (script fourni `migration/06-migrate-users.md` avec la procédure).
+Conséquence : un remplacement "en dur" dans `client.ts` à l'intérieur de Lovable n'est pas un chemin viable. Je te propose à la place une approche qui **fonctionne pendant que tu édites dans Lovable** ET **bascule proprement sur ton Supabase quand tu héberges ailleurs** (Vercel/Netlify/local).
 
 ---
 
-## Détails techniques
+## Plan proposé
 
-- L'export DB se fait via `psql -c "COPY ..."` (les dumps complets `pg_dump` ne sont pas disponibles sur Cloud — seuls les exports CSV par table le sont).
-- Pour le storage, j'utiliserai l'API REST `/storage/v1/object/list/artisan-images` puis téléchargerai chaque objet.
-- La edge function `chat` utilise `LOVABLE_API_KEY` (Lovable AI Gateway). Sur ton propre Supabase, soit tu gardes cette clé (elle fonctionne hors Cloud tant que ton workspace Lovable existe), soit tu migres vers OpenAI/Anthropic directement — je fournirai les deux variantes commentées.
-- Aucune modification du code applicatif existant (pages, composants) — uniquement ajout du dossier `migration/` et d'un fichier client alternatif.
+### Étape 1 — Mettre à jour `src/integrations/supabase/client.custom.ts`
 
----
+Le fichier existe déjà (créé lors du package de migration). Je vais le simplifier pour qu'il pointe **directement** vers ton projet, sans dépendre de `.env.local` :
 
-## Livrables
+```ts
+import { createClient } from "@supabase/supabase-js";
+import type { Database } from "./types";
 
-```text
-migration/
-├── README.md                  ← guide pas à pas
-├── schema.sql                 ← DDL complet
-├── data/
-│   └── profiles.csv
-├── storage/
-│   └── (fichiers téléchargés du bucket)
-├── functions/
-│   └── chat/index.ts
-├── 01-apply-schema.sh
-├── 02-import-data.sh
-├── 03-create-bucket.sh
-├── 04-upload-storage.sh
-├── 05-deploy-functions.sh
-└── 06-migrate-users.md
-src/integrations/supabase/
-└── client.custom.ts           ← client alternatif (inactif par défaut)
+const SUPABASE_URL = "https://ghzrzlkezdgnldlpnlbc.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIs...NO6U";
+
+export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  auth: { storage: localStorage, persistSession: true, autoRefreshToken: true },
+});
 ```
 
-Confirme-moi que tu veux que je procède ainsi et je lance l'implémentation.
+> Note sécurité : la clé `anon` est publique par design (elle finit dans le bundle JS de toute façon), donc la committer est acceptable. La sécurité repose sur tes politiques RLS côté Supabase.
+
+### Étape 2 — Documenter la bascule dans `migration/README.md`
+
+Mettre à jour la section "Étape 4" pour expliquer la procédure exacte de bascule (une seule ligne à changer dans `client.ts`), à faire **en dehors de Lovable** :
+
+```ts
+// src/integrations/supabase/client.ts
+export * from "./client.custom";
+```
+
+### Étape 3 — Types TypeScript : à faire de ton côté
+
+Je ne peux pas régénérer `types.ts` depuis ici. Tu as deux options, que je documenterai dans le README :
+
+- **Option A (recommandée)** : sur ta machine, après avoir cloné le repo :
+  ```bash
+  npx supabase login
+  npx supabase gen types typescript \
+    --project-id ghzrzlkezdgnldlpnlbc \
+    > src/integrations/supabase/types.ts
+  ```
+- **Option B** : copier-coller depuis le Dashboard Supabase → **API Docs → TypeScript types**.
+
+En attendant, le code qui utilise les tables `artisans` / `products` / `profiles` continuera de fonctionner (TypeScript râlera mais runtime sera OK), parce que `ClientHubPage` fait déjà `(supabase as any).from("profiles")`.
+
+### Étape 4 — Ne pas toucher
+
+- `src/integrations/supabase/client.ts` (auto-généré)
+- `src/integrations/supabase/types.ts` (auto-généré ; tu le régénères toi-même)
+- `.env` (auto-généré)
+- Aucun autre fichier de l'app
+
+---
+
+## Résumé de ce qui sera modifié
+
+| Fichier | Action |
+|---|---|
+| `src/integrations/supabase/client.custom.ts` | Réécrit pour pointer vers ton projet (URL + anon en dur) |
+| `migration/README.md` | Section "Étape 4" + "Étape 5" mises à jour avec la procédure réelle |
+
+**Aucun autre fichier touché.** Tant que tu édites dans Lovable, l'app continuera d'utiliser Cloud. Le jour où tu héberges ailleurs, tu remplaces le contenu de `client.ts` par `export * from "./client.custom";` et tu pousses — c'est tout.
+
+---
+
+**Confirme-moi que ce plan te convient**, ou dis-moi si tu préfères que je tente quand même la réécriture directe de `client.ts` (en sachant qu'elle peut être écrasée par Lovable Cloud à tout moment).
