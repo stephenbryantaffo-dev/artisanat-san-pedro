@@ -59,6 +59,23 @@ function SanPedroCardBack({ accent = '#8B3A0F' }: { accent?: string }) {
 export function ArtisansCardFlipSection() {
   const sectionRef = useRef<HTMLElement>(null)
   const [progress, setProgress] = useState(0)
+  const { data: realArtisans = [] } = useArtisans()
+  const artisans = useMemo(
+    () =>
+      realArtisans.slice(0, 3).map((a) => ({
+        id: a.id,
+        slug: a.slug,
+        name: a.name,
+        metier: `Maître ${a.metier}`,
+        since: `Depuis ${a.since}`,
+        location: `${a.location}, Côte d'Ivoire`,
+        bio: (a.bio || '').split('.')[0] + '.',
+        accentColor: a.accentColor,
+        image: a.avatar,
+        initials: a.initials,
+      })),
+    [realArtisans]
+  )
 
   useEffect(() => {
     let rafId: number
@@ -82,6 +99,8 @@ export function ArtisansCardFlipSection() {
       window.removeEventListener('scroll', handleScroll)
     }
   }, [])
+
+  if (artisans.length === 0) return null
 
   const cardRange = 1 / artisans.length
   const activeIndex = Math.min(Math.floor(progress / cardRange), artisans.length - 1)
@@ -173,7 +192,13 @@ export function ArtisansCardFlipSection() {
                       to={`/artisans/${artisan.slug}`}
                       className="group cursor-pointer relative w-full h-full block"
                     >
-                      <img src={artisan.image} alt={artisan.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" style={{ filter: 'brightness(0.95) sepia(0.1)' }} />
+                      <ArtisanAvatar
+                        src={artisan.image}
+                        initials={artisan.initials}
+                        accentColor={artisan.accentColor}
+                        name={artisan.name}
+                        className="w-full h-full transition-transform duration-500 group-hover:scale-105"
+                      />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
                       {/* Hover badge — only visible when card is fully flipped + hovered */}
                       <div className="absolute top-4 right-4 glass-card px-3 py-1.5 rounded-full text-[9px] uppercase tracking-wider font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1">
