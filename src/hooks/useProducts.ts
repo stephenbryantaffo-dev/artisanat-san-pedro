@@ -20,6 +20,7 @@ export interface ProductUI {
   date: string;
   stock: number;
   description: string;
+  gallery: string[];
 }
 
 const CATEGORY_CODES: Record<string, string> = {
@@ -56,6 +57,7 @@ function mapProductRow(row: any): ProductUI {
     date: row.created_at ?? "",
     stock: row.stock ?? 0,
     description: row.description ?? "",
+    gallery: (row.gallery && row.gallery.length > 0) ? row.gallery : (row.image_url ? [row.image_url] : []),
   };
 }
 
