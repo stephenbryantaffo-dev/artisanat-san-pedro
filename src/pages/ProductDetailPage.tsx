@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { ArrowLeft, Share2, Heart, Star, Minus, Plus, Check } from "lucide-react";
+import { ArrowLeft, Share2, Heart, Star, Minus, Plus, Check, ChevronLeft, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 
@@ -77,6 +77,9 @@ const ProductDetailPage = () => {
   const gallery = product.gallery && product.gallery.length > 0 ? product.gallery : (product.image ? [product.image] : []);
   const hasMultiple = gallery.length > 1;
 
+  const goNext = () => setActivePhoto((p) => (p + 1) % gallery.length);
+  const goPrev = () => setActivePhoto((p) => (p - 1 + gallery.length) % gallery.length);
+
   const handleAddToCart = () => {
     setAdded(true);
     addItem(product, qty);
@@ -104,41 +107,76 @@ const ProductDetailPage = () => {
         </button>
       </header>
 
-      {/* SECTION 1 — Photo Gallery */}
+      {/* SECTION 1 — Photo Gallery (carousel) */}
       <div className="pt-[72px] px-4">
         <ScrollReveal variants={scaleReveal} className="relative w-full aspect-[4/5] rounded-[2rem] overflow-hidden">
           {gallery.length > 0 ? (
-            <img
+            <motion.img
+              key={activePhoto}
               src={gallery[activePhoto]}
               alt={`${product.name} - photo ${activePhoto + 1}`}
               width={800}
               height={1000}
-              className="w-full h-full object-cover brightness-[0.95] sepia-[0.15]"
+              className="w-full h-full object-cover brightness-[0.95] sepia-[0.15] touch-pan-y"
+              drag={hasMultiple ? "x" : false}
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.2}
+              onDragEnd={(_, info) => {
+                if (info.offset.x < -60) goNext();
+                else if (info.offset.x > 60) goPrev();
+              }}
+              initial={{ opacity: 0.6 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.25 }}
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center" style={{ background: "#E8E0D5" }}>
               <span className="font-serif italic text-muted-foreground">{product.category}</span>
             </div>
           )}
-          <div className="absolute top-6 left-6 right-6 flex justify-between">
+
+          <div className="absolute top-6 left-6 right-6 flex justify-between pointer-events-none">
             {product.badge ? (
-              <span className="glass-card px-4 py-1.5 rounded-full text-primary font-bold uppercase text-[10px]">
+              <span className="glass-card px-4 py-1.5 rounded-full text-primary font-bold uppercase text-[10px] pointer-events-auto">
                 {product.badge}
               </span>
             ) : <span />}
             <button
               onClick={() => setLiked(!liked)}
-              className="glass-card w-10 h-10 rounded-full flex items-center justify-center"
+              className="glass-card w-10 h-10 rounded-full flex items-center justify-center pointer-events-auto"
             >
               <Heart className={`w-5 h-5 ${liked ? "fill-primary text-primary" : "text-inverse-surface"}`} />
             </button>
           </div>
-          {/* Pagination dots — real, based on gallery */}
+
+          {/* Arrow buttons */}
+          {hasMultiple && (
+            <>
+              <button
+                onClick={goPrev}
+                aria-label="Photo précédente"
+                className="absolute left-3 top-1/2 -translate-y-1/2 glass-card w-10 h-10 rounded-full flex items-center justify-center active:scale-90 transition-transform"
+              >
+                <ChevronLeft className="w-5 h-5 text-inverse-surface" />
+              </button>
+              <button
+                onClick={goNext}
+                aria-label="Photo suivante"
+                className="absolute right-3 top-1/2 -translate-y-1/2 glass-card w-10 h-10 rounded-full flex items-center justify-center active:scale-90 transition-transform"
+              >
+                <ChevronRight className="w-5 h-5 text-inverse-surface" />
+              </button>
+            </>
+          )}
+
+          {/* Pagination dots */}
           {hasMultiple && (
             <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-1.5">
               {gallery.map((_, i) => (
-                <span
+                <button
                   key={i}
+                  onClick={() => setActivePhoto(i)}
+                  aria-label={`Photo ${i + 1}`}
                   className={`h-1 rounded-full transition-all ${i === activePhoto ? "w-8 bg-primary-foreground" : "w-1.5 bg-primary-foreground/40"}`}
                 />
               ))}
@@ -146,7 +184,7 @@ const ProductDetailPage = () => {
           )}
         </ScrollReveal>
 
-        {/* Thumbnails row — only if more than 1 photo */}
+        {/* Thumbnails row */}
         {hasMultiple && (
           <div className="flex gap-2 overflow-x-auto pb-1 mt-3">
             {gallery.map((photo, i) => (
