@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { ArrowLeft, Share2, Heart, Star, Minus, Plus, Check } from "lucide-react";
 import { toast } from "sonner";
@@ -30,9 +30,14 @@ const ProductDetailPage = () => {
   const [liked, setLiked] = useState(false);
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
+  const [activePhoto, setActivePhoto] = useState(0);
 
   const { data: product, isLoading } = useProduct(slug);
   const { data: allProducts = [] } = useProducts();
+
+  useEffect(() => {
+    setActivePhoto(0);
+  }, [slug]);
 
   const relatedProducts = useMemo(() => {
     if (!product) return [];
@@ -69,6 +74,9 @@ const ProductDetailPage = () => {
     );
   }
 
+  const gallery = product.gallery && product.gallery.length > 0 ? product.gallery : (product.image ? [product.image] : []);
+  const hasMultiple = gallery.length > 1;
+
   const handleAddToCart = () => {
     setAdded(true);
     addItem(product, qty);
@@ -99,13 +107,19 @@ const ProductDetailPage = () => {
       {/* SECTION 1 — Photo Gallery */}
       <div className="pt-[72px] px-4">
         <ScrollReveal variants={scaleReveal} className="relative w-full aspect-[4/5] rounded-[2rem] overflow-hidden">
-          <img
-            src={product.image}
-            alt={product.name}
-            width={800}
-            height={1000}
-            className="w-full h-full object-cover brightness-[0.95] sepia-[0.15]"
-          />
+          {gallery.length > 0 ? (
+            <img
+              src={gallery[activePhoto]}
+              alt={`${product.name} - photo ${activePhoto + 1}`}
+              width={800}
+              height={1000}
+              className="w-full h-full object-cover brightness-[0.95] sepia-[0.15]"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center" style={{ background: "#E8E0D5" }}>
+              <span className="font-serif italic text-muted-foreground">{product.category}</span>
+            </div>
+          )}
           <div className="absolute top-6 left-6 right-6 flex justify-between">
             {product.badge ? (
               <span className="glass-card px-4 py-1.5 rounded-full text-primary font-bold uppercase text-[10px]">
@@ -119,13 +133,35 @@ const ProductDetailPage = () => {
               <Heart className={`w-5 h-5 ${liked ? "fill-primary text-primary" : "text-inverse-surface"}`} />
             </button>
           </div>
-          {/* Pagination dots */}
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-1.5">
-            <span className="w-8 h-1 bg-primary-foreground rounded-full" />
-            <span className="w-1.5 h-1 bg-primary-foreground/40 rounded-full" />
-            <span className="w-1.5 h-1 bg-primary-foreground/40 rounded-full" />
-          </div>
+          {/* Pagination dots — real, based on gallery */}
+          {hasMultiple && (
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-1.5">
+              {gallery.map((_, i) => (
+                <span
+                  key={i}
+                  className={`h-1 rounded-full transition-all ${i === activePhoto ? "w-8 bg-primary-foreground" : "w-1.5 bg-primary-foreground/40"}`}
+                />
+              ))}
+            </div>
+          )}
         </ScrollReveal>
+
+        {/* Thumbnails row — only if more than 1 photo */}
+        {hasMultiple && (
+          <div className="flex gap-2 overflow-x-auto pb-1 mt-3">
+            {gallery.map((photo, i) => (
+              <button
+                key={i}
+                onClick={() => setActivePhoto(i)}
+                className={`flex-shrink-0 w-16 h-16 rounded-xl overflow-hidden border-2 transition-all ${
+                  i === activePhoto ? "border-primary" : "border-transparent opacity-60 hover:opacity-100"
+                }`}
+              >
+                <img src={photo} alt={`miniature ${i + 1}`} className="w-full h-full object-cover" />
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* SECTION 2 — Product Info */}
