@@ -4,7 +4,8 @@ import { ArrowRight, Star } from "lucide-react";
 import { motion } from "framer-motion";
 
 import AppShell from "@/components/AppShell";
-import { allArtisans } from "@/data/artisans";
+import { useArtisans } from "@/hooks/useArtisans";
+import ArtisanAvatar from "@/components/ArtisanAvatar";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { staggerContainer, staggerItem, slideLeft, scaleReveal } from "@/lib/motionVariants";
 
@@ -12,8 +13,9 @@ const METIERS = ["Tous", "Sculpture", "Tressage", "Tissage", "Poterie", "Forge",
 
 const ArtisansPage = () => {
   const [selectedMetier, setSelectedMetier] = useState("Tous");
+  const { data: allArtisans = [], isLoading } = useArtisans();
 
-  const featured = allArtisans.find((a) => a.featured);
+  const featured = allArtisans.find((a) => a.featured) || allArtisans[0];
 
   const filtered = useMemo(() => {
     if (selectedMetier === "Tous") return allArtisans;
@@ -60,14 +62,15 @@ const ArtisansPage = () => {
             to={`/artisans/${featured.slug}`}
             className="bg-[#2C1810] rounded-bento p-5 flex gap-4 items-center group"
           >
-            <img
-              src={featured.avatar}
-              alt={featured.name}
-              loading="lazy"
-              width={80}
-              height={80}
-              className="w-20 h-20 rounded-xl object-cover shrink-0"
-            />
+            <div className="w-20 h-20 rounded-xl overflow-hidden shrink-0">
+              <ArtisanAvatar
+                src={featured.avatar}
+                initials={featured.initials}
+                accentColor={featured.accentColor}
+                name={featured.name}
+                className="w-full h-full"
+              />
+            </div>
             <div className="flex-1 min-w-0">
               <span className="text-primary text-[9px] uppercase tracking-widest font-bold">À la une</span>
               <p className="font-serif text-xl text-primary-foreground italic truncate">{featured.name}</p>
@@ -80,7 +83,17 @@ const ArtisansPage = () => {
           </ScrollReveal>
         )}
 
+        {/* Loading skeleton */}
+        {isLoading && (
+          <div className="grid grid-cols-2 gap-4">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="rounded-bento aspect-[3/4] bg-surface-container-low animate-pulse" />
+            ))}
+          </div>
+        )}
+
         {/* Grid */}
+        {!isLoading && (
         <motion.div
           className="grid grid-cols-2 gap-4"
           variants={staggerContainer}
@@ -95,13 +108,12 @@ const ArtisansPage = () => {
               className="group cursor-pointer block"
             >
               <div className="rounded-bento overflow-hidden relative aspect-[3/4]">
-                <img
+                <ArtisanAvatar
                   src={artisan.avatar}
-                  alt={artisan.name}
-                  loading="lazy"
-                  width={750}
-                  height={1000}
-                  className="w-full h-full object-cover grayscale-[0.2] sepia-[0.1] group-hover:grayscale-0 transition-all duration-500"
+                  initials={artisan.initials}
+                  accentColor={artisan.accentColor}
+                  name={artisan.name}
+                  className="w-full h-full grayscale-[0.2] sepia-[0.1] group-hover:grayscale-0 transition-all duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-inverse-surface/70 via-transparent to-transparent" />
                 {artisan.featured && (
@@ -135,6 +147,7 @@ const ArtisansPage = () => {
             </motion.div>
           ))}
         </motion.div>
+        )}
       </div>
     </AppShell>
   );

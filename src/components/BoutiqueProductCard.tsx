@@ -28,15 +28,29 @@ const BoutiqueProductCard = ({ product }: BoutiqueProductCardProps) => {
       className="rounded-bento overflow-hidden bg-background cursor-pointer shadow-luxury"
       onClick={handleCardClick}
     >
-      <div className="relative aspect-[3/4] overflow-hidden">
-        <img
-          src={product.image}
-          alt={product.name}
-          loading="lazy"
-          width={800}
-          height={1000}
-          className="w-full h-full object-cover brightness-[0.95] sepia-[0.1] transition-transform duration-500 hover:scale-105"
-        />
+      <div
+        className="relative aspect-[3/4] overflow-hidden"
+        style={{ background: !product.image ? '#E8E0D5' : undefined }}
+      >
+        {product.image ? (
+          <img
+            src={product.image}
+            alt={product.name}
+            loading="lazy"
+            width={800}
+            height={1000}
+            className="w-full h-full object-cover brightness-[0.95] sepia-[0.1] transition-transform duration-500 hover:scale-105"
+          />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span
+              className="font-serif italic text-2xl"
+              style={{ color: accent.hex }}
+            >
+              {product.category}
+            </span>
+          </div>
+        )}
         {product.badge && (
           <span className="absolute top-3 left-3 glass-card px-2.5 py-1 rounded-full text-[8px] uppercase tracking-widest font-bold text-inverse-surface">
             {product.badge}

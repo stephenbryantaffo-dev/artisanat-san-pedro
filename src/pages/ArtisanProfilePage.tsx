@@ -1,10 +1,10 @@
-import { useMemo } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { ArrowLeft, Share2, Star } from "lucide-react";
 import { motion } from "framer-motion";
 
-import { allArtisans } from "@/data/artisans";
-import { allProducts } from "@/data/products";
+import { useArtisan } from "@/hooks/useArtisans";
+import { useProductsByArtisan } from "@/hooks/useProducts";
+import ArtisanAvatar from "@/components/ArtisanAvatar";
 import BoutiqueProductCard from "@/components/BoutiqueProductCard";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { staggerContainer, staggerItem } from "@/lib/motionVariants";
@@ -13,11 +13,17 @@ const ArtisanProfilePage = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
 
-  const artisan = allArtisans.find((a) => a.slug === slug);
-  const products = useMemo(
-    () => (artisan ? allProducts.filter((p) => p.artisanSlug === artisan.slug) : []),
-    [artisan]
-  );
+  const { data: artisan, isLoading } = useArtisan(slug);
+  const { data: products = [] } = useProductsByArtisan(artisan?.id);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background pt-32 px-6">
+        <div className="h-[280px] rounded-bento bg-surface-container-low animate-pulse" />
+        <div className="mt-8 h-40 rounded-bento bg-surface-container-low animate-pulse" />
+      </div>
+    );
+  }
 
   if (!artisan) {
     return (
@@ -55,28 +61,36 @@ const ArtisanProfilePage = () => {
 
       {/* Hero section */}
       <div className="relative h-[280px] overflow-hidden">
-        <img
-          src={artisan.coverImage}
-          alt={artisan.metier}
-          className="absolute inset-0 w-full h-full object-cover"
-          style={{ filter: "brightness(0.5) sepia(0.2)" }}
-          width={1200}
-          height={600}
-        />
+        {artisan.coverImage ? (
+          <img
+            src={artisan.coverImage}
+            alt={artisan.metier}
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{ filter: "brightness(0.5) sepia(0.2)" }}
+            width={1200}
+            height={600}
+          />
+        ) : (
+          <div
+            className="absolute inset-0"
+            style={{ background: `linear-gradient(135deg, ${artisan.accentColor}, #1a1a1a)` }}
+          />
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent" />
       </div>
 
       {/* Floating identity card */}
       <div className="relative px-6 -mt-14">
         <div className="bg-background rounded-bento p-5 flex items-end gap-4 shadow-luxury">
-          <img
-            src={artisan.avatar}
-            alt={artisan.name}
-            loading="lazy"
-            width={80}
-            height={80}
-            className="w-20 h-20 rounded-[1rem] object-cover border-4 border-background -mt-12"
-          />
+          <div className="w-20 h-20 rounded-[1rem] overflow-hidden border-4 border-background -mt-12">
+            <ArtisanAvatar
+              src={artisan.avatar}
+              initials={artisan.initials}
+              accentColor={artisan.accentColor}
+              name={artisan.name}
+              className="w-full h-full"
+            />
+          </div>
           <div className="flex-1 min-w-0">
             <h1 className="font-serif text-2xl italic text-inverse-surface">{artisan.name}</h1>
             <div className="flex items-center gap-2 mt-1 flex-wrap">

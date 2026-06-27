@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 import AppShell from "@/components/AppShell";
 import BoutiqueProductCard from "@/components/BoutiqueProductCard";
-import { allProducts } from "@/data/products";
+import { useProducts } from "@/hooks/useProducts";
 import { categoryAccent } from "@/lib/categoryColors";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { staggerContainer, staggerItem } from "@/lib/motionVariants";
@@ -20,6 +20,7 @@ const SORT_OPTIONS = [
 
 const BoutiquePage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { data: allProducts = [], isLoading } = useProducts();
 
   const selectedCategory = searchParams.get("cat") || "tout";
   const searchQuery = searchParams.get("q") || "";
@@ -68,7 +69,7 @@ const BoutiquePage = () => {
     }
 
     return results;
-  }, [selectedCategory, searchQuery, sortBy]);
+  }, [selectedCategory, searchQuery, sortBy, allProducts]);
 
   const resetFilters = () => {
     setSearchParams({}, { replace: true });
@@ -163,7 +164,13 @@ const BoutiquePage = () => {
 
       {/* Product grid */}
       <div className="px-6 pb-16" style={{ paddingTop: '220px' }}>
-        {filteredProducts.length > 0 ? (
+        {isLoading ? (
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="rounded-bento aspect-[3/4] bg-surface-container-low animate-pulse" />
+            ))}
+          </div>
+        ) : filteredProducts.length > 0 ? (
           <motion.div
             className="grid grid-cols-2 md:grid-cols-3 gap-4"
             variants={staggerContainer}
