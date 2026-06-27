@@ -4,7 +4,7 @@ import { ArrowLeft, Share2, Heart, Star, Minus, Plus, Check } from "lucide-react
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 
-import { allProducts } from "@/data/products";
+import { useProduct, useProducts } from "@/hooks/useProducts";
 import { useCart } from "@/context/CartContext";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { staggerContainer, staggerItem, scaleReveal } from "@/lib/motionVariants";
@@ -31,7 +31,8 @@ const ProductDetailPage = () => {
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
 
-  const product = allProducts.find((p) => p.slug === slug);
+  const { data: product, isLoading } = useProduct(slug);
+  const { data: allProducts = [] } = useProducts();
 
   const relatedProducts = useMemo(() => {
     if (!product) return [];
@@ -42,7 +43,15 @@ const ProductDetailPage = () => {
       (p) => p.category !== product.category && p.id !== product.id
     );
     return [...sameCategory, ...others].slice(0, 6);
-  }, [product]);
+  }, [product, allProducts]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background pt-24 px-6">
+        <div className="aspect-[4/5] rounded-bento bg-surface-container-low animate-pulse" />
+      </div>
+    );
+  }
 
   if (!product) {
     return (
