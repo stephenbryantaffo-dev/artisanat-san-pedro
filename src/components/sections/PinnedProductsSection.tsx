@@ -1,27 +1,27 @@
 import { useEffect, useRef, useState } from 'react'
+import { useProducts } from '@/hooks/useProducts'
+
+const ACCENT_BY_CATEGORY: Record<string, string> = {
+  Sculpture: '#8B3A0F', Tressage: '#2D4A2D', Tissage: '#8B1A1A',
+  Poterie: '#8B3A0F', Forge: '#8B1A1A', Peinture: '#2D4A2D',
+  Bijouterie: '#8B1A1A', Botterie: '#5C3A1E', Accessoires: '#2D4A2D',
+  Sérigraphie: '#8B3A0F',
+}
 
 export function PinnedProductsSection() {
   const sectionRef = useRef<HTMLElement>(null)
   const trackRef = useRef<HTMLDivElement>(null)
   const [sectionHeight, setSectionHeight] = useState('400vh')
-
-  const products = [
-    { name: 'Masque Baoulé ébène', artisan: 'Kofi Asante', price: '45 000', category: 'Sculpture', badge: 'COUP DE COEUR', accent: '#8B3A0F',
-      image: 'https://picsum.photos/seed/asp-masque/800/1000',
-      fallback: 'https://placehold.co/800x1000/8B3A0F/FFDCB4/png?text=Masque+Baoul%C3%A9' },
-    { name: 'Panier Abissa', artisan: 'Aya Coulibaly', price: '18 000', category: 'Tressage', badge: '', accent: '#2D4A2D',
-      image: 'https://picsum.photos/seed/asp-panier/800/1000',
-      fallback: 'https://placehold.co/800x1000/2D4A2D/FFDCB4/png?text=Panier+Abissa' },
-    { name: 'Vase Sénoufo', artisan: 'Fatou Diallo', price: '28 500', category: 'Poterie', badge: 'NOUVEAU', accent: '#8B3A0F',
-      image: 'https://picsum.photos/seed/asp-vase/800/1000',
-      fallback: 'https://placehold.co/800x1000/8B3A0F/FFDCB4/png?text=Vase+S%C3%A9noufo' },
-    { name: 'Village crépuscule', artisan: 'Abou Koné', price: '65 000', category: 'Peinture', badge: '', accent: '#2D4A2D',
-      image: 'https://picsum.photos/seed/asp-village/800/1000',
-      fallback: 'https://placehold.co/800x1000/2D4A2D/FFDCB4/png?text=Village' },
-    { name: 'Statue Dan', artisan: 'Kofi Asante', price: '72 000', category: 'Sculpture', badge: 'PIECE RARE', accent: '#8B1A1A',
-      image: 'https://picsum.photos/seed/asp-statue/800/1000',
-      fallback: 'https://placehold.co/800x1000/8B1A1A/FFDCB4/png?text=Statue+Dan' },
-  ]
+  const { data: realProducts = [] } = useProducts()
+  const products = realProducts.slice(0, 8).map((p) => ({
+    name: p.name,
+    artisan: p.artisan,
+    price: p.price.toLocaleString('fr-FR'),
+    category: p.category,
+    badge: p.badge ?? '',
+    accent: ACCENT_BY_CATEGORY[p.category] || '#8B3A0F',
+    image: p.image,
+  }))
 
   useEffect(() => {
     const update = () => setSectionHeight(window.innerWidth < 768 ? '320vh' : '400vh')
@@ -60,7 +60,9 @@ export function PinnedProductsSection() {
       cancelAnimationFrame(rafId)
       window.removeEventListener('scroll', handleScroll)
     }
-  }, [sectionHeight])
+  }, [sectionHeight, products.length])
+
+  if (products.length < 2) return null
 
   return (
     <section ref={sectionRef} className="relative" style={{ height: sectionHeight, background: '#fcf9f4' }}>
@@ -97,14 +99,24 @@ export function PinnedProductsSection() {
                 boxShadow: '0 30px 80px rgba(14,13,13,0.12)',
               }}
             >
-              <div style={{ position: 'relative', aspectRatio: '3/4', overflow: 'hidden', background: '#f0ede9' }}>
-                <img
-                  src={p.image}
-                  onError={(e) => { (e.target as HTMLImageElement).src = p.fallback }}
-                  alt={p.name}
-                  loading="lazy"
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'brightness(0.95) sepia(0.1)' }}
-                />
+              <div style={{ position: 'relative', aspectRatio: '3/4', overflow: 'hidden', background: p.image ? '#f0ede9' : p.accent }}>
+                {p.image ? (
+                  <img
+                    src={p.image}
+                    alt={p.name}
+                    loading="lazy"
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'brightness(0.95) sepia(0.1)' }}
+                  />
+                ) : (
+                  <div style={{
+                    position: 'absolute', inset: 0,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontFamily: 'Noto Serif, serif', fontStyle: 'italic',
+                    color: '#FFDCB4', fontSize: '28px', letterSpacing: '0.05em',
+                  }}>
+                    {p.category}
+                  </div>
+                )}
                 {p.badge && (
                   <div style={{
                     position: 'absolute', top: '16px', left: '16px',
