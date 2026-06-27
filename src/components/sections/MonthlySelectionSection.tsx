@@ -2,16 +2,19 @@ import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Sparkles, ArrowRight } from "lucide-react";
-import { allProducts, type Product } from "@/data/products";
-import { allArtisans } from "@/data/artisans";
+import { useProducts, type ProductUI } from "@/hooks/useProducts";
+import { useArtisans } from "@/hooks/useArtisans";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { staggerContainer, staggerItem } from "@/lib/motionVariants";
 import { categoryAccent } from "@/lib/categoryColors";
 
 const MonthlySelectionSection = () => {
-  const selection = useMemo<Product[]>(() => {
+  const { data: allProducts = [] } = useProducts();
+  const { data: allArtisans = [] } = useArtisans();
+
+  const selection = useMemo<ProductUI[]>(() => {
     const targets = ["Sculpture", "Poterie", "Tissage", "Forge"];
-    const picked: Product[] = [];
+    const picked: ProductUI[] = [];
     for (const cat of targets) {
       const found = allProducts.find(
         (p) => p.category === cat && !picked.some((x) => x.id === p.id)
@@ -24,7 +27,7 @@ const MonthlySelectionSection = () => {
       picked.push(next);
     }
     return picked.slice(0, 4);
-  }, []);
+  }, [allProducts]);
 
   const getArtisan = (slug: string) => allArtisans.find((a) => a.slug === slug);
 
