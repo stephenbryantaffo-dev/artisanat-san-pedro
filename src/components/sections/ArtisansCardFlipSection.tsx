@@ -1,26 +1,7 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { allArtisans }  from '@/data/artisans'
-
-
-
-const artisans = allArtisans.slice(0, 3).map((a) => ({
-  id: a.id,
-  slug: a.slug,
-  name: a.name,
-  metier: `Maître ${a.metier}`,
-  since: `Depuis ${a.since}`,
-  location: `${a.location}, Côte d'Ivoire`,
-  bio: a.bio.split('.')[0] + '.',
-  accentColor:
-    a.metierCategory === 'Sculpture' ? '#8B3A0F' :
-    a.metierCategory === 'Tissage' ? '#2D4A2D' :
-    a.metierCategory === 'Forge' ? '#8B1A1A' :
-    a.metierCategory === 'Poterie' ? '#8B3A0F' :
-    a.metierCategory === 'Tressage' ? '#2D4A2D' :
-    '#8B1A1A',
-  image: a.avatar,
-}))
+import { useArtisans } from '@/hooks/useArtisans'
+import ArtisanAvatar from '@/components/ArtisanAvatar'
 
 function SanPedroCardBack({ accent = '#8B3A0F' }: { accent?: string }) {
   return (
