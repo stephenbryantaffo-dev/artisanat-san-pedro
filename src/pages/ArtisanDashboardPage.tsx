@@ -1,11 +1,15 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Package, Eye, ShoppingCart, Star, Sparkles, ChevronRight, AlertTriangle, Check } from "lucide-react";
+import { Package, Eye, ShoppingCart, Star, Sparkles, ChevronRight, AlertTriangle, Check, LogOut } from "lucide-react";
 import AppShell from "@/components/AppShell";
-import { allProducts } from "@/data/products";
-import { allArtisans } from "@/data/artisans";
+import { useArtisan } from "@/hooks/useArtisans";
+import { useProductsByArtisan } from "@/hooks/useProducts";
 
-const artisan = allArtisans[0]; // Kofi Asante
-const artisanProducts = allProducts.filter((p) => p.artisanSlug === artisan.slug);
+interface ArtisanSession {
+  id: string;
+  slug: string;
+  name: string;
+}
 
 const mockOrders = [
   { id: "#SP-9402", client: "Chloé Martin", initials: "CM", amount: 45000, status: "pending" as const },
@@ -13,20 +17,70 @@ const mockOrders = [
   { id: "#SP-7615", client: "Marie Koné", initials: "MK", amount: 18500, status: "pending" as const },
 ];
 
-const lowStockProducts = artisanProducts.filter((p) => p.stock <= 2);
-
 const ArtisanDashboardPage = () => {
   const navigate = useNavigate();
+  const [session, setSession] = useState<ArtisanSession | null>(null);
+  const [checked, setChecked] = useState(false);
+
+  // Vérifie la session au chargement
+  useEffect(() => {
+    const stored = sessionStorage.getItem("artisan_connecte");
+    if (!stored) {
+      navigate("/espace-artisan/login");
+      return;
+    }
+    try {
+      setSession(JSON.parse(stored));
+    } catch {
+      navigate("/espace-artisan/login");
+    }
+    setChecked(true);
+  }, [navigate]);
+
+  const { data: artisan } = useArtisan(session?.slug);
+  const { data: artisanProducts = [] } = useProductsByArtisan(session?.id);
+
+  const handleLogout = () => {
+    sessionStorage.removeItem("artisan_connecte");
+    navigate("/espace-artisan/login");
+  };
+
+  // Tant qu'on n'a pas vérifié la session
+  if (!checked || !session) {
+    return (
+      <AppShell>
+        <div className="px-6 pt-24 flex items-center justify-center">
+          <p className="text-muted-foreground">Chargement...</p>
+        </div>
+      </AppShell>
+    );
+  }
+
+  const lowStockProducts = artisanProducts.filter((p) => p.stock <= 2);
+  const displayName = artisan?.name || session.name;
+  const displayMetier = artisan?.metier || "";
+  const displayRating = artisan?.rating || 0;
 
   return (
     <AppShell>
       {/* Header */}
-      <div className="px-6 pt-24 pb-4">
-        <p className="text-[10px] uppercase tracking-widest text-muted-foreground">TABLEAU DE BORD</p>
-        <h1 className="font-serif text-3xl italic text-foreground">{artisan.name}</h1>
-        <span className="inline-block mt-1 px-3 py-1 rounded-full bg-primary/10 text-primary text-[9px] uppercase tracking-widest backdrop-blur-sm">
-          {artisan.metier}
-        </span>
+      <div className="px-6 pt-24 pb-4 flex items-start justify-between">
+        <div>
+          <p className="text-[10px] uppercase tracking-widest text-muted-foreground">TABLEAU DE BORD</p>
+          <h1 className="font-serif text-3xl italic text-foreground">{displayName}</h1>
+          {displayMetier && (
+            <span className="inline-block mt-1 px-3 py-1 rounded-full bg-primary/10 text-primary text-[9px] uppercase tracking-widest backdrop-blur-sm">
+              {displayMetier}
+            </span>
+          )}
+        </div>
+        <button
+          onClick={handleLogout}
+          className="flex items-center gap-1.5 px-3 py-2 rounded-full bg-surface-container-low text-muted-foreground text-[10px] uppercase tracking-widest hover:bg-destructive/10 hover:text-destructive transition-colors"
+        >
+          <LogOut className="w-3.5 h-3.5" />
+          Quitter
+        </button>
       </div>
 
       {/* Stats Bento */}
@@ -35,7 +89,7 @@ const ArtisanDashboardPage = () => {
           { icon: Package, value: artisanProducts.length.toString(), label: "Total Produits", bg: "bg-surface-container-low", iconColor: "text-primary" },
           { icon: Eye, value: "1,2k", label: "Vues (mois)", bg: "bg-[#E8F0E8]", iconColor: "text-[#2D4A2D]" },
           { icon: ShoppingCart, value: "8", label: "Commandes", bg: "bg-[#F5E8E8]", iconColor: "text-[#8B1A1A]" },
-          { icon: Star, value: artisan.rating.toString(), label: "Note Globale", bg: "bg-surface-container-low", iconColor: "text-primary" },
+          { icon: Star, value: displayRating.toString(), label: "Note Globale", bg: "bg-surface-container-low", iconColor: "text-primary" },
         ].map((stat) => (
           <div key={stat.label} className={`${stat.bg} p-5 rounded-xl`}>
             <stat.icon className={`w-5 h-5 mb-2 ${stat.iconColor}`} />
@@ -48,86 +102,84 @@ const ArtisanDashboardPage = () => {
       {/* Stock Alert */}
       {lowStockProducts.length > 0 && (
         <div className="px-6 mt-6">
-          <div className="bg-destructive/10 text-destructive rounded-[1.5rem] p-4 flex items-center gap-3">
-            <AlertTriangle className="w-5 h-5 flex-shrink-0" />
-            <p className="text-sm">
-              Stock faible : {lowStockProducts[0].name} ({lowStockProducts[0].stock} restant{lowStockProducts[0].stock > 1 ? "s" : ""})
-            </p>
+          <div className="bg-[#F5E8E8] p-4 rounded-xl flex items-start gap-3">
+            <AlertTriangle className="w-5 h-5 text-[#8B1A1A] shrink-0 mt-0.5" />
+            <div>
+              <p className="font-medium text-[#8B1A1A] text-sm">Stock faible</p>
+              <p className="text-xs text-[#8B1A1A]/80 mt-0.5">
+                {lowStockProducts.length} produit(s) bientôt épuisé(s).
+              </p>
+            </div>
           </div>
         </div>
       )}
 
-      {/* AI Generation CTA */}
+      {/* IA Studio CTA */}
       <div className="px-6 mt-6">
-        <div className="bg-background rounded-[2rem] p-6 shadow-[0_20px_40px_rgba(14,13,13,0.04)] border-l-4 border-[#2D4A2D]">
-          <div className="flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-primary fill-primary" />
-            <span className="font-serif text-lg text-foreground">Ajouter avec l'IA</span>
-          </div>
-          <p className="text-xs text-muted-foreground font-light mt-1">
-            Décrivez votre œuvre, l'IA rédige votre fiche.
-          </p>
-          <button
-            onClick={() => navigate("/espace-artisan/ia-studio")}
-            className="mt-4 w-full bg-background border-l-4 border-primary text-primary text-[10px] uppercase tracking-widest py-4 rounded-r-xl text-left pl-6 flex justify-between items-center font-semibold"
-          >
-            Ouvrir l'IA Studio
-            <ChevronRight className="w-4 h-4" />
-          </button>
-        </div>
-      </div>
-
-      {/* Products */}
-      <div className="px-6 mt-8">
-        <div className="flex justify-between items-baseline mb-4">
-          <h2 className="font-serif text-xl text-foreground">Vos Produits</h2>
-          <button className="text-primary text-[10px] underline">Gérer tout →</button>
-        </div>
-        <div className="flex gap-3 overflow-x-auto no-scrollbar pb-2">
-          {artisanProducts.map((product) => (
-            <div key={product.id} className="min-w-[200px] bg-surface-container-low rounded-[1.5rem] overflow-hidden flex flex-col flex-shrink-0">
-              <img src={product.image} alt={product.name} className="w-full h-32 object-cover" />
-              <div className="p-4 flex-1 flex flex-col justify-between">
-                <div>
-                  <p className="font-serif text-sm text-foreground">{product.name}</p>
-                  <p className="text-primary font-bold text-xs mt-1">{product.price.toLocaleString("fr-FR")} FCFA</p>
-                  <p className="text-[10px] uppercase text-muted-foreground mt-1">Stock: {product.stock}</p>
-                </div>
-                <button className="mt-3 w-full py-2 rounded-full border border-secondary/20 text-primary text-[10px] uppercase tracking-widest font-bold hover:bg-secondary/10 transition-colors">
-                  Modifier
-                </button>
-              </div>
+        <button
+          onClick={() => navigate("/espace-artisan/ia-studio")}
+          className="w-full bg-gradient-to-br from-terracotta to-terracotta-light text-white p-5 rounded-xl flex items-center justify-between active:scale-[0.98] transition-transform"
+        >
+          <div className="flex items-center gap-3">
+            <Sparkles className="w-6 h-6" />
+            <div className="text-left">
+              <p className="font-serif text-lg italic">Studio IA</p>
+              <p className="text-xs text-white/80">Améliore tes photos et descriptions</p>
             </div>
-          ))}
-        </div>
+          </div>
+          <ChevronRight className="w-5 h-5" />
+        </button>
       </div>
 
-      {/* Recent Orders */}
-      <div className="px-6 mt-8 pb-16">
-        <h2 className="font-serif text-xl text-foreground mb-4">Commandes Récentes</h2>
+      {/* Mes Produits */}
+      <div className="px-6 mt-8">
+        <h2 className="font-serif text-xl italic text-foreground mb-4">Mes Créations</h2>
+        {artisanProducts.length === 0 ? (
+          <p className="text-sm text-muted-foreground">Aucun produit pour le moment.</p>
+        ) : (
+          <div className="grid grid-cols-2 gap-3">
+            {artisanProducts.map((p) => (
+              <div key={p.id} className="bg-surface-container-low rounded-xl overflow-hidden">
+                <div className="aspect-square overflow-hidden">
+                  {p.image ? (
+                    <img src={p.image} alt={p.name} className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center" style={{ background: "#E8E0D5" }}>
+                      <span className="font-serif italic text-xs text-muted-foreground">{p.category}</span>
+                    </div>
+                  )}
+                </div>
+                <div className="p-3">
+                  <p className="font-serif text-sm text-foreground line-clamp-1">{p.name}</p>
+                  <p className="font-serif text-primary text-sm mt-0.5">{p.price.toLocaleString("fr-FR")} FCFA</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Commandes récentes */}
+      <div className="px-6 mt-8 pb-32">
+        <h2 className="font-serif text-xl italic text-foreground mb-4">Commandes récentes</h2>
         <div className="space-y-3">
           {mockOrders.map((order) => (
-            <div key={order.id} className="bg-surface-container-low p-4 rounded-[1.5rem] flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-foreground font-bold text-xs">
-                  {order.initials}
+            <div key={order.id} className="bg-surface-container-low p-4 rounded-xl flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                  <span className="text-primary text-xs font-bold">{order.initials}</span>
                 </div>
                 <div>
-                  <p className="font-bold text-sm text-foreground">{order.id}</p>
-                  <p className="text-[10px] uppercase text-muted-foreground">
-                    {order.client} · {order.amount.toLocaleString("fr-FR")} FCFA
-                  </p>
+                  <p className="text-sm text-foreground font-medium">{order.client}</p>
+                  <p className="text-[10px] text-muted-foreground">{order.id}</p>
                 </div>
               </div>
-              {order.status === "pending" ? (
-                <button className="bg-primary text-primary-foreground text-[10px] uppercase tracking-widest px-3 py-2 rounded-full font-bold">
-                  Expédier
-                </button>
-              ) : (
-                <span className="bg-green-50 text-green-700 border border-green-100 rounded-full px-3 py-2 text-[10px] uppercase flex items-center gap-1">
-                  <Check className="w-3 h-3" /> Posté
+              <div className="text-right">
+                <p className="font-serif text-foreground">{order.amount.toLocaleString("fr-FR")} F</p>
+                <span className={`text-[9px] uppercase tracking-widest ${order.status === "pending" ? "text-[#8B1A1A]" : "text-[#2D4A2D]"}`}>
+                  {order.status === "pending" ? "En attente" : "Expédiée"}
                 </span>
-              )}
+              </div>
             </div>
           ))}
         </div>
