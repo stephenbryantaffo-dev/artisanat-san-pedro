@@ -15,6 +15,7 @@ import CartPage from "./pages/CartPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import ClientHubPage from "./pages/ClientHubPage";
 import ArtisanDashboardPage from "./pages/ArtisanDashboardPage";
+import ArtisanLoginPage from "./pages/ArtisanLoginPage";
 import AIStudioPage from "./pages/AIStudioPage";
 import DecouvertePage from "./pages/DecouvertePage";
 import AboutPage from "./pages/AboutPage";
@@ -49,6 +50,7 @@ const AnimatedRoutes = () => {
           <Route path="/panier" element={<CartPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/mon-espace" element={<ClientHubPage />} />
+          <Route path="/espace-artisan/login" element={<ArtisanLoginPage />} />
           <Route path="/espace-artisan" element={<ArtisanDashboardPage />} />
           <Route path="/espace-artisan/ia-studio" element={<AIStudioPage />} />
           <Route path="/decouverte" element={<DecouvertePage />} />
