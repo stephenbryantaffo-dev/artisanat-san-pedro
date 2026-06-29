@@ -1,11 +1,23 @@
 import { useState, useRef, useEffect } from "react";
 import { Sparkles, Send, X } from "lucide-react";
+import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+
+interface ProductCard {
+  id: string;
+  slug: string;
+  name: string;
+  category: string;
+  price: number;
+  image_url: string;
+  artisan_name: string;
+}
 
 interface Message {
   id: string;
   role: "user" | "assistant";
   content: string;
+  produits?: ProductCard[];
 }
 
 const quickActions = [
@@ -62,6 +74,7 @@ const AIChatbot = () => {
         id: (Date.now() + 1).toString(),
         role: "assistant",
         content: data?.content || "Je suis désolé, je n'ai pas pu traiter votre demande.",
+        produits: Array.isArray(data?.produits) ? data.produits : [],
       };
       setMessages((prev) => [...prev, aiMsg]);
     } catch (err) {
@@ -146,16 +159,47 @@ const AIChatbot = () => {
             {/* Messages */}
             <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
               {messages.map((msg) => (
-                <div key={msg.id} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-                  <div
-                    className={`max-w-[85%] p-4 text-sm leading-relaxed font-light ${
-                      msg.role === "user"
-                        ? "bg-primary text-primary-foreground rounded-[1.5rem] rounded-tr-sm"
-                        : "bg-surface-container-low text-foreground rounded-[1.5rem] rounded-tl-sm"
-                    }`}
-                  >
-                    {msg.content}
+                <div key={msg.id} className="space-y-3">
+                  <div className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+                    <div
+                      className={`max-w-[85%] p-4 text-sm leading-relaxed font-light ${
+                        msg.role === "user"
+                          ? "bg-primary text-primary-foreground rounded-[1.5rem] rounded-tr-sm"
+                          : "bg-surface-container-low text-foreground rounded-[1.5rem] rounded-tl-sm"
+                      }`}
+                    >
+                      {msg.content}
+                    </div>
                   </div>
+
+                  {/* Fiches produits */}
+                  {msg.produits && msg.produits.length > 0 && (
+                    <div className="flex gap-3 overflow-x-auto no-scrollbar pb-1">
+                      {msg.produits.map((p) => (
+                        <Link
+                          key={p.id}
+                          to={`/boutique/${p.slug}`}
+                          onClick={() => setIsOpen(false)}
+                          className="flex-shrink-0 w-36 bg-surface-container-low rounded-2xl overflow-hidden border border-border/20 active:scale-95 transition-transform"
+                        >
+                          <div className="w-full h-36 overflow-hidden">
+                            {p.image_url ? (
+                              <img src={p.image_url} alt={p.name} className="w-full h-full object-cover" />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center" style={{ background: "#E8E0D5" }}>
+                                <span className="font-serif italic text-[10px] text-muted-foreground">{p.category}</span>
+                              </div>
+                            )}
+                          </div>
+                          <div className="p-2.5">
+                            <p className="font-serif text-xs text-foreground leading-snug line-clamp-2">{p.name}</p>
+                            <p className="font-serif text-primary text-sm mt-1">{p.price.toLocaleString("fr-FR")} F</p>
+                            <p className="text-[9px] text-muted-foreground mt-0.5 line-clamp-1">{p.artisan_name}</p>
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                  )}
                 </div>
               ))}
               {isLoading && (
